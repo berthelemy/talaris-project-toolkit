@@ -1,0 +1,29 @@
+// For format details, see https://aka.ms/devcontainer.json
+{
+  "name": "Project Toolkit PHP",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "runServices": ["app", "mysql"],
+  "workspaceFolder": "/var/www/html",
+  "shutdownAction": "stopCompose",
+  "forwardPorts": [80, 3306],
+  "portsAttributes": {
+    "80": {
+      "label": "Project Toolkit (Apache)",
+      "onAutoForward": "openBrowser",
+      "protocol": "http"
+    },
+    "3306": {
+      "label": "MySQL Service"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-debug",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}
