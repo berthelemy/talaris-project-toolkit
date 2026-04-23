@@ -1,5 +1,7 @@
 # Talaris Project Toolkit: Phased Implementation Plan
 
+The project name "Talaris" is derived from the Latin *talaria* (the winged sandals of Hermes), implying speed and communication.
+
 This plan is organized as two-week phases (sprints). Each phase includes:
 - A delivery checklist.
 - Manual acceptance testing instructions for phase sign-off.

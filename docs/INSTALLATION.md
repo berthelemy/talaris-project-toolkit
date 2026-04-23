@@ -2,6 +2,8 @@
 
 This guide describes a clean local setup for the Talaris Project Toolkit.
 
+The project name "Talaris" is derived from the Latin *talaria* (the winged sandals of Hermes), implying speed and communication.
+
 ## Prerequisites
 
 - PHP 8.2+

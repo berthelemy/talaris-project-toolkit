@@ -1,4 +1,12 @@
-# CodeIgniter 4 Application Starter
+# Talaris Project Toolkit
+
+## Why "Talaris"?
+
+The project name "Talaris" is derived from the Latin *talaria* (the winged sandals of Hermes), implying speed and communication.
+
+## Framework Base
+
+This repository is currently based on the CodeIgniter 4 application starter template.
 
 ## What is CodeIgniter?
 
