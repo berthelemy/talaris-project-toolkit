@@ -18,12 +18,14 @@
     }
   },
   "customizations": {
-    "vscode": {
-      "extensions": [
-        "bmewburn.vscode-intelephense-client",
-        "xdebug.php-debug",
-        "ms-azuretools.vscode-docker"
-      ]
-    }
+  "vscode": {
+    "extensions": [
+      "github.copilot", // Keep this one
+      // Remove "github.copilot-chat" for now
+      "bmewburn.vscode-intelephense-client",
+      "xdebug.php-debug",
+      "ms-azuretools.vscode-docker"
+    ]
   }
+}
 }
