@@ -1,6 +1,6 @@
 # Installation
 
-This guide describes a clean local setup for the Pejen Project Toolkit.
+This guide describes a clean local setup for the Talaris Project Toolkit.
 
 ## Prerequisites
 

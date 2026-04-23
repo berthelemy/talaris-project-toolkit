@@ -1,4 +1,4 @@
-# Copilot Instructions for Pejen Project Toolkit
+# Copilot Instructions for Talaris Project Toolkit
 
 Use these repository skills whenever tasks match their scope. Choose the most specific skill and combine multiple skills when needed.
 

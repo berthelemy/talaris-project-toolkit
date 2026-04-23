@@ -1,4 +1,4 @@
-# Pejen Project Toolkit: Phased Implementation Plan
+# Talaris Project Toolkit: Phased Implementation Plan
 
 This plan is organized as two-week phases (sprints). Each phase includes:
 - A delivery checklist.
