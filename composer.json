@@ -38,6 +38,11 @@
         "sort-packages": true
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "XDEBUG_MODE=coverage phpunit",
+        "lint": "find app tests -type f -name '*.php' -print0 | xargs -0 -n1 php -l > /dev/null",
+        "ci": [
+            "@lint",
+            "@test"
+        ]
     }
 }

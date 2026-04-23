@@ -28,11 +28,11 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - Enable local development and initial CI checks.
 
 ### Delivery Checklist
-- [ ] Confirm baseline CodeIgniter 4 app bootstraps cleanly.
-- [ ] Configure environment templates for local/shared hosting/VPS.
-- [ ] Add coding standards checks and test runner baseline.
-- [ ] Define initial DB migration strategy and naming conventions.
-- [ ] Create starter docs pages: installation, configuration, server requirements.
+- [x] Confirm baseline CodeIgniter 4 app bootstraps cleanly.
+- [x] Configure environment templates for local/shared hosting/VPS.
+- [x] Add coding standards checks and test runner baseline.
+- [x] Define initial DB migration strategy and naming conventions.
+- [x] Create starter docs pages: installation, configuration, server requirements.
 
 ### Manual Acceptance Testing
 1. Clone repository and install dependencies on a clean machine.
