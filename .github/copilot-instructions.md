@@ -16,6 +16,7 @@ Use these repository skills whenever tasks match their scope. Choose the most sp
 - `.github/skills/ui-theming-admin-customization/SKILL.md`
 - `.github/skills/i18n-en-fr-localization/SKILL.md`
 - `.github/skills/autosave-live-persistence/SKILL.md`
+- `.github/skills/accessibility-wcag22-aa/SKILL.md`
 
 ## Modules and Reporting Skills
 - `.github/skills/module-plugin-architecture/SKILL.md`
@@ -35,5 +36,6 @@ Use these repository skills whenever tasks match their scope. Choose the most sp
 - Enforce PSR-12 formatting for all PHP changes.
 - Prefer secure defaults and include audit logging for data mutations.
 - Keep features mobile-first, Bootstrap 5 compliant, and localization-ready.
+- Build and review UI changes to meet WCAG 2.2 Level AA.
 - Add or update automated tests (unit, integration, system) for meaningful behavioral changes.
 - Update Markdown documentation when behavior, configuration, or module APIs change.
