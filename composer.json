@@ -39,7 +39,7 @@
     },
     "scripts": {
         "test": "XDEBUG_MODE=coverage phpunit",
-        "lint": "find app tests -type f -name '*.php' -print0 | xargs -0 -n1 php -l > /dev/null",
+        "lint": "XDEBUG_MODE=off find app tests -type f -name '*.php' -print0 | xargs -0 -n1 php -d xdebug.mode=off -l > /dev/null",
         "ci": [
             "@lint",
             "@test"
