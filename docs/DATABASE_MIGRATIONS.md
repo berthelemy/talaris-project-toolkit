@@ -24,6 +24,13 @@ This document defines the baseline migration approach for the toolkit.
 - Store migrations in `app/Database/Migrations/`.
 - Keep one migration focused on one schema change concern.
 
+## Current Authentication Tables (Phase 2)
+
+- `users`: identity and password hash records.
+- `password_reset_tokens`: hashed reset token storage with expiry and single-use marker.
+- `auth_audit_logs`: traceable auth events (login/logout/failures/reset actions).
+- `auth_settings`: administrator-configurable password policy and timeout settings.
+
 ## Authoring Rules
 
 - Always implement both `up()` and `down()` methods.

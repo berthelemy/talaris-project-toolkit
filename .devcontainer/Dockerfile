@@ -1,5 +1,7 @@
 FROM mcr.microsoft.com/devcontainers/php:3-8.5-trixie
 
+ENV PHP_INI_DIR=/usr/local/etc/php
+
 # Enable Apache modules and .htaccess support
 RUN a2enmod rewrite && a2enmod headers
 
@@ -21,5 +23,5 @@ RUN apt-get update && apt-get install -y \
     default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Install and enable the intl extension
-RUN docker-php-ext-install intl
+# Install and enable required PHP extensions
+RUN docker-php-ext-install intl mysqli pdo_mysql

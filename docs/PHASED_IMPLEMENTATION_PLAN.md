@@ -62,11 +62,11 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - Implement secure login foundations and session inactivity timeout.
 
 ### Delivery Checklist
-- [ ] Username/password authentication implemented.
-- [ ] Password policy is configurable by administrator settings.
-- [ ] Session inactivity timeout is configurable and enforced.
-- [ ] Password reset flow via email token is implemented.
-- [ ] Audit logs created for login, logout, failed login, password reset events.
+- [x] Username/password authentication implemented.
+- [x] Password policy is configurable by administrator settings.
+- [x] Session inactivity timeout is configurable and enforced.
+- [x] Password reset flow via email token is implemented.
+- [x] Audit logs created for login, logout, failed login, password reset events.
 
 ### Manual Acceptance Testing
 1. Create a test user with compliant password.
