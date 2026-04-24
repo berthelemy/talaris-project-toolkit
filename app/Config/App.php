@@ -42,6 +42,26 @@ class App extends BaseConfig
      */
     public string $indexPage = 'index.php';
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        if (PHP_SAPI === 'cli' || ! isset($_SERVER['HTTP_HOST'])) {
+            return;
+        }
+
+        $scheme = 'http';
+
+        if (! empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+            $scheme = strtolower(trim(explode(',', (string) $_SERVER['HTTP_X_FORWARDED_PROTO'])[0]));
+        } elseif (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+            $scheme = 'https';
+        }
+
+        $this->baseURL  = $scheme . '://' . (string) $_SERVER['HTTP_HOST'] . '/';
+        $this->indexPage = '';
+    }
+
     /**
      * --------------------------------------------------------------------------
      * URI PROTOCOL

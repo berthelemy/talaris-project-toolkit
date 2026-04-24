@@ -46,6 +46,18 @@ php spark serve
 
 8. Verify application is reachable in your browser.
 
+## Initial Administrator Setup (Browser)
+
+After migrations complete and before any users exist:
+
+1. Open `/install/admin` in your browser.
+2. Enter username, email, and password for the first administrator account.
+3. Submit the form to complete one-time setup and sign in.
+
+Behavior notes:
+- The setup page is available only while there are no users.
+- Once the first user exists, `/install/admin` redirects to `/login`.
+
 ## Verify Writable Permissions
 
 Use these checks to confirm the runtime folders are writable by the web server user.

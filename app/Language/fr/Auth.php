@@ -32,4 +32,10 @@ return [
     'passwordPolicySymbol'           => 'Le mot de passe doit inclure au moins un symbole.',
     'dashboardTitle'                 => 'Tableau de bord',
     'dashboardSubtitle'              => 'Vous etes connecte en tant que {username}.',
+    'setupTitle'                     => 'Configuration initiale',
+    'setupIntro'                     => 'Creez le premier compte administrateur pour cette installation.',
+    'setupCreateButton'              => 'Creer l administrateur',
+    'setupCompleted'                 => 'La configuration initiale est terminee. Vous etes connecte.',
+    'setupAlreadyCompleted'          => 'La configuration initiale est deja terminee.',
+    'setupMigrationsRequired'        => 'La base de donnees n est pas prete. Lancez d abord les migrations : php spark migrate',
 ];

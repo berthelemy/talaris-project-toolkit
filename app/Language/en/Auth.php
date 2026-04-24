@@ -32,4 +32,10 @@ return [
     'passwordPolicySymbol'           => 'Password must include at least one symbol.',
     'dashboardTitle'                 => 'Dashboard',
     'dashboardSubtitle'              => 'You are signed in as {username}.',
+    'setupTitle'                     => 'Initial setup',
+    'setupIntro'                     => 'Create the first administrator account for this installation.',
+    'setupCreateButton'              => 'Create administrator',
+    'setupCompleted'                 => 'Initial setup is complete. You are signed in.',
+    'setupAlreadyCompleted'          => 'Initial setup has already been completed.',
+    'setupMigrationsRequired'        => 'Database is not ready yet. Run migrations first: php spark migrate',
 ];
