@@ -46,6 +46,41 @@ php spark serve
 
 8. Verify application is reachable in your browser.
 
+## Verify Writable Permissions
+
+Use these checks to confirm the runtime folders are writable by the web server user.
+
+1. Inspect owner/group and mode:
+
+```bash
+ls -ld writable writable/cache writable/logs writable/session writable/uploads
+```
+
+2. Confirm the expected web server user inside the container (usually `www-data` for Apache):
+
+```bash
+ps -eo user,comm | grep -E "apache2|httpd|php-fpm"
+```
+
+3. Test write access as the web server user:
+
+```bash
+sudo -u www-data sh -c 'touch writable/cache/.perm-test && rm writable/cache/.perm-test'
+sudo -u www-data sh -c 'touch writable/logs/.perm-test && rm writable/logs/.perm-test'
+sudo -u www-data sh -c 'touch writable/session/.perm-test && rm writable/session/.perm-test'
+sudo -u www-data sh -c 'touch writable/uploads/.perm-test && rm writable/uploads/.perm-test'
+```
+
+4. If any command fails, fix ownership and minimum safe permissions:
+
+```bash
+sudo chown -R www-data:www-data writable
+sudo find writable -type d -exec chmod 775 {} \;
+sudo find writable -type f -exec chmod 664 {} \;
+```
+
+If your web server runs as a different user/group, replace `www-data` with that account.
+
 ## Verify the Baseline
 
 Run baseline checks:

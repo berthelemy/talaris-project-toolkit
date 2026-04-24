@@ -8,8 +8,10 @@ services:
     volumes:
       - ..:/var/www/html:cached
     command: /bin/sh -c "apachectl -D FOREGROUND"
-    ports:
-      - "80:80"
+    # Disabled host port publishing to prevent conflicts when opening
+    # another instance of this dev container in a separate window.
+    # ports:
+    #   - "80:80"
     depends_on:
       mysql:
         condition: service_healthy
@@ -29,8 +31,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
-    ports:
-      - "3306:3306"
+    # Disabled host port publishing to prevent conflicts when opening
+    # another instance of this dev container in a separate window.
+    # ports:
+    #   - "3306:3306"
 
 volumes:
   mysql-data:

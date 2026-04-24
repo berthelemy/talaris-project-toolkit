@@ -6,17 +6,19 @@
   "runServices": ["app", "mysql"],
   "workspaceFolder": "/var/www/html",
   "shutdownAction": "stopCompose",
-  "forwardPorts": [80, 3306],
-  "portsAttributes": {
-    "80": {
-      "label": "Project Toolkit (Apache)",
-      "onAutoForward": "openBrowser",
-      "protocol": "http"
-    },
-    "3306": {
-      "label": "MySQL Service"
-    }
-  },
+  // Disabled to avoid fixed forwarding conflicts when opening the same
+  // dev container setup in another VS Code window.
+  // "forwardPorts": [80, 3306],
+  // "portsAttributes": {
+  //   "80": {
+  //     "label": "Project Toolkit (Apache)",
+  //     "onAutoForward": "openBrowser",
+  //     "protocol": "http"
+  //   },
+  //   "3306": {
+  //     "label": "MySQL Service"
+  //   }
+  // },
   "customizations": {
   "vscode": {
     "extensions": [
