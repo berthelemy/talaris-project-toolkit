@@ -45,10 +45,10 @@ Run these steps at the start of the next session:
 
 ## Sign-off Checklist
 
-- [ ] App boots successfully after documented setup steps.
-- [ ] Baseline checks pass.
-- [ ] Installation instructions are reproducible end to end.
-- [ ] No critical blockers remain for Phase 2 start.
+- [X] App boots successfully after documented setup steps.
+- [X] Baseline checks pass.
+- [X] Installation instructions are reproducible end to end.
+- [X] No critical blockers remain for Phase 2 start.
 
 ## Suggested First Message for Next Session
 

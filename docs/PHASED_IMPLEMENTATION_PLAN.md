@@ -43,8 +43,18 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 4. Run test command and confirm baseline suite executes.
 5. Review docs pages and verify installation steps are reproducible.
 
+### Manual Acceptance Result (2026-04-24)
+- Environment: Local dev container.
+- Timestamp (UTC): 2026-04-24 19:27:48.
+- Dependency install step: `composer install --no-interaction --no-progress` completed successfully.
+- Environment setup step: `.env` created from `env` template.
+- App startup check: `curl http://localhost` returned HTTP 200.
+- Baseline checks: `XDEBUG_MODE=off composer ci` passed (5 tests, 6 assertions).
+- Documentation reproducibility check: `docs/INSTALLATION.md`, `docs/CONFIGURATION.md`, `docs/SERVER_REQUIREMENTS.md`, and `docs/DATABASE_MIGRATIONS.md` are present and non-empty.
+- Blockers found: None.
+
 ### Exit Criteria
-- [ ] New developer can run the app in under 30 minutes using docs only.
+- [x] New developer can run the app in under 30 minutes using docs only.
 
 ## Phase 2 (Weeks 3-4): Authentication Core and Session Security
 
