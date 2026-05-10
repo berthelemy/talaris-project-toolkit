@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\Auth\RbacService;
+use App\Libraries\Modules\ModuleLockService;
 use App\Libraries\Modules\ModuleRegistryService;
 use App\Models\ModuleRegistryModel;
 use App\Models\ModuleWidgetFailureModel;
@@ -34,6 +35,7 @@ class ModuleManagementController extends BaseController
         return view('modules/index', [
             'modules' => (new ModuleRegistryService())->allModules(),
             'recentFailures' => $this->recentFailuresByModule(),
+            'activeLocks' => (new ModuleLockService())->activeLocks(),
         ]);
     }
 
@@ -118,6 +120,23 @@ class ModuleManagementController extends BaseController
             ->update();
 
         return redirect()->to('/modules')->with('success', lang('Module.configUpdatedSuccess'));
+    }
+
+    public function releaseLock(int $lockId): RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+
+        if ($actorId === null) {
+            return redirect()->to('/login')->with('error', lang('Auth.loginRequired'));
+        }
+
+        if (! $this->canManageModules($actorId)) {
+            return redirect()->to('/dashboard')->with('error', lang('Domain.notAuthorized'));
+        }
+
+        $released = (new ModuleLockService())->releaseByIdAsAdmin($lockId, $actorId);
+
+        return redirect()->to('/modules')->with($released ? 'success' : 'error', lang($released ? 'Module.lockReleaseSuccess' : 'Module.lockReleaseError'));
     }
 
     private function canManageModules(int $actorId): bool

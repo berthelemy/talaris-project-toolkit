@@ -329,11 +329,26 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - Prevent edit conflicts with module-level checkout locking.
 
 ### Delivery Checklist
-- [ ] Locking model implemented for module data by context and user.
-- [ ] Lock acquisition on module open for authorized editors.
-- [ ] Lock denial message for second editor with clear guidance.
-- [ ] Lock release on logout and timeout.
-- [ ] Administrative lock visibility and recovery tooling added.
+- [x] Locking model implemented for module data by context and user.
+- [x] Lock acquisition on module open for authorized editors.
+- [x] Lock denial message for second editor with clear guidance.
+- [x] Lock release on logout and timeout.
+- [x] Administrative lock visibility and recovery tooling added.
+
+### Implementation Progress (2026-05-10)
+- Added `module_edit_locks` persistence with unique context lock key (`module_slug`, `scope_type`, `scope_id`) and lock ownership/expiry fields.
+- Added `ModuleLockService` for acquire/deny, expiry cleanup, user-scope release on logout/timeout, and admin force release flows.
+- Enforced lock checks on module write paths:
+	- Hello World autosave endpoints now return `423` when lock is held by another editor.
+	- Internal module API write endpoints now return `423` on lock denial.
+- Added module page checkout behavior on open for authorized editors and read-only fallback with lock-owner guidance for second editor.
+- Added admin lock visibility/recovery section on `/modules` with active lock table and explicit release action.
+- Added EN/FR localization strings for lock and read-only UX states.
+- Added system test coverage for lock denial and release behavior in:
+	- `tests/system/ModuleAutosaveSystemTest.php`
+	- `tests/system/ModuleApiSystemTest.php`
+	- `tests/system/AuthSystemTest.php`
+	- `tests/system/ModuleFrameworkSystemTest.php`
 
 ### Manual Acceptance Testing
 1. User A opens editable module and acquires lock.

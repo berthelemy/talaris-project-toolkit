@@ -30,6 +30,9 @@ Current implementation supports:
 - `module_api_read`
 - `module_api_write`
 - `autosave_update`
+- `module_lock_acquired`
+- `module_lock_denied`
+- `module_lock_released`
 
 Each event captures actor identity and scope metadata.
 
@@ -49,8 +52,17 @@ Response behavior:
 
 - `200` on successful save
 - `409` for concurrency conflict
+- `423` when module context is locked by another editor
 - `422` for validation errors
 - `401/403/404` for authentication/authorization/not found paths
+
+## Locking Behavior (Phase 8)
+
+- Lock scope is module context (`module_slug`, `scope_type`, `scope_id`).
+- Authorized editors acquire/refresh lock on module open.
+- Second editor sees read-only mode and receives lock-owner guidance.
+- Autosave and internal API write operations return `423` while lock is held by another user.
+- Locks are released on logout, inactivity timeout, expiry cleanup, or administrator recovery action from `/modules`.
 
 ## Frontend Integration
 

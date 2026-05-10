@@ -4,6 +4,7 @@ namespace App\Filters;
 
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\AuthSettingsService;
+use App\Libraries\Modules\ModuleLockService;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -34,7 +35,9 @@ class SessionInactivityFilter implements FilterInterface
         $threshold    = (int) $settings['inactivity_timeout_seconds'];
 
         if ($lastActivity > 0 && ($now - $lastActivity) > $threshold) {
-            (new AuditLogger())->log('session_timeout_logout', 'success', (int) $session->get('user_id'));
+            $userId = (int) $session->get('user_id');
+            (new ModuleLockService())->releaseAllForUser($userId, 'session_timeout');
+            (new AuditLogger())->log('session_timeout_logout', 'success', $userId);
             $session->destroy();
 
             return redirect()->to('/login')->with('error', lang('Auth.sessionTimedOut'));

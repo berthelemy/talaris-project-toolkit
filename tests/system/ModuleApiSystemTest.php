@@ -1,6 +1,7 @@
 <?php
 
 use App\Libraries\Auth\RbacService;
+use App\Libraries\Modules\ModuleLockService;
 use App\Libraries\Modules\ModuleRegistryService;
 use App\Models\AuthAuditLogModel;
 use App\Models\ModuleHelloWorldEntryModel;
@@ -106,6 +107,41 @@ final class ModuleApiSystemTest extends CIUnitTestCase
             ]);
 
         $result->assertStatus(403);
+    }
+
+    public function testApiUpdateReturns423WhenContextLockedByAnotherEditor(): void
+    {
+        $editorA = $this->createUser('api-lock-a', 'api-lock-a@example.com');
+        $editorB = $this->createUser('api-lock-b', 'api-lock-b@example.com');
+
+        (new RbacService())->assignRoleToUser((int) $editorA['id'], 'administrator', 'system', null, (int) $editorA['id']);
+        (new RbacService())->assignRoleToUser((int) $editorB['id'], 'administrator', 'system', null, (int) $editorB['id']);
+
+        $projectId = (new ProjectModel())->insert([
+            'name' => 'API Lock Project',
+            'description' => null,
+            'owner_user_id' => (int) $editorA['id'],
+        ], true);
+
+        $entryId = (new ModuleHelloWorldEntryModel())->insert([
+            'module_slug' => ModuleRegistryService::HELLO_WORLD_PROJECT,
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'message' => 'API lock target',
+            'created_by_user_id' => (int) $editorA['id'],
+        ], true);
+
+        (new ModuleLockService())->acquire(ModuleRegistryService::HELLO_WORLD_PROJECT, 'project', (int) $projectId, (int) $editorA['id']);
+
+        $result = $this->withSession($this->authSession($editorB))
+            ->withBodyFormat('form')
+            ->post('/api/modules/' . ModuleRegistryService::HELLO_WORLD_PROJECT . '/entries/' . (int) $entryId . '?_method=PUT', [
+                'scope_type' => 'project',
+                'scope_id' => $projectId,
+                'message' => 'Blocked API update',
+            ]);
+
+        $result->assertStatus(423);
     }
 
     /**

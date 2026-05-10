@@ -37,6 +37,10 @@ This document defines the baseline migration approach for the toolkit.
 - `projects`: project entities with owner semantics (`owner_user_id`).
 - `programme_projects`: explicit many-to-many linking table for programme/project association.
 
+## Current Module Concurrency Tables (Phase 8)
+
+- `module_edit_locks`: module checkout locks by context with owner (`locked_by_user_id`) and expiry (`expires_at`) used to prevent concurrent edits.
+
 ## Authoring Rules
 
 - Always implement both `up()` and `down()` methods.

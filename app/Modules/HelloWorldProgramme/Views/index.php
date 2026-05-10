@@ -22,6 +22,18 @@
             <div class="alert alert-danger" role="alert"><?= esc((string) $error) ?></div>
         <?php endforeach; ?>
     <?php endif; ?>
+    <?php if (($isReadOnly ?? false) === true): ?>
+        <div class="alert alert-warning" role="alert">
+            <?php if (is_array($lockDenied ?? null)): ?>
+                <?= esc(lang('Module.lockedByOtherEditor', [
+                    (string) (($lockDenied['locked_by_username'] ?? '') !== '' ? $lockDenied['locked_by_username'] : ('#' . (int) ($lockDenied['locked_by_user_id'] ?? 0))),
+                    (string) ($lockDenied['expires_at'] ?? ''),
+                ])) ?>
+            <?php else: ?>
+                <?= esc(lang('Module.readOnlyNotice')) ?>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body">
@@ -36,10 +48,10 @@
                 <?= csrf_field() ?>
                 <div class="col-12 col-md-9">
                     <label for="message" class="form-label"><?= esc(lang('Module.entryLabel')) ?></label>
-                    <input id="message" name="message" type="text" maxlength="500" class="form-control" required value="<?= esc((string) old('message')) ?>">
+                    <input id="message" name="message" type="text" maxlength="500" class="form-control" required value="<?= esc((string) old('message')) ?>" <?= ($isReadOnly ?? false) ? 'readonly' : '' ?>>
                 </div>
                 <div class="col-12 col-md-3">
-                    <button class="btn btn-primary w-100" type="submit"><?= esc(lang('Module.entryCreateButton')) ?></button>
+                    <button class="btn btn-primary w-100" type="submit" <?= ($isReadOnly ?? false) ? 'disabled' : '' ?>><?= esc(lang('Module.entryCreateButton')) ?></button>
                 </div>
             </form>
         </div>
@@ -61,9 +73,10 @@
                                 name="message"
                                 type="text"
                                 class="form-control"
+                                <?= ($isReadOnly ?? false) ? 'readonly' : '' ?>
                                 value="<?= esc((string) ($entry['message'] ?? '')) ?>"
                                 maxlength="500"
-                                data-autosave="true"
+                                data-autosave="<?= ($isReadOnly ?? false) ? 'false' : 'true' ?>"
                                 data-autosave-url="<?= site_url('programmes/' . (int) ($programme['id'] ?? 0) . '/modules/hello-world/entries/' . (int) ($entry['id'] ?? 0) . '/autosave') ?>"
                                 data-last-updated-at="<?= esc((string) ($entry['updated_at'] ?? '')) ?>"
                                 data-autosave-status="entry-status-<?= (int) ($entry['id'] ?? 0) ?>"
@@ -71,12 +84,13 @@
                                 data-status-saved="<?= esc(lang('Module.autosaveSaved')) ?>"
                                 data-status-error="<?= esc(lang('Module.autosaveError')) ?>"
                                 data-status-conflict="<?= esc(lang('Module.autosaveConflict')) ?>"
+                                data-status-locked="<?= esc(lang('Module.autosaveLocked')) ?>"
                                 data-csrf-name="<?= esc(csrf_token()) ?>"
                                 data-csrf-value="<?= esc(csrf_hash()) ?>"
                                 data-csrf-cookie-name="<?= esc(config('Security')->cookieName) ?>"
                             >
                             <div id="entry-status-<?= (int) ($entry['id'] ?? 0) ?>" class="small text-muted mt-1">
-                                <?= esc(lang('Module.autosaveIdle')) ?>
+                                <?= esc(($isReadOnly ?? false) ? lang('Module.readOnlyNotice') : lang('Module.autosaveIdle')) ?>
                             </div>
                             <div class="text-muted small"><?= esc((string) ($entry['created_at'] ?? '')) ?></div>
                         </li>

@@ -51,6 +51,11 @@
             return;
         }
 
+        if (state === 'locked') {
+            status.classList.add('text-warning');
+            return;
+        }
+
         status.classList.add('text-danger');
     }
 
@@ -90,6 +95,13 @@
                 input.value = result.current.message || input.value;
                 input.setAttribute('data-last-updated-at', result.current.updated_at || '');
                 setStatus(input, 'conflict', input.getAttribute('data-status-conflict') || 'Conflict detected. Reloaded latest value.');
+                return;
+            }
+
+            if (response.status === 423) {
+                input.readOnly = true;
+                input.setAttribute('data-autosave', 'false');
+                setStatus(input, 'locked', result.message || input.getAttribute('data-status-locked') || 'Editing is locked by another user.');
                 return;
             }
 

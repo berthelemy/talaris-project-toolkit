@@ -3,6 +3,7 @@
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Modules\ModuleRegistryService;
 use App\Models\AuthAuditLogModel;
+use App\Models\ModuleEditLockModel;
 use App\Models\ModuleHelloWorldEntryModel;
 use App\Models\ProjectModel;
 use App\Models\UserModel;
@@ -94,6 +95,69 @@ final class ModuleAutosaveSystemTest extends CIUnitTestCase
             ]);
 
         $result->assertStatus(409);
+    }
+
+    public function testLockDenialReturns423UntilOwnerLogsOut(): void
+    {
+        $editorA = $this->createUser('autosavelocka', 'autosavelocka@example.com');
+        $editorB = $this->createUser('autosavelockb', 'autosavelockb@example.com');
+
+        (new RbacService())->assignRoleToUser((int) $editorA['id'], 'administrator', 'system', null, (int) $editorA['id']);
+        (new RbacService())->assignRoleToUser((int) $editorB['id'], 'administrator', 'system', null, (int) $editorB['id']);
+
+        $projectId = (new ProjectModel())->insert([
+            'name' => 'Locking Project',
+            'description' => null,
+            'owner_user_id' => (int) $editorA['id'],
+        ], true);
+
+        $entryId = (new ModuleHelloWorldEntryModel())->insert([
+            'module_slug' => ModuleRegistryService::HELLO_WORLD_PROJECT,
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'message' => 'Lock me',
+            'created_by_user_id' => (int) $editorA['id'],
+        ], true);
+
+        $openByA = $this->withSession($this->authSession($editorA))
+            ->get('/projects/' . $projectId . '/modules/hello-world');
+        $openByA->assertOK();
+
+        $openByB = $this->withSession($this->authSession($editorB))
+            ->get('/projects/' . $projectId . '/modules/hello-world');
+        $openByB->assertOK();
+        $this->assertStringContainsString('Read-only mode', $openByB->getBody());
+
+        $lockedAttempt = $this->withSession($this->authSession($editorB))
+            ->withBodyFormat('form')
+            ->post('/projects/' . $projectId . '/modules/hello-world/entries/' . (int) $entryId . '/autosave', [
+                'message' => 'Editor B attempt',
+                'last_updated_at' => '',
+            ]);
+        $lockedAttempt->assertStatus(423);
+
+        $this->withSession($this->authSession($editorA))->post('/logout');
+
+        $retry = $this->withSession($this->authSession($editorB))
+            ->withBodyFormat('form')
+            ->post('/projects/' . $projectId . '/modules/hello-world/entries/' . (int) $entryId . '/autosave', [
+                'message' => 'Editor B after release',
+                'last_updated_at' => '',
+            ]);
+        $retry->assertOK();
+
+        $updated = (new ModuleHelloWorldEntryModel())->find((int) $entryId);
+        $this->assertIsArray($updated);
+        $this->assertSame('Editor B after release', (string) ($updated['message'] ?? ''));
+
+        $remainingLock = (new ModuleEditLockModel())
+            ->where('module_slug', ModuleRegistryService::HELLO_WORLD_PROJECT)
+            ->where('scope_type', 'project')
+            ->where('scope_id', (int) $projectId)
+            ->first();
+
+        $this->assertIsArray($remainingLock);
+        $this->assertSame((int) $editorB['id'], (int) ($remainingLock['locked_by_user_id'] ?? 0));
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\AuthAuditLogModel;
+use App\Models\ModuleEditLockModel;
 use App\Models\AuthSettingsModel;
 use App\Models\PasswordResetTokenModel;
 use App\Models\UserModel;
@@ -108,6 +109,15 @@ final class AuthSystemTest extends CIUnitTestCase
 
         $user = (new UserModel())->where('username', 'phase2user')->first();
 
+        (new ModuleEditLockModel())->insert([
+            'module_slug' => 'hello_world_project',
+            'scope_type' => 'project',
+            'scope_id' => 123,
+            'locked_by_user_id' => (int) $user['id'],
+            'acquired_at' => date('Y-m-d H:i:s', time() - 70),
+            'expires_at' => date('Y-m-d H:i:s', time() + 3600),
+        ]);
+
         $result = $this->withSession([
             'user_id' => (int) $user['id'],
             'username' => 'phase2user',
@@ -124,6 +134,40 @@ final class AuthSystemTest extends CIUnitTestCase
         $this->assertNotNull($audit);
         $this->assertSame('success', $audit['status']);
         $this->assertSame((int) $user['id'], (int) $audit['user_id']);
+
+        $remainingLocks = (new ModuleEditLockModel())
+            ->where('locked_by_user_id', (int) $user['id'])
+            ->findAll();
+
+        $this->assertSame([], $remainingLocks);
+    }
+
+    public function testLogoutReleasesActiveModuleLocks(): void
+    {
+        $user = (new UserModel())->where('username', 'phase2user')->first();
+
+        (new ModuleEditLockModel())->insert([
+            'module_slug' => 'hello_world_programme',
+            'scope_type' => 'programme',
+            'scope_id' => 12,
+            'locked_by_user_id' => (int) $user['id'],
+            'acquired_at' => date('Y-m-d H:i:s'),
+            'expires_at' => date('Y-m-d H:i:s', time() + 3600),
+        ]);
+
+        $result = $this->withSession([
+            'user_id' => (int) $user['id'],
+            'username' => 'phase2user',
+            'last_activity_at' => time(),
+        ])->post('/logout');
+
+        $result->assertRedirectTo('/login');
+
+        $remainingLocks = (new ModuleEditLockModel())
+            ->where('locked_by_user_id', (int) $user['id'])
+            ->findAll();
+
+        $this->assertSame([], $remainingLocks);
     }
 
     public function testResetPasswordUpdatesPasswordAndAudit(): void

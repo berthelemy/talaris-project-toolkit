@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Modules\HelloWorldModuleApi;
 use App\Libraries\Modules\ModuleApiAuthorizationService;
+use App\Libraries\Modules\ModuleLockService;
 use App\Models\ModuleRegistryModel;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -64,6 +65,11 @@ class ModuleApiController extends BaseController
             return $this->response->setStatusCode(403)->setJSON(['ok' => false, 'error' => 'forbidden']);
         }
 
+        $lockResult = (new ModuleLockService())->acquire($moduleSlug, $scopeType, $scopeId, $actorId);
+        if (! $lockResult['ok']) {
+            return $this->lockDeniedResponse((array) ($lockResult['lock'] ?? []));
+        }
+
         $result = (new HelloWorldModuleApi())->create($moduleSlug, $resource, [
             'scope_type' => $scopeType,
             'scope_id' => $scopeId,
@@ -98,6 +104,11 @@ class ModuleApiController extends BaseController
 
         if (! (new ModuleApiAuthorizationService())->canWrite($actorId, $scopeType, $scopeId)) {
             return $this->response->setStatusCode(403)->setJSON(['ok' => false, 'error' => 'forbidden']);
+        }
+
+        $lockResult = (new ModuleLockService())->acquire($moduleSlug, $scopeType, $scopeId, $actorId);
+        if (! $lockResult['ok']) {
+            return $this->lockDeniedResponse((array) ($lockResult['lock'] ?? []));
         }
 
         $result = (new HelloWorldModuleApi())->update($moduleSlug, $resource, $id, [
@@ -167,5 +178,21 @@ class ModuleApiController extends BaseController
         }
 
         return '';
+    }
+
+    /**
+     * @param array<string, mixed> $lock
+     */
+    private function lockDeniedResponse(array $lock): ResponseInterface
+    {
+        return $this->response->setStatusCode(423)->setJSON([
+            'ok' => false,
+            'error' => 'locked',
+            'lock' => [
+                'locked_by_user_id' => (int) ($lock['locked_by_user_id'] ?? 0),
+                'locked_by_username' => (string) ($lock['locked_by_username'] ?? ''),
+                'expires_at' => (string) ($lock['expires_at'] ?? ''),
+            ],
+        ]);
     }
 }

@@ -11,6 +11,7 @@
 <body class="bg-light">
 <?= view('layouts/app_header', ['pageTitle' => lang('Module.managementTitle'), 'active' => 'modules']) ?>
 <main class="container py-4">
+    <?php $activeLocksList = (array) ($activeLocks ?? []); ?>
     <?php if (session('error') !== null): ?>
         <div class="alert alert-danger" role="alert"><?= esc((string) session('error')) ?></div>
     <?php endif; ?>
@@ -89,6 +90,55 @@
                                             <?= csrf_field() ?>
                                             <input class="form-control form-control-sm" style="width: 72px;" name="max_entries" type="number" min="1" max="25" value="<?= esc((string) $maxEntries) ?>">
                                             <button class="btn btn-sm btn-outline-secondary" type="submit"><?= esc(lang('Module.updateConfigButton')) ?></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mt-4">
+        <div class="card-body p-0">
+            <div class="p-3 border-bottom">
+                <h2 class="h6 mb-1"><?= esc(lang('Module.activeLocksTitle')) ?></h2>
+                <p class="text-muted small mb-0"><?= esc(lang('Module.activeLocksSubtitle')) ?></p>
+            </div>
+            <?php if (empty($activeLocksList)): ?>
+                <p class="text-muted p-4 mb-0"><?= esc(lang('Module.activeLocksNone')) ?></p>
+            <?php else: ?>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th><?= esc(lang('Module.lockColumnModule')) ?></th>
+                                <th><?= esc(lang('Module.lockColumnScope')) ?></th>
+                                <th><?= esc(lang('Module.lockColumnOwner')) ?></th>
+                                <th><?= esc(lang('Module.lockColumnAcquiredAt')) ?></th>
+                                <th><?= esc(lang('Module.lockColumnExpiresAt')) ?></th>
+                                <th class="text-end"><?= esc(lang('Module.columnActions')) ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($activeLocksList as $lock): ?>
+                                <tr>
+                                    <td><code><?= esc((string) ($lock['module_slug'] ?? '')) ?></code></td>
+                                    <td>
+                                        <?= esc(lang('Module.scope.' . (string) ($lock['scope_type'] ?? 'unknown'))) ?>
+                                        #<?= esc((string) ((int) ($lock['scope_id'] ?? 0))) ?>
+                                    </td>
+                                    <td>
+                                        <?= esc((string) (($lock['locked_by_username'] ?? '') !== '' ? $lock['locked_by_username'] : ('#' . (int) ($lock['locked_by_user_id'] ?? 0)))) ?>
+                                    </td>
+                                    <td><?= esc((string) ($lock['acquired_at'] ?? '')) ?></td>
+                                    <td><?= esc((string) ($lock['expires_at'] ?? '')) ?></td>
+                                    <td class="text-end">
+                                        <form method="post" action="<?= site_url('modules/locks/' . (int) ($lock['id'] ?? 0) . '/release') ?>" class="d-inline">
+                                            <?= csrf_field() ?>
+                                            <button class="btn btn-sm btn-outline-danger" type="submit"><?= esc(lang('Module.lockReleaseButton')) ?></button>
                                         </form>
                                     </td>
                                 </tr>

@@ -34,6 +34,7 @@ $routes->get('modules', 'ModuleManagementController::index', ['filter' => ['auth
 $routes->post('modules/(:segment)/toggle', 'ModuleManagementController::toggle/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('modules/(:segment)/ordering', 'ModuleManagementController::updateOrdering/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('modules/(:segment)/widget-config', 'ModuleManagementController::updateWidgetConfig/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('modules/locks/(:num)/release', 'ModuleManagementController::releaseLock/$1', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('api/modules/(:segment)/(:segment)', 'ModuleApiController::read/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('api/modules/(:segment)/(:segment)', 'ModuleApiController::create/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);

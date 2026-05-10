@@ -5,6 +5,8 @@ namespace App\Modules\HelloWorldProject\Controllers;
 use App\Controllers\BaseController;
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
+use App\Libraries\Modules\ModuleApiAuthorizationService;
+use App\Libraries\Modules\ModuleLockService;
 use App\Libraries\Modules\ModuleRegistryService;
 use App\Models\ModuleHelloWorldEntryModel;
 use App\Models\ProjectModel;
@@ -46,9 +48,23 @@ class HelloWorldController extends BaseController
             ->orderBy('id', 'DESC')
             ->findAll();
 
+        $canEdit = (new ModuleApiAuthorizationService())->canWrite($actorId, 'project', $projectId);
+        $isReadOnly = ! $canEdit;
+        $lockDenied = null;
+
+        if ($canEdit) {
+            $lockResult = (new ModuleLockService())->acquire(ModuleRegistryService::HELLO_WORLD_PROJECT, 'project', $projectId, $actorId);
+            if (! $lockResult['ok']) {
+                $isReadOnly = true;
+                $lockDenied = (array) ($lockResult['lock'] ?? []);
+            }
+        }
+
         return view('App\Modules\HelloWorldProject\Views\index', [
             'project' => $project,
             'entries' => $entries,
+            'isReadOnly' => $isReadOnly,
+            'lockDenied' => $lockDenied,
         ]);
     }
 
@@ -71,8 +87,18 @@ class HelloWorldController extends BaseController
             return redirect()->to('/projects')->with('error', lang('Domain.notAuthorized'));
         }
 
+        if (! (new ModuleApiAuthorizationService())->canWrite($actorId, 'project', $projectId)) {
+            return redirect()->to('/projects/' . $projectId . '/modules/hello-world')->with('error', lang('Domain.notAuthorized'));
+        }
+
         if (! (new ModuleRegistryService())->isEnabled(ModuleRegistryService::HELLO_WORLD_PROJECT, 'project')) {
             return redirect()->to('/projects/' . $projectId)->with('error', lang('Module.disabledForScope'));
+        }
+
+        $lockResult = (new ModuleLockService())->acquire(ModuleRegistryService::HELLO_WORLD_PROJECT, 'project', $projectId, $actorId);
+        if (! $lockResult['ok']) {
+            return redirect()->to('/projects/' . $projectId . '/modules/hello-world')
+                ->with('error', $this->lockDeniedMessage((array) ($lockResult['lock'] ?? [])));
         }
 
         $rules = [
@@ -115,6 +141,15 @@ class HelloWorldController extends BaseController
 
         if (! is_array($project) || ! $this->canViewProject($actorId, $project)) {
             return $this->response->setStatusCode(403)->setJSON(['ok' => false, 'error' => 'forbidden']);
+        }
+
+        if (! (new ModuleApiAuthorizationService())->canWrite($actorId, 'project', $projectId)) {
+            return $this->response->setStatusCode(403)->setJSON(['ok' => false, 'error' => 'forbidden']);
+        }
+
+        $lockResult = (new ModuleLockService())->acquire(ModuleRegistryService::HELLO_WORLD_PROJECT, 'project', $projectId, $actorId);
+        if (! $lockResult['ok']) {
+            return $this->lockDeniedJson((array) ($lockResult['lock'] ?? []));
         }
 
         $entryModel = new ModuleHelloWorldEntryModel();
@@ -187,5 +222,38 @@ class HelloWorldController extends BaseController
         }
 
         return (int) $userId;
+    }
+
+    /**
+     * @param array<string, mixed> $lock
+     */
+    private function lockDeniedMessage(array $lock): string
+    {
+        $owner = trim((string) ($lock['locked_by_username'] ?? ''));
+        if ($owner === '') {
+            $owner = '#' . (int) ($lock['locked_by_user_id'] ?? 0);
+        }
+
+        return lang('Module.lockedByOtherEditor', [
+            $owner,
+            (string) ($lock['expires_at'] ?? ''),
+        ]);
+    }
+
+    /**
+     * @param array<string, mixed> $lock
+     */
+    private function lockDeniedJson(array $lock): ResponseInterface
+    {
+        return $this->response->setStatusCode(423)->setJSON([
+            'ok' => false,
+            'error' => 'locked',
+            'message' => $this->lockDeniedMessage($lock),
+            'lock' => [
+                'locked_by_user_id' => (int) ($lock['locked_by_user_id'] ?? 0),
+                'locked_by_username' => (string) ($lock['locked_by_username'] ?? ''),
+                'expires_at' => (string) ($lock['expires_at'] ?? ''),
+            ],
+        ]);
     }
 }

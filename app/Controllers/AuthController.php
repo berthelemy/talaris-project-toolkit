@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\AuthSettingsService;
 use App\Libraries\Auth\PasswordPolicyService;
+use App\Libraries\Modules\ModuleLockService;
 use App\Models\PasswordResetTokenModel;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -87,6 +88,7 @@ class AuthController extends BaseController
         $userId = session('user_id');
 
         if ($userId !== null) {
+            (new ModuleLockService())->releaseAllForUser((int) $userId, 'logout');
             (new AuditLogger())->log('logout', 'success', (int) $userId);
         }
 

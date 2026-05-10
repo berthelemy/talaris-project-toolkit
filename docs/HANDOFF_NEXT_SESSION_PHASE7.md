@@ -4,7 +4,7 @@ Date: 2026-05-10
 
 ## Session Outcome
 
-Phase 6 backlog implementation was completed, Phase 7 internal API/autosave was implemented, and post-implementation reliability fixes were applied.
+Phase 7 was reviewed to completion and Phase 8 concurrency locking was started with end-to-end implementation across DB, service layer, module UI, autosave, API write paths, and session/logout release hooks.
 
 ## Major Changes Delivered
 
@@ -42,6 +42,18 @@ Phase 6 backlog implementation was completed, Phase 7 internal API/autosave was 
 - Updated autosave frontend to read current CSRF token from cookie on each request.
 - Endpoints now return `csrf_hash` for client refresh.
 
+5. Phase 8 kickoff: module locking and checkout flow
+- Added migration `2026-05-10-230000_CreateModuleEditLocksTable` creating `module_edit_locks`.
+- Added `ModuleEditLockModel` and `ModuleLockService` with lock acquisition, denial, expiry purge, user-scope release, and admin force release.
+- Added lock acquisition on Hello World module open for authorized editors.
+- Added read-only fallback for second editor with clear lock-owner guidance.
+- Enforced lock checks on mutation paths:
+  - Hello World autosave now returns `423` on lock denial.
+  - Internal module API write endpoints now return `423` on lock denial.
+- Added lock release on explicit logout and inactivity-timeout logout.
+- Added admin lock visibility and recovery UI/actions on `/modules`.
+- Added EN/FR localization keys for locking/read-only states.
+
 ## Commits Generated (latest first)
 
 1. `18abadf` - fix(autosave): handle csrf token rotation in hello world modules
@@ -60,9 +72,14 @@ Results:
 - Assertions/tests passed for targeted suites.
 - PHPUnit reports a coverage warning (`XDEBUG_MODE=coverage ...`) which still causes a non-zero process exit in this environment despite passing assertions.
 
+Phase 8-focused suites executed in-session:
+
+- `XDEBUG_MODE=off vendor/bin/phpunit --do-not-fail-on-warning tests/system/AuthSystemTest.php tests/system/ModuleFrameworkSystemTest.php tests/system/ModuleApiSystemTest.php tests/system/ModuleAutosaveSystemTest.php`
+
 ## Migration/Environment Notes
 
 - The migration `2026-05-10-210000_EnhanceModuleFrameworkPhase6` must be applied for current module code to work.
+- The migration `2026-05-10-230000_CreateModuleEditLocksTable` must be applied for Phase 8 locking to work.
 - Rule added to repository instructions: after schema changes, run `XDEBUG_MODE=off php spark migrate` before validation/handoff.
 
 ## Known Behavior Clarification
@@ -72,14 +89,15 @@ Creating a brand-new entry still requires clicking the create/save button.
 
 ## Known Risks / Follow-ups
 
-1. Manual acceptance verification pending
-- Re-check autosave in browser after CSRF reliability patch under normal user navigation.
+1. Manual acceptance verification pending for Phase 8 UX
+- Confirm lock banner/read-only state clarity in both EN and FR UI under real browser interaction.
+- Confirm admin lock release behavior on `/modules` in interactive UI workflow.
 
-2. API expansion pending
-- Internal API currently supports `entries` resource for Hello World module pattern; additional module resources can be onboarded later.
+2. API/resource expansion pending
+- Internal API still focuses on `entries` resource for Hello World pattern; additional module resources can be onboarded later.
 
-3. Metrics/failure visibility UX
-- Metrics/failures are persisted; additional dedicated admin dashboards can be added for richer observability.
+3. Lock heartbeat optimization (optional)
+- Current lock refresh happens on module open and write operations; optional background heartbeat can be added later for very long editing sessions.
 
 ## Recommended Start Sequence Next Session
 
@@ -92,14 +110,16 @@ XDEBUG_MODE=off composer ci
 
 2. Smoke test key flows manually
 - Open project Hello World module.
-- Edit existing entry and confirm autosave status transitions (`Saving...` -> `Saved.`).
-- Create new entry with manual submit and confirm persistence.
-- Confirm module management ordering/config controls persist.
+- User A opens module and begins editing.
+- User B opens same module and confirms read-only mode with lock guidance.
+- User B attempts autosave/API write and confirms `423` lock denial.
+- User A logs out (and separately timeout case), then User B retries and confirms edit succeeds.
+- Confirm admin lock visibility and force-release actions on `/modules`.
 
-3. If continuing Phase 7 hardening
-- Add broader system tests for browser-level autosave UX states.
-- Expand internal API resource coverage to additional modules.
-- Add admin UI for widget metrics/failure monitoring.
+3. If continuing Phase 8 hardening
+- Add browser-level system tests for lock UX state transitions and admin release actions.
+- Add lock heartbeat ping endpoint for long-running edit sessions.
+- Extend lock integration to additional editable modules beyond Hello World.
 
 ## Suggested First Command Next Session
 

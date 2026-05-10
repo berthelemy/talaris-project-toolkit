@@ -3,6 +3,7 @@
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Modules\ModuleRegistryService;
 use App\Models\AuthAuditLogModel;
+use App\Models\ModuleEditLockModel;
 use App\Models\ModuleHelloWorldEntryModel;
 use App\Models\ModuleRegistryModel;
 use App\Models\ProgrammeModel;
@@ -254,6 +255,34 @@ final class ModuleFrameworkSystemTest extends CIUnitTestCase
 
         $result->assertOK();
         $this->assertStringContainsString('Healthy widget still renders', $result->getBody());
+    }
+
+    public function testAdminCanViewAndReleaseActiveModuleLocks(): void
+    {
+        $admin = $this->createUser('modulelockadmin', 'modulelockadmin@example.com');
+        (new RbacService())->assignRoleToUser((int) $admin['id'], 'administrator', 'system', null, (int) $admin['id']);
+
+        $lockId = (new ModuleEditLockModel())->insert([
+            'module_slug' => ModuleRegistryService::HELLO_WORLD_PROJECT,
+            'scope_type' => 'project',
+            'scope_id' => 55,
+            'locked_by_user_id' => (int) $admin['id'],
+            'acquired_at' => date('Y-m-d H:i:s'),
+            'expires_at' => date('Y-m-d H:i:s', time() + 600),
+        ], true);
+
+        $page = $this->withSession($this->authSession($admin))->get('/modules');
+        $page->assertOK();
+        $this->assertStringContainsString('Active edit locks', $page->getBody());
+
+        $release = $this->withSession($this->authSession($admin))
+            ->withBodyFormat('form')
+            ->post('/modules/locks/' . (int) $lockId . '/release');
+
+        $release->assertRedirectTo('/modules');
+
+        $lock = (new ModuleEditLockModel())->find((int) $lockId);
+        $this->assertNull($lock);
     }
 
     /**
