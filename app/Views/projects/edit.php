@@ -14,6 +14,12 @@
     </div>
 </header>
 <main class="container py-4">
+    <?php if (session('error') !== null): ?>
+        <div class="alert alert-danger" role="alert"><?= esc((string) session('error')) ?></div>
+    <?php endif; ?>
+    <?php if (session('success') !== null): ?>
+        <div class="alert alert-success" role="alert"><?= esc((string) session('success')) ?></div>
+    <?php endif; ?>
     <?php if (session('errors') !== null): ?>
         <div class="alert alert-danger" role="alert">
             <ul class="mb-0 ps-3">
@@ -51,6 +57,30 @@
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body">
                     <h2 class="h6 mb-3"><?= esc(lang('Domain.projectLinkSectionTitle')) ?></h2>
+                    <?php $linkedProgrammeIdsList = (array) ($linkedProgrammeIds ?? []); ?>
+                    <?php $linkedProgrammes = array_values(array_filter(
+                        (array) ($programmes ?? []),
+                        static fn (array $programme): bool => in_array((int) ($programme['id'] ?? 0), $linkedProgrammeIdsList, true),
+                    )); ?>
+
+                    <h3 class="h6 text-muted mt-2 mb-2"><?= esc(lang('Domain.linkedProgrammesTitle')) ?></h3>
+                    <?php if ($linkedProgrammes === []): ?>
+                        <p class="text-muted small mb-3"><?= esc(lang('Domain.noLinkedProgrammes')) ?></p>
+                    <?php else: ?>
+                        <ul class="list-group list-group-flush mb-3">
+                            <?php foreach ($linkedProgrammes as $linkedProgramme): ?>
+                                <?php $linkedProgrammeId = (int) ($linkedProgramme['id'] ?? 0); ?>
+                                <li class="list-group-item px-0 d-flex justify-content-between align-items-center gap-2">
+                                    <span><?= esc((string) ($linkedProgramme['name'] ?? '')) ?></span>
+                                    <form method="post" action="<?= site_url('programmes/' . $linkedProgrammeId . '/projects/' . (int) ($project['id'] ?? 0) . '/unlink') ?>">
+                                        <?= csrf_field() ?>
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"><?= esc(lang('Domain.unlinkButton')) ?></button>
+                                    </form>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+
                     <?php if (empty($programmes)): ?>
                         <p class="text-muted mb-0"><?= esc(lang('Domain.noProgrammesAvailable')) ?></p>
                     <?php else: ?>
