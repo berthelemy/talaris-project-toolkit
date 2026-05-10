@@ -21,6 +21,20 @@ class ModuleRegistryService
             ->findAll();
     }
 
+    /**
+     * Get all enabled modules for a given scope type.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function getEnabledModulesByType(string $scopeType): array
+    {
+        return (new ModuleRegistryModel())
+            ->where('scope_type', $scopeType)
+            ->where('is_enabled', 1)
+            ->orderBy('name', 'ASC')
+            ->findAll();
+    }
+
     public function isEnabled(string $slug, string $scopeType): bool
     {
         $module = (new ModuleRegistryModel())

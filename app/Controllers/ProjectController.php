@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Modules\ModuleRegistryService;
+use App\Libraries\Modules\ModuleWidgetService;
 use App\Models\ProgrammeModel;
 use App\Models\ProgrammeProjectModel;
 use App\Models\ProjectModel;
@@ -96,9 +97,12 @@ class ProjectController extends BaseController
             ->orderBy('programmes.name', 'ASC')
             ->findAll();
 
+        $widgets = (new ModuleWidgetService())->renderWidgets('project', $projectId);
+
         return view('projects/show', [
             'project' => $project,
             'linkedProgrammes' => $linkedProgrammes,
+            'widgets' => $widgets,
             'canOpenHelloModule' => (new ModuleRegistryService())
                 ->isEnabled(ModuleRegistryService::HELLO_WORLD_PROJECT, 'project'),
         ]);

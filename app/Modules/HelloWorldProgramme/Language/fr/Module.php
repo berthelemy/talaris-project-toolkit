@@ -29,6 +29,7 @@ return [
     'entryCreatedSuccess' => 'Enregistrement Hello World cree avec succes.',
     'entriesTitle' => 'Enregistrements sauvegardes',
     'entriesNone' => 'Aucun enregistrement pour ce module.',
+    'viewAll' => 'Voir tout',
     'openProgrammeModuleButton' => 'Ouvrir le module Hello World programme',
     'openProjectModuleButton' => 'Ouvrir le module Hello World projet',
     'scope' => [

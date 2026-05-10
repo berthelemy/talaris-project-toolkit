@@ -46,6 +46,12 @@
         </div>
     </div>
 
+    <?php if (! empty($widgets ?? '')): ?>
+        <div class="mb-4">
+            <?= $widgets ?>
+        </div>
+    <?php endif; ?>
+
     <div class="card border-0 shadow-sm">
         <div class="card-body p-0">
             <div class="p-3 border-bottom">

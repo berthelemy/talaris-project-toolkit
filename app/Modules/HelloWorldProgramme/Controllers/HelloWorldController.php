@@ -36,7 +36,7 @@ class HelloWorldController extends BaseController
             ->orderBy('id', 'DESC')
             ->findAll();
 
-        return view('app/Modules/HelloWorldProgramme/Views/index', [
+        return view('App\Modules\HelloWorldProgramme\Views\index', [
             'programme' => $programme,
             'entries' => $entries,
         ]);

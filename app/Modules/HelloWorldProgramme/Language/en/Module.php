@@ -29,6 +29,7 @@ return [
     'entryCreatedSuccess' => 'Hello World record created successfully.',
     'entriesTitle' => 'Saved records',
     'entriesNone' => 'No records yet for this module.',
+    'viewAll' => 'View all',
     'openProgrammeModuleButton' => 'Open programme Hello World module',
     'openProjectModuleButton' => 'Open project Hello World module',
     'scope' => [
