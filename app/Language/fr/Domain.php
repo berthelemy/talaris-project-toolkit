@@ -43,6 +43,7 @@ return [
         'linkedProgrammesTitle' => 'Programmes lies',
         'noLinkedProgrammes' => 'Ce projet n est encore lie a aucun programme.',
         'selectProgrammeLabel' => 'Programme',
+        'selectPlaceholder' => 'Selectionner',
         'linkToProgrammeButton' => 'Lier au programme',
         'unlinkButton' => 'Delier',
         'noProgrammesAvailable' => 'Aucun programme disponible pour la liaison.',

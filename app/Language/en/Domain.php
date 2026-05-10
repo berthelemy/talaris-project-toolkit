@@ -43,6 +43,7 @@ return [
         'linkedProgrammesTitle' => 'Linked programmes',
         'noLinkedProgrammes' => 'This project is not linked to any programme yet.',
         'selectProgrammeLabel' => 'Programme',
+        'selectPlaceholder' => 'Select',
         'linkToProgrammeButton' => 'Link to programme',
         'unlinkButton' => 'Unlink',
         'noProgrammesAvailable' => 'No programmes available to link.',

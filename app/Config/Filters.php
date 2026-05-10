@@ -38,6 +38,7 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'auth'          => AuthenticationFilter::class,
         'sessiontimeout' => SessionInactivityFilter::class,
+        'locale'        => 'App\\Filters\\LocaleFilter',
     ];
 
     /**
@@ -76,6 +77,7 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
+            'locale',
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= esc(lang('Auth.profileTitle')) ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <?= view('layouts/theme_assets') ?>
 </head>
 <body class="bg-light">
 <?= view('layouts/app_header', ['pageTitle' => lang('Auth.profileTitle'), 'active' => 'profile']) ?>
@@ -37,7 +38,7 @@
                             <label for="language_preference" class="form-label"><?= esc(lang('Auth.profileLanguage')) ?></label>
                             <select class="form-select" id="language_preference" name="language_preference">
                                 <?php $language = old('language_preference', (string) ($user['language_preference'] ?? '')); ?>
-                                <option value="">-</option>
+                                <option value=""><?= esc(lang('Auth.profileLanguageNoPreference')) ?></option>
                                 <option value="en" <?= $language === 'en' ? 'selected' : '' ?>><?= esc(lang('Auth.languageEnglish')) ?></option>
                                 <option value="fr" <?= $language === 'fr' ? 'selected' : '' ?>><?= esc(lang('Auth.languageFrench')) ?></option>
                             </select>

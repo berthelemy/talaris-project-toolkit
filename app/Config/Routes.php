@@ -27,6 +27,9 @@ $routes->post('impersonate/stop', 'ImpersonationController::stop', ['filter' => 
 $routes->get('profile', 'ProfileController::edit', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('profile', 'ProfileController::update', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('profile/password', 'ProfileController::changePassword', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('language', 'LanguageController::switch', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->get('theme', 'ThemeSettingsController::edit', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('theme', 'ThemeSettingsController::update', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('programmes', 'ProgrammeController::index', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->get('programmes/(:num)', 'ProgrammeController::show/$1', ['filter' => ['auth', 'sessiontimeout']]);

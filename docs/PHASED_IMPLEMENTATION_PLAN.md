@@ -126,6 +126,34 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 ### Exit Criteria
 - [x] Authorization checks consistently block unauthorized actions.
 
+### Phase 3 Enhancement Backlog: Admin User and Role Management Interface
+
+#### Objectives
+- Provide administrators a complete interface to create, read, update, and delete users.
+- Enable administrators to assign and revoke roles across system/programme/project scopes.
+
+#### Delivery Checklist
+- [ ] Admin users list page with search/filter by username, email, status, and role.
+- [ ] Create user flow (username, email, initial password policy validation, active flag).
+- [ ] Edit user flow (profile fields, active/inactive status, optional password reset trigger).
+- [ ] Delete/deactivate user flow with safeguards for last active administrator.
+- [ ] Role assignment UI for system/programme/project scopes with multi-role support.
+- [ ] Role revoke flow with permission boundary checks.
+- [ ] Audit logging for all user and role mutations (actor, target, before/after metadata).
+- [ ] System tests covering admin CRUD boundaries and scoped role management.
+
+#### Manual Acceptance Testing
+1. As an administrator, open user management and create a new active user.
+2. Edit that user and update profile/status fields; verify persisted values.
+3. Assign multiple roles to the user across system and project scopes.
+4. Confirm effective permissions match assigned roles and scopes.
+5. Revoke one role and confirm permission reduction is immediate.
+6. Attempt restricted actions as non-admin and confirm access is denied.
+7. Delete or deactivate a user and confirm safety rules and audit entries.
+
+#### Exit Criteria
+- [ ] Administrators can fully manage users and roles through UI with complete auditability.
+
 ## Phase 4 (Weeks 7-8): Programmes, Projects, and Core Domain Model
 
 ### Objectives
@@ -166,10 +194,19 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 
 ### Delivery Checklist
 - [ ] English and French language packs wired for key UI flows.
-- [ ] Browser language detection implemented with English fallback.
-- [ ] Language selector implemented with essential cookie persistence.
-- [ ] Admin theme settings added: logo, heading font, body font, color scheme.
-- [ ] Contrast and readability validations included in theme handling.
+- [x] Browser language detection implemented with English fallback.
+- [x] Language selector implemented with essential cookie persistence.
+- [x] Admin theme settings added: logo, heading font, body font, color scheme.
+- [x] Contrast and readability validations included in theme handling.
+
+### Implementation Progress (2026-05-10)
+- Added global locale resolution with this precedence: language cookie override, user profile preference, browser `Accept-Language`, then English fallback.
+- Added authenticated header language selector (`en`/`fr`) with essential cookie persistence.
+- Added system coverage in `tests/system/LocalizationSystemTest.php` for French browser locale detection, unsupported locale fallback to English, and cookie persistence behavior.
+- Added admin theme settings at `/theme` with RBAC permission `system.theme.manage`, logo upload/removal, heading/body font selection, and color scheme persistence.
+- Added contrast/readability validation rules (text/background, primary/background, secondary/background) before theme updates are saved.
+- Added system coverage in `tests/system/ThemeSettingsSystemTest.php` for authorized updates, unauthorized denial, audit logging, and contrast validation failure paths.
+- Completed a key-flow EN/FR UI string sweep for authenticated pages by replacing remaining hardcoded select placeholders in profile and project-linking flows with language keys.
 
 ### Manual Acceptance Testing
 1. Open app in browser configured to French and verify French UI.
