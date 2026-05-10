@@ -193,7 +193,7 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - Enable multilingual experience and admin branding customization.
 
 ### Delivery Checklist
-- [ ] English and French language packs wired for key UI flows.
+- [x] English and French language packs wired for key UI flows.
 - [x] Browser language detection implemented with English fallback.
 - [x] Language selector implemented with essential cookie persistence.
 - [x] Admin theme settings added: logo, heading font, body font, color scheme.
@@ -216,8 +216,19 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 5. Verify updated theme appears across major pages.
 6. Run quick contrast spot-check on primary text, links, and buttons.
 
+### Manual Acceptance Result (2026-05-10)
+- Environment: Local dev container.
+- Timestamp (UTC): 2026-05-10 14:21:44.
+- French locale behavior: Verified by `tests/system/LocalizationSystemTest.php` (`testFrenchBrowserLocaleRendersFrenchLoginStrings`) and manual UI checks on authenticated pages.
+- Unsupported locale fallback: Verified by `tests/system/LocalizationSystemTest.php` (`testUnsupportedBrowserLocaleFallsBackToEnglish`).
+- Language persistence: Verified cookie-based persistence via `tests/system/LocalizationSystemTest.php` (`testLanguageSelectorCookiePersistsAcrossSignedOutAndSignedInScreens`) and header selector flow.
+- Theme configuration: Verified admin `/theme` page supports logo, heading/body fonts, and color scheme updates with role restriction (`system.theme.manage`).
+- Contrast/readability checks: Verified validation prevents low-contrast combinations in `tests/system/ThemeSettingsSystemTest.php` (`testContrastValidationRejectsInaccessibleColors`).
+- Baseline checks: `XDEBUG_MODE=off vendor/bin/phpunit --do-not-fail-on-warning tests/system/ProfileSystemTest.php tests/system/LocalizationSystemTest.php tests/system/ThemeSettingsSystemTest.php` passed in-session (coverage warning only).
+- Blockers found: None.
+
 ### Exit Criteria
-- [ ] Language and branding preferences persist correctly across sessions.
+- [x] Language and branding preferences persist correctly across sessions.
 
 ## Phase 6 (Weeks 11-12): Module Framework and Hello World Modules
 
