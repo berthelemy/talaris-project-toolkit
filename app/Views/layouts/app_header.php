@@ -11,9 +11,13 @@ $theme = (new ThemeSettingsService())->get();
 $logoPath = trim((string) ($theme['logo_path'] ?? ''));
 $userId = session('user_id');
 $canManageTheme = false;
+$canManageUsers = false;
 
 if (is_int($userId) || ctype_digit((string) $userId)) {
-    $canManageTheme = (new RbacService())->hasPermission((int) $userId, 'system.theme.manage', 'system', null);
+    $rbac = new RbacService();
+    $canManageTheme = $rbac->hasPermission((int) $userId, 'system.theme.manage', 'system', null);
+    $canManageUsers = $rbac->hasPermission((int) $userId, 'system.users.invite', 'system', null)
+        || $rbac->hasPermission((int) $userId, 'system.users.impersonate', 'system', null);
 }
 ?>
 <header class="border-bottom bg-white">
@@ -28,6 +32,9 @@ if (is_int($userId) || ctype_digit((string) $userId)) {
             <a href="<?= site_url('dashboard') ?>" class="btn btn-sm <?= $active === 'dashboard' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Auth.dashboardTitle')) ?></a>
             <a href="<?= site_url('programmes') ?>" class="btn btn-sm <?= $active === 'programmes' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Domain.programmesTitle')) ?></a>
             <a href="<?= site_url('projects') ?>" class="btn btn-sm <?= $active === 'projects' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Domain.projectsTitle')) ?></a>
+            <?php if ($canManageUsers): ?>
+                <a href="<?= site_url('users') ?>" class="btn btn-sm <?= $active === 'users' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('UserAdmin.navLabel')) ?></a>
+            <?php endif; ?>
             <a href="<?= site_url('profile') ?>" class="btn btn-sm <?= $active === 'profile' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Auth.profileButton')) ?></a>
             <?php if ($canManageTheme): ?>
                 <a href="<?= site_url('theme') ?>" class="btn btn-sm <?= $active === 'theme' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Theme.navLabel')) ?></a>

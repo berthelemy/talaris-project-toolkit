@@ -31,6 +31,14 @@ $routes->post('language', 'LanguageController::switch', ['filter' => ['auth', 's
 $routes->get('theme', 'ThemeSettingsController::edit', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('theme', 'ThemeSettingsController::update', ['filter' => ['auth', 'sessiontimeout']]);
 
+$routes->get('users', 'UserManagementController::index', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('users', 'UserManagementController::create', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->get('users/(:num)/edit', 'UserManagementController::edit/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('users/(:num)', 'UserManagementController::update/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('users/(:num)/deactivate', 'UserManagementController::deactivate/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('users/(:num)/roles', 'UserManagementController::assignRole/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('users/(:num)/roles/revoke', 'UserManagementController::revokeRole/$1', ['filter' => ['auth', 'sessiontimeout']]);
+
 $routes->get('programmes', 'ProgrammeController::index', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->get('programmes/(:num)', 'ProgrammeController::show/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('programmes', 'ProgrammeController::create', ['filter' => ['auth', 'sessiontimeout']]);

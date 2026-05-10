@@ -133,14 +133,14 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - Enable administrators to assign and revoke roles across system/programme/project scopes.
 
 #### Delivery Checklist
-- [ ] Admin users list page with search/filter by username, email, status, and role.
-- [ ] Create user flow (username, email, initial password policy validation, active flag).
-- [ ] Edit user flow (profile fields, active/inactive status, optional password reset trigger).
-- [ ] Delete/deactivate user flow with safeguards for last active administrator.
-- [ ] Role assignment UI for system/programme/project scopes with multi-role support.
-- [ ] Role revoke flow with permission boundary checks.
-- [ ] Audit logging for all user and role mutations (actor, target, before/after metadata).
-- [ ] System tests covering admin CRUD boundaries and scoped role management.
+- [x] Admin users list page with search/filter by username, email, status, and role.
+- [x] Create user flow (username, email, initial password policy validation, active flag).
+- [x] Edit user flow (profile fields, active/inactive status, optional password reset trigger).
+- [x] Delete/deactivate user flow with safeguards for last active administrator.
+- [x] Role assignment UI for system/programme/project scopes with multi-role support.
+- [x] Role revoke flow with permission boundary checks.
+- [x] Audit logging for all user and role mutations (actor, target, before/after metadata).
+- [x] System tests covering admin CRUD boundaries and scoped role management.
 
 #### Manual Acceptance Testing
 1. As an administrator, open user management and create a new active user.
@@ -151,8 +151,18 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 6. Attempt restricted actions as non-admin and confirm access is denied.
 7. Delete or deactivate a user and confirm safety rules and audit entries.
 
+#### Manual Acceptance Result (2026-05-10)
+- Environment: Local dev container.
+- Timestamp (UTC): 2026-05-10 15:12:10.
+- Admin user management UI: Added `/users` list with username/email/status/role filters, create flow, edit flow, and deactivate flow.
+- Last-active-admin safeguard: Enforced for deactivate and administrator role revoke actions.
+- Scoped roles: Added assign/revoke flows for system/programme/project scopes with scope existence validation.
+- Audit logging: Added events for user CRUD governance (`user_admin_created`, `user_admin_updated`, `user_admin_deactivated`, `user_admin_denied`) and role revoke (`role_revoked`) with actor/target metadata.
+- Automated checks: `XDEBUG_MODE=off vendor/bin/phpunit --do-not-fail-on-warning tests/system/UserManagementSystemTest.php` passed in-session (coverage warning only).
+- Blockers found: None.
+
 #### Exit Criteria
-- [ ] Administrators can fully manage users and roles through UI with complete auditability.
+- [x] Administrators can fully manage users and roles through UI with complete auditability.
 
 ## Phase 4 (Weeks 7-8): Programmes, Projects, and Core Domain Model
 

@@ -57,6 +57,46 @@ class RbacService
         ]);
     }
 
+    public function revokeRoleFromUser(int $userId, string $roleSlug, string $scopeType, ?int $scopeId, ?int $actorUserId = null): bool
+    {
+        $this->assertScope($scopeType, $scopeId);
+
+        $role = (new RoleModel())->where('slug', $roleSlug)->first();
+
+        if ($role === null) {
+            throw new RuntimeException('Role not found: ' . $roleSlug);
+        }
+
+        $assignments = new UserRoleAssignmentModel();
+        $query = $assignments
+            ->where('user_id', $userId)
+            ->where('role_id', (int) $role['id'])
+            ->where('scope_type', $scopeType);
+
+        if ($scopeId === null) {
+            $query->where('scope_id', null);
+        } else {
+            $query->where('scope_id', $scopeId);
+        }
+
+        $assignment = $query->first();
+
+        if ($assignment === null) {
+            return false;
+        }
+
+        $assignments->delete((int) $assignment['id']);
+
+        (new AuditLogger())->log('role_revoked', 'success', $actorUserId, [
+            'target_user_id' => $userId,
+            'role_slug' => $roleSlug,
+            'scope_type' => $scopeType,
+            'scope_id' => $scopeId,
+        ]);
+
+        return true;
+    }
+
     public function hasPermission(int $userId, string $permission, string $scopeType, ?int $scopeId): bool
     {
         $permissions = $this->permissionsForUser($userId, $scopeType, $scopeId);
@@ -127,6 +167,27 @@ class RbacService
         }
 
         return array_values(array_unique($permissions));
+    }
+
+    /**
+     * @return list<array{id:int, role_slug:string, role_name:string, scope_type:string, scope_id:int|null}>
+     */
+    public function roleAssignmentsForUser(int $userId): array
+    {
+        $rows = (new UserRoleAssignmentModel())
+            ->select('user_role_assignments.id, user_role_assignments.scope_type, user_role_assignments.scope_id, roles.slug, roles.name')
+            ->join('roles', 'roles.id = user_role_assignments.role_id')
+            ->where('user_role_assignments.user_id', $userId)
+            ->orderBy('roles.name', 'ASC')
+            ->findAll();
+
+        return array_map(static fn (array $row): array => [
+            'id' => (int) $row['id'],
+            'role_slug' => (string) $row['slug'],
+            'role_name' => (string) $row['name'],
+            'scope_type' => (string) $row['scope_type'],
+            'scope_id' => $row['scope_id'] === null ? null : (int) $row['scope_id'],
+        ], $rows);
     }
 
     private function assertScope(string $scopeType, ?int $scopeId): void
