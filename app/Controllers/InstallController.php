@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\PasswordPolicyService;
+use App\Libraries\Auth\RbacService;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 use Throwable;
@@ -65,6 +66,15 @@ class InstallController extends BaseController
         $userId   = (int) $userModel->getInsertID();
         $username = (string) $this->request->getPost('username');
 
+        // Backfill bootstrap administrator RBAC assignment when role tables exist.
+        if ($this->hasRoleTables()) {
+            try {
+                (new RbacService())->assignRoleToUser($userId, 'administrator', 'system', null, $userId);
+            } catch (Throwable) {
+                // Keep installation resilient in case RBAC schema is not yet available.
+            }
+        }
+
         (new AuditLogger())->log('bootstrap_admin_created', 'success', $userId);
 
         session()->regenerate();
@@ -90,6 +100,17 @@ class InstallController extends BaseController
     {
         try {
             return db_connect()->tableExists('users');
+        } catch (Throwable) {
+            return false;
+        }
+    }
+
+    private function hasRoleTables(): bool
+    {
+        try {
+            $db = db_connect();
+
+            return $db->tableExists('roles') && $db->tableExists('user_role_assignments');
         } catch (Throwable) {
             return false;
         }
