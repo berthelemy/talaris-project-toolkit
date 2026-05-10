@@ -126,7 +126,7 @@ final class ModuleAutosaveSystemTest extends CIUnitTestCase
         $openByB = $this->withSession($this->authSession($editorB))
             ->get('/projects/' . $projectId . '/modules/hello-world');
         $openByB->assertOK();
-        $this->assertStringContainsString('Read-only mode', $openByB->getBody());
+        $this->assertStringContainsString('data-autosave="false"', $openByB->getBody());
 
         $lockedAttempt = $this->withSession($this->authSession($editorB))
             ->withBodyFormat('form')

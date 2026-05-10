@@ -273,7 +273,7 @@ final class ModuleFrameworkSystemTest extends CIUnitTestCase
 
         $page = $this->withSession($this->authSession($admin))->get('/modules');
         $page->assertOK();
-        $this->assertStringContainsString('Active edit locks', $page->getBody());
+        $this->assertStringContainsString('/modules/locks/', $page->getBody());
 
         $release = $this->withSession($this->authSession($admin))
             ->withBodyFormat('form')
