@@ -1,88 +1,182 @@
-# Next Session Handoff: Phase 6 Kickoff
+# Next Session Handoff: Phase 6 Continuation
 
 Date: 2026-05-10
 
 ## Session Outcome
 
-Pre-Phase 6 backlog work has been completed and committed.
+Phase 6 module framework completed with modular architecture and widget system.
 
-- Commit: `e43d878`
-- Commit message: Implement admin user-role management backlog before Phase 6
+### Major Accomplishments
 
-Implemented in this commit:
-- Admin user management area at `/users` with list/search/filter and create/edit/deactivate flows.
-- Scoped role assignment and revoke flows (system/programme/project) with permission boundaries.
-- Last active administrator protection for deactivation and admin-role revoke actions.
-- Audit logging for user-management actions and role revocation.
-- EN/FR localization keys for the new user-management UI.
-- System test coverage for new admin workflows.
-- Plan and handoff documentation updates reflecting backlog closure.
+1. **Modular Architecture Refactoring** ✅
+   - Migrated Hello World modules from scattered locations (app/Controllers/, app/Models/, app/Views/) to self-contained structure: `app/Modules/<ModuleName>/`
+   - Each module now has: Controllers/, Models/, Views/, Language/(en|fr)/, Config/
+   - Added PSR-4 autoload mapping for `App\Modules\` namespace in composer.json
+   - Implemented dynamic module route discovery (routes auto-load from each module's Config/routes.php)
 
-## Validation Evidence
+2. **Widget System Implementation** ✅
+   - Created `ModuleWidgetInterface` for standardized widget display
+   - Created `ModuleWidgetService` for widget discovery and rendering
+   - Both HelloWorldProgramme and HelloWorldProject modules implement widget display
+   - Widgets show on Programme and Project detail pages (5 recent entries with "View all" link)
+   - Graceful error handling (widget failures don't break page rendering)
+   - Respects module enabled/disabled state
 
-Full CI command executed after commit:
-- `XDEBUG_MODE=off composer ci`
+### Commits Generated
 
-Result:
-- Status: PASS
-- Tests: 38
-- Assertions: 181
-- Coverage reports generated (PHP, Clover XML, HTML)
-- Coverage summary:
-  - Classes: 31.03% (9/29)
-  - Methods: 31.54% (41/130)
-  - Lines: 73.45% (1638/2230)
+1. `72dd632` - refactor: migrate Hello World modules to self-contained modular architecture
+   - 15 files changed (8 created, 4 renamed, 3 modified)
+   - Moved all module code to app/Modules/ structure
+   - Created shared ModuleHelloWorldEntryModel in app/Models/
+
+2. `59e1d92` - feat: add module widget system for displaying content on Programme/Project pages
+   - 17 files changed
+   - Widget interface, service, and implementations
+   - Updated views to display widgets
+   - Added language strings for widget UI
+
+3. `fe58854` - fix: use session() helper instead of request->session() in ModuleWidgetService
+   - Fixed session access in ModuleWidgetService
+
+4. `a625fac` - fix: properly match module slug to directory in widget loader
+   - Fixed widget loader to correctly match module slug to directory
+   - Added directoryToSlug() helper method
+
+5. `b339963` - fix: add missing closing brace in directoryToSlug() method
+   - Fixed PHP syntax error
+
+### Test Results
+
+- **Status**: ✅ PASS
+- **Tests**: 43
+- **Assertions**: 207
+- **Errors**: 0
+- **Warnings**: 1 (acceptable)
+
+All tests passing with no regressions from refactoring.
 
 ## Current Repository State
 
-- The backlog implementation commit is present on branch `main`.
-- This handoff file was created after CI to prepare Phase 6 start context.
+**Module Architecture**:
+```
+app/Modules/
+├── HelloWorldProgramme/
+│   ├── Controllers/HelloWorldController.php
+│   ├── Models/HelloWorldEntryModel.php
+│   ├── Views/
+│   │   ├── index.php
+│   │   └── widget.php
+│   ├── Widgets/ModuleWidget.php
+│   ├── Language/
+│   │   ├── en/Module.php
+│   │   └── fr/Module.php
+│   └── Config/routes.php
+└── HelloWorldProject/
+    ├── Controllers/HelloWorldController.php
+    ├── Models/HelloWorldEntryModel.php
+    ├── Views/
+    │   ├── index.php
+    │   └── widget.php
+    ├── Widgets/ModuleWidget.php
+    ├── Language/
+    │   ├── en/Module.php
+    │   └── fr/Module.php
+    └── Config/routes.php
 
-## Recommended Start Sequence for Next Session (Phase 6)
+app/Libraries/Modules/
+├── ModuleRegistryService.php (added getEnabledModulesByType())
+├── ModuleWidgetInterface.php (NEW)
+└── ModuleWidgetService.php (NEW)
 
-1. Module registry foundation
-- Introduce module registry persistence model and migration.
-- Define enable/disable state and audit events for module lifecycle changes.
+app/Models/
+└── ModuleHelloWorldEntryModel.php (shared by both modules)
+```
 
-2. Standard module scaffold
-- Create base module contract (metadata, routes, controller/service/view conventions).
-- Add developer-facing scaffold documentation and naming conventions.
+**Key Files Updated**:
+- `app/Controllers/ProgrammeController.php` - loads and renders widgets
+- `app/Controllers/ProjectController.php` - loads and renders widgets
+- `app/Views/programmes/show.php` - displays widgets
+- `app/Views/projects/show.php` - displays widgets
+- `composer.json` - PSR-4 autoload for App\Modules\
+- `app/Config/Routes.php` - dynamic module route discovery
+- `docs/MODULE_AUTHORING_GUIDE.md` - updated with modular structure
 
-3. Hello World reference modules
-- Implement one programme-scope Hello World module.
-- Implement one project-scope Hello World module.
+## Backlog Items for Next Session
 
-4. Access and lifecycle enforcement
-- Ensure disabled modules are blocked in UI/routes.
-- Validate scope-aware visibility (programme module not shown in project scope and vice versa).
+### High Priority
+- [ ] **Clean up global language files**: Decide whether to keep or delete `app/Language/en|fr/Module.php` (module-specific files now at `app/Modules/*/Language/`)
+- [ ] **Create MODULE_STRUCTURE.md**: Developer reference explaining folder hierarchy and why modular structure is better
+- [ ] **Add integration tests for widgets**: Test widget rendering with enabled/disabled modules, permission checks, error handling
+- [ ] **Documentation**: Add architecture diagram showing module structure to MODULE_AUTHORING_GUIDE.md
 
-5. Testing baseline for module framework
-- Add reusable module system-test template for enable/disable, routing, and persistence.
-- Add at least one passing system test per Hello World module.
+### Medium Priority
+- [ ] **Module permission boundaries**: Enhance widget access control to check RBAC permissions per module/scope
+- [ ] **Widget caching**: Consider caching widget data if modules grow more complex
+- [ ] **Widget ordering**: Allow admin to configure widget display order on pages
+- [ ] **Additional reference modules**: Create more example modules (Risk Register, Issue Tracker, etc.) to test scalability
 
-## Phase 6 Kickoff Progress (2026-05-10)
+### Low Priority (Nice-to-have)
+- [ ] **Module versioning**: Track module versions in registry
+- [ ] **Module dependencies**: Support module-to-module dependencies
+- [ ] **Widget metrics**: Dashboard showing widget usage/popularity
+- [ ] **Widget configurability**: Allow modules to expose configuration options to end users
 
-Started implementation against steps 1 to 4 and initial step 5:
+## Known Issues / Considerations
 
-- Added migration `2026-05-10-160000_CreateModuleFrameworkTables.php` with:
-  - `module_registry` (module metadata + `is_enabled` lifecycle state)
-  - `module_hello_world_entries` (sample module persistence with scope and actor)
-- Added module lifecycle service `app/Libraries/Modules/ModuleRegistryService.php`.
-- Added admin module registry management routes and controller:
-  - `GET /modules`
-  - `POST /modules/:slug/toggle`
-- Added sample Hello World modules:
-  - Programme scope: `GET/POST /programmes/:id/modules/hello-world`
-  - Project scope: `GET/POST /projects/:id/modules/hello-world`
-- Added module lifecycle and write audit events:
-  - `module_enabled`, `module_disabled`
-  - `module_hello_world_entry_created`
-- Added scope-aware UI entry points from programme/project details pages and route-level disabled-module enforcement.
-- Added module localization files (`en`/`fr`) and scaffold documentation in `docs/MODULE_FRAMEWORK.md`.
-- Added initial system tests in `tests/system/ModuleFrameworkSystemTest.php`.
+1. **Global vs Module Language Files**: Currently both exist
+   - Module-specific files at `app/Modules/*/Language/en|fr/Module.php`
+   - Global files at `app/Language/en|fr/Module.php`
+   - Decision needed on consolidation strategy
+
+2. **Widget Error Handling**: Currently logs warnings but silently skips failed widgets
+   - Consider more verbose error reporting in development mode
+   - Consider admin notification for widget failures
+
+3. **Module Discovery**: Uses regex to convert directory names to slugs
+   - Works for 'HelloWorldProgramme' → 'hello_world_programme'
+   - Should be tested with other naming conventions
+
+## Validation Evidence
+
+Full CI command executed after final commits:
+
+```
+XDEBUG_MODE=off composer ci
+```
+
+Result:
+- Status: ✅ PASS
+- Tests: 43
+- Assertions: 207
+- Coverage: Generated
+- No regressions from modular refactoring
+
+## Recommended Start Sequence for Next Session
+
+1. **Review Phase 6 Completion** (5 min)
+   - Read this handoff document
+   - Review the 5 commits generated this session
+   - Run `XDEBUG_MODE=off composer ci` to verify baseline
+
+2. **Address High Priority Backlog** (first focus)
+   - Delete or consolidate global language files
+   - Create MODULE_STRUCTURE.md documentation
+   - Add widget integration tests
+
+3. **Enhance Module System** (second focus)
+   - Improve widget access control with RBAC
+   - Create additional reference modules
+   - Test module scalability with more complex examples
+
+4. **Documentation Update** (ongoing)
+   - Add architecture diagrams
+   - Update MODULE_AUTHORING_GUIDE.md with widget examples
+   - Document module discovery and loading process
 
 ## Suggested First Command Next Session
 
-- `XDEBUG_MODE=off composer ci`
+```bash
+cd /var/www/html && XDEBUG_MODE=off composer ci
+```
 
-This verifies the starting baseline before Phase 6 feature development begins.
+This verifies the modular architecture is stable and all tests pass.
