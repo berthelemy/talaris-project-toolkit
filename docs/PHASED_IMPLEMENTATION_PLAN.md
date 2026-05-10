@@ -102,7 +102,7 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - [x] Support multiple roles per user in a context.
 - [x] Implement user profile updates including avatar, description, language preference.
 - [x] Enforce current-password requirement for password change in profile.
-- [ ] Add impersonation capability for administrators with strict audit logging.
+- [x] Add impersonation capability for administrators with strict audit logging.
 
 ### Manual Acceptance Testing
 1. Create users representing each predefined role.

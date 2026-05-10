@@ -21,6 +21,8 @@ $routes->get('reset-password/(:segment)', 'AuthController::resetPasswordForm/$1'
 $routes->post('reset-password/(:segment)', 'AuthController::resetPassword/$1');
 
 $routes->get('dashboard', 'DashboardController::index', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('impersonate/(:num)', 'ImpersonationController::start/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('impersonate/stop', 'ImpersonationController::stop', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('profile', 'ProfileController::edit', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('profile', 'ProfileController::update', ['filter' => ['auth', 'sessiontimeout']]);
