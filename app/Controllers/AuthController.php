@@ -10,12 +10,12 @@ use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * AuthController component.
+ * Handle authentication flows including login, logout, and password reset.
  */
 class AuthController extends BaseController
 {
     /**
-     * Login operation.
+     * Render login page for signed-out users.
      *
      * @return string|RedirectResponse
      */
@@ -31,7 +31,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * AttemptLogin operation.
+        * Validate credentials, establish session state, and audit login outcome.
      *
      * @return RedirectResponse
      */
@@ -78,7 +78,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * Logout operation.
+        * Terminate active session and redirect to login page.
      *
      * @return RedirectResponse
      */
@@ -96,7 +96,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * ForgotPassword operation.
+        * Render forgot-password request form.
      *
      * @return string
      */
@@ -106,7 +106,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * SendResetLink operation.
+        * Generate password reset token and send reset email when account exists.
      *
      * @return RedirectResponse
      */
@@ -163,9 +163,9 @@ class AuthController extends BaseController
     }
 
     /**
-     * ResetPasswordForm operation.
+        * Render reset-password form when token is still valid.
      *
-     * @param string $token
+        * @param string $token Raw reset token from route.
      * @return string|RedirectResponse
      */
     public function resetPasswordForm(string $token): string|RedirectResponse
@@ -178,9 +178,9 @@ class AuthController extends BaseController
     }
 
     /**
-     * ResetPassword operation.
+        * Validate new password and complete reset for a valid token.
      *
-     * @param string $token
+        * @param string $token Raw reset token from route.
      * @return RedirectResponse
      */
     public function resetPassword(string $token): RedirectResponse

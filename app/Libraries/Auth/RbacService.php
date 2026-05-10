@@ -10,7 +10,7 @@ use RuntimeException;
 use Throwable;
 
 /**
- * RbacService component.
+ * Role-based access control orchestration for scoped assignments and permissions.
  */
 class RbacService
 {
@@ -20,14 +20,13 @@ class RbacService
     private array $allowedScopes = ['system', 'programme', 'project'];
 
     /**
-     * AssignRoleToUser operation.
+    * Assign a role to a user within system, programme, or project scope.
      *
-     * @param int $userId
-     * @param string $roleSlug
-     * @param string $scopeType
-     * @param ?int $scopeId
-     * @param ?int $actorUserId
-     * @return void
+    * @param int $userId Target user identifier.
+    * @param string $roleSlug Role slug from the roles catalog.
+    * @param string $scopeType Scope type: system, programme, or project.
+    * @param ?int $scopeId Scope identifier, null only for system scope.
+    * @param ?int $actorUserId Actor performing the assignment for audit logging.
      */
     public function assignRoleToUser(int $userId, string $roleSlug, string $scopeType, ?int $scopeId, ?int $actorUserId = null): void
     {
@@ -71,14 +70,14 @@ class RbacService
     }
 
     /**
-     * RevokeRoleFromUser operation.
+    * Revoke a previously assigned role from a user in the given scope.
      *
-     * @param int $userId
-     * @param string $roleSlug
-     * @param string $scopeType
-     * @param ?int $scopeId
-     * @param ?int $actorUserId
-     * @return bool
+    * @param int $userId Target user identifier.
+    * @param string $roleSlug Role slug from the roles catalog.
+    * @param string $scopeType Scope type: system, programme, or project.
+    * @param ?int $scopeId Scope identifier, null only for system scope.
+    * @param ?int $actorUserId Actor performing the revoke for audit logging.
+    * @return bool True when an assignment was found and revoked.
      */
     public function revokeRoleFromUser(int $userId, string $roleSlug, string $scopeType, ?int $scopeId, ?int $actorUserId = null): bool
     {
@@ -121,13 +120,13 @@ class RbacService
     }
 
     /**
-     * HasPermission operation.
+    * Check whether a user has an effective permission in a scope.
      *
-     * @param int $userId
-     * @param string $permission
-     * @param string $scopeType
-     * @param ?int $scopeId
-     * @return bool
+    * @param int $userId User identifier.
+    * @param string $permission Permission key to evaluate.
+    * @param string $scopeType Scope type: system, programme, or project.
+    * @param ?int $scopeId Scope identifier, null only for system scope.
+    * @return bool True when the permission is present in effective permission set.
      */
     public function hasPermission(int $userId, string $permission, string $scopeType, ?int $scopeId): bool
     {
@@ -137,6 +136,13 @@ class RbacService
     }
 
     /**
+        * Return effective role slugs for a user in the requested scope.
+        *
+        * System roles are inherited into non-system scopes.
+        *
+        * @param int $userId User identifier.
+        * @param string $scopeType Scope type: system, programme, or project.
+        * @param ?int $scopeId Scope identifier, null only for system scope.
      * @return list<string>
      */
     public function roleSlugsForUser(int $userId, string $scopeType, ?int $scopeId): array
@@ -171,6 +177,11 @@ class RbacService
     }
 
     /**
+        * Resolve effective permissions by combining assigned roles and role metadata.
+        *
+        * @param int $userId User identifier.
+        * @param string $scopeType Scope type: system, programme, or project.
+        * @param ?int $scopeId Scope identifier, null only for system scope.
      * @return list<string>
      */
     public function permissionsForUser(int $userId, string $scopeType, ?int $scopeId): array
@@ -202,6 +213,9 @@ class RbacService
     }
 
     /**
+        * List role assignments for user-management UI rendering.
+        *
+        * @param int $userId User identifier.
      * @return list<array{id:int, role_slug:string, role_name:string, scope_type:string, scope_id:int|null}>
      */
     public function roleAssignmentsForUser(int $userId): array

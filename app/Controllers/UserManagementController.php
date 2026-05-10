@@ -13,12 +13,12 @@ use App\Models\UserRoleAssignmentModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * UserManagementController component.
+ * Admin user lifecycle and scoped role assignment management.
  */
 class UserManagementController extends BaseController
 {
     /**
-     * Index operation.
+     * Render user administration index with filters and role labels.
      *
      * @return string|RedirectResponse
      */
@@ -55,7 +55,7 @@ class UserManagementController extends BaseController
     }
 
     /**
-     * Create operation.
+        * Create a user account from admin form input.
      *
      * @return RedirectResponse
      */
@@ -116,9 +116,9 @@ class UserManagementController extends BaseController
     }
 
     /**
-     * Edit operation.
+        * Render user edit screen with assignments and scope options.
      *
-     * @param int $userId
+        * @param int $userId Target user identifier.
      * @return string|RedirectResponse
      */
     public function edit(int $userId): string|RedirectResponse
@@ -152,9 +152,9 @@ class UserManagementController extends BaseController
     }
 
     /**
-     * Update operation.
+        * Update user profile fields and optional password reset.
      *
-     * @param int $userId
+        * @param int $userId Target user identifier.
      * @return RedirectResponse
      */
     public function update(int $userId): RedirectResponse
@@ -237,9 +237,9 @@ class UserManagementController extends BaseController
     }
 
     /**
-     * Deactivate operation.
+        * Deactivate user account with last-admin safety guard.
      *
-     * @param int $userId
+        * @param int $userId Target user identifier.
      * @return RedirectResponse
      */
     public function deactivate(int $userId): RedirectResponse
@@ -276,9 +276,9 @@ class UserManagementController extends BaseController
     }
 
     /**
-     * AssignRole operation.
+        * Assign a scoped role to a user from admin workflow.
      *
-     * @param int $userId
+        * @param int $userId Target user identifier.
      * @return RedirectResponse
      */
     public function assignRole(int $userId): RedirectResponse
@@ -322,9 +322,9 @@ class UserManagementController extends BaseController
     }
 
     /**
-     * RevokeRole operation.
+        * Revoke a scoped role from a user from admin workflow.
      *
-     * @param int $userId
+        * @param int $userId Target user identifier.
      * @return RedirectResponse
      */
     public function revokeRole(int $userId): RedirectResponse

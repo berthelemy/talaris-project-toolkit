@@ -10,7 +10,7 @@ class ModuleWidgetService
     private ModuleRegistryService $registryService;
 
     /**
-     * __construct operation.
+    * Build widget service with module registry dependency.
      */
     public function __construct()
     {
@@ -18,12 +18,11 @@ class ModuleWidgetService
     }
 
     /**
-     * Get all available widgets for a given scope.
+    * Discover enabled and accessible widgets for a scope record.
      *
-     * @param string $scopeType 'programme' or 'project'
-     * @param int    $scopeId   ID of the programme or project
-     *
-      * @return array<string, array{widget: ModuleWidgetInterface, data: array<string, mixed>, view: string}> Widgets keyed by module slug
+    * @param string $scopeType Scope type, either 'programme' or 'project'.
+    * @param int $scopeId Programme or project identifier.
+    * @return array<string, array{widget: ModuleWidgetInterface, data: array<string, mixed>, view: string}> Widget definitions keyed by module slug.
      */
     public function getAvailableWidgets(string $scopeType, int $scopeId): array
     {
@@ -62,12 +61,11 @@ class ModuleWidgetService
     }
 
     /**
-     * Render widgets for display.
+    * Render all discovered widgets into concatenated HTML fragments.
      *
-     * @param string $scopeType 'programme' or 'project'
-     * @param int    $scopeId   ID of the programme or project
-     *
-     * @return string HTML rendering of all available widgets
+    * @param string $scopeType Scope type, either 'programme' or 'project'.
+    * @param int $scopeId Programme or project identifier.
+    * @return string Rendered widget markup.
      */
     public function renderWidgets(string $scopeType, int $scopeId): string
     {
@@ -90,10 +88,10 @@ class ModuleWidgetService
     }
 
     /**
-     * Load a module widget by slug.
+    * Resolve a widget provider implementation for a module slug.
      *
-      * @param string $moduleSlug Module slug (for example, 'hello_world_project').
-     * @return ModuleWidgetInterface|null
+    * @param string $moduleSlug Module slug, for example 'hello_world_project'.
+    * @return ModuleWidgetInterface|null Widget instance when discovered; otherwise null.
      */
     private function loadModuleWidget(string $moduleSlug): ?ModuleWidgetInterface
     {
@@ -130,9 +128,9 @@ class ModuleWidgetService
     /**
      * Convert a module directory name to its registry slug.
      * e.g., 'HelloWorldProject' -> 'hello_world_project'
-      *
-      * @param string $module Directory name under app/Modules.
-      * @return string Module slug in snake_case.
+    *
+    * @param string $module Directory name under app/Modules.
+    * @return string Module slug in snake_case.
      */
     private function directoryToSlug(string $module): string
     {
@@ -143,13 +141,14 @@ class ModuleWidgetService
     }
 
     /**
-     * Check if current actor can access this widget.
-     * By default, allows access if actor can view the scope.
+    * Evaluate whether an actor is allowed to view a widget.
+    *
+    * Current behavior allows all discovered widgets and is reserved for RBAC expansion.
      *
-      * @param int    $actorId    User ID
-     * @param string $moduleSlug Module slug (e.g., 'hello_world_programme')
-      * @param string $scopeType  'programme' or 'project'
-      * @return bool True when widget should be visible to the actor.
+    * @param int $actorId Authenticated user identifier.
+    * @param string $moduleSlug Module slug, for example 'hello_world_programme'.
+    * @param string $scopeType Scope type, either 'programme' or 'project'.
+    * @return bool True when widget should be visible to the actor.
      */
     private function canAccessWidget(int $actorId, string $moduleSlug, string $scopeType): bool
     {

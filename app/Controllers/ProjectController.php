@@ -13,12 +13,12 @@ use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * ProjectController component.
+ * Handle project lifecycle, programme links, and project-scope widget pages.
  */
 class ProjectController extends BaseController
 {
     /**
-     * Index operation.
+     * Show project listing with create permission state for the current actor.
      *
      * @return string|RedirectResponse
      */
@@ -39,7 +39,7 @@ class ProjectController extends BaseController
     }
 
     /**
-     * Create operation.
+        * Create a new project after validation and owner resolution.
      *
      * @return RedirectResponse
      */
@@ -87,9 +87,9 @@ class ProjectController extends BaseController
     }
 
     /**
-     * Show operation.
+        * Display a single project with linked programmes and enabled module widgets.
      *
-     * @param int $projectId
+        * @param int $projectId Project identifier.
      * @return string|RedirectResponse
      */
     public function show(int $projectId): string|RedirectResponse
@@ -128,9 +128,9 @@ class ProjectController extends BaseController
     }
 
     /**
-     * Update operation.
+        * Update editable project fields and write an audit event.
      *
-     * @param int $projectId
+        * @param int $projectId Project identifier.
      * @return RedirectResponse
      */
     public function update(int $projectId): RedirectResponse
@@ -164,9 +164,9 @@ class ProjectController extends BaseController
     }
 
     /**
-     * Delete operation.
+        * Delete a project when actor has management access.
      *
-     * @param int $projectId
+        * @param int $projectId Project identifier.
      * @return RedirectResponse
      */
     public function delete(int $projectId): RedirectResponse
@@ -188,9 +188,9 @@ class ProjectController extends BaseController
     }
 
     /**
-     * Edit operation.
+        * Render project edit screen with current programme link state.
      *
-     * @param int $projectId
+        * @param int $projectId Project identifier.
      * @return string|RedirectResponse
      */
     public function edit(int $projectId): string|RedirectResponse
@@ -220,9 +220,9 @@ class ProjectController extends BaseController
     }
 
     /**
-     * AssignManager operation.
+        * Assign project_manager role to a selected active user.
      *
-     * @param int $projectId
+        * @param int $projectId Project identifier.
      * @return RedirectResponse
      */
     public function assignManager(int $projectId): RedirectResponse

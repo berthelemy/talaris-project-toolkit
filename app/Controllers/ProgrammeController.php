@@ -13,12 +13,12 @@ use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * ProgrammeController component.
+ * Handle programme lifecycle, ownership actions, and project link management.
  */
 class ProgrammeController extends BaseController
 {
     /**
-     * Index operation.
+     * Show programme listing with create permission state for the current actor.
      *
      * @return string|RedirectResponse
      */
@@ -39,7 +39,7 @@ class ProgrammeController extends BaseController
     }
 
     /**
-     * Create operation.
+        * Create a new programme after validation and owner resolution.
      *
      * @return RedirectResponse
      */
@@ -87,9 +87,9 @@ class ProgrammeController extends BaseController
     }
 
     /**
-     * Show operation.
+        * Display a single programme with linked projects and enabled module widgets.
      *
-     * @param int $programmeId
+        * @param int $programmeId Programme identifier.
      * @return string|RedirectResponse
      */
     public function show(int $programmeId): string|RedirectResponse
@@ -128,9 +128,9 @@ class ProgrammeController extends BaseController
     }
 
     /**
-     * Update operation.
+        * Update editable programme fields and write an audit event.
      *
-     * @param int $programmeId
+        * @param int $programmeId Programme identifier.
      * @return RedirectResponse
      */
     public function update(int $programmeId): RedirectResponse
@@ -164,9 +164,9 @@ class ProgrammeController extends BaseController
     }
 
     /**
-     * Delete operation.
+        * Delete a programme when actor has management access.
      *
-     * @param int $programmeId
+        * @param int $programmeId Programme identifier.
      * @return RedirectResponse
      */
     public function delete(int $programmeId): RedirectResponse
@@ -188,9 +188,9 @@ class ProgrammeController extends BaseController
     }
 
     /**
-     * Edit operation.
+        * Render programme edit screen for authorized actors.
      *
-     * @param int $programmeId
+        * @param int $programmeId Programme identifier.
      * @return string|RedirectResponse
      */
     public function edit(int $programmeId): string|RedirectResponse
@@ -208,10 +208,10 @@ class ProgrammeController extends BaseController
     }
 
     /**
-     * LinkProject operation.
+        * Link an existing project to a programme.
      *
-     * @param int $programmeId
-     * @param int $projectId
+        * @param int $programmeId Programme identifier.
+        * @param int $projectId Project identifier.
      * @return RedirectResponse
      */
     public function linkProject(int $programmeId, int $projectId): RedirectResponse
@@ -246,10 +246,10 @@ class ProgrammeController extends BaseController
     }
 
     /**
-     * UnlinkProject operation.
+        * Remove a project-to-programme link.
      *
-     * @param int $programmeId
-     * @param int $projectId
+        * @param int $programmeId Programme identifier.
+        * @param int $projectId Project identifier.
      * @return RedirectResponse
      */
     public function unlinkProject(int $programmeId, int $projectId): RedirectResponse
@@ -275,9 +275,9 @@ class ProgrammeController extends BaseController
     }
 
     /**
-     * AssignManager operation.
+        * Assign programme_manager role to a selected active user.
      *
-     * @param int $programmeId
+        * @param int $programmeId Programme identifier.
      * @return RedirectResponse
      */
     public function assignManager(int $programmeId): RedirectResponse

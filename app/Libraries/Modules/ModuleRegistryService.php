@@ -6,7 +6,7 @@ use App\Libraries\Auth\AuditLogger;
 use App\Models\ModuleRegistryModel;
 
 /**
- * Registry service for installed modules and lifecycle state changes.
+ * Manage module registry lookups and enablement lifecycle transitions.
  */
 class ModuleRegistryService
 {
@@ -14,9 +14,9 @@ class ModuleRegistryService
     public const HELLO_WORLD_PROJECT = 'hello_world_project';
 
     /**
-     * Fetch all registered modules ordered by scope then name.
+    * Fetch all registered modules ordered by scope and display name.
      *
-     * @return list<array<string, mixed>>
+    * @return list<array<string, mixed>> Registered module rows.
      */
     public function allModules(): array
     {
@@ -27,10 +27,10 @@ class ModuleRegistryService
     }
 
     /**
-     * Get all enabled modules for a given scope type.
+    * Fetch enabled modules for a specific scope type.
      *
-      * @param string $scopeType Either 'programme' or 'project'.
-     * @return list<array<string, mixed>>
+    * @param string $scopeType Either 'programme' or 'project'.
+    * @return list<array<string, mixed>> Enabled module rows.
      */
     public function getEnabledModulesByType(string $scopeType): array
     {
@@ -42,7 +42,7 @@ class ModuleRegistryService
     }
 
     /**
-     * Determine whether a specific module slug is enabled for a scope.
+    * Determine whether a specific module is enabled for a scope.
      *
      * @param string $slug Registered module slug.
      * @param string $scopeType Either 'programme' or 'project'.
@@ -63,12 +63,12 @@ class ModuleRegistryService
     }
 
     /**
-     * Enable or disable a module and record an audit event for state changes.
+    * Change a module enabled state and emit audit evidence when it changes.
      *
      * @param string $slug Registered module slug.
      * @param bool $enabled Desired enabled state.
      * @param int $actorId Authenticated actor performing the change.
-     * @return array{ok: bool, message_key: string}
+    * @return array{ok: bool, message_key: string} Outcome and language key for user feedback.
      */
     public function setEnabled(string $slug, bool $enabled, int $actorId): array
     {
