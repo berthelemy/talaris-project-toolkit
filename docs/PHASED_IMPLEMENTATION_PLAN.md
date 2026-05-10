@@ -112,8 +112,19 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 5. Attempt password change without current password and confirm rejection.
 6. Perform admin impersonation and verify audit trail includes actor and target user.
 
+### Manual Acceptance Result (2026-05-10)
+- Environment: Local dev container.
+- Timestamp (UTC): 2026-05-10 12:23:54.
+- Predefined roles and scoped assignments: `tests/database/RbacServiceDatabaseTest.php` confirms system/project scope assignment behavior and role/permission resolution.
+- Multiple roles in a context: `tests/database/RbacServiceDatabaseTest.php` confirms union permissions for a user holding Team member and Stakeholder roles in the same project.
+- Profile updates: `tests/system/ProfileSystemTest.php` confirms persistence of language preference, description, and avatar path with `profile_updated` audit logging.
+- Current-password enforcement: `tests/system/ProfileSystemTest.php` confirms password change is rejected when current password is invalid and accepted when valid, with audit events.
+- Administrator impersonation: `tests/system/ImpersonationSystemTest.php` confirms authorized start/stop impersonation, non-admin denial, and audit events for started/stopped/denied paths.
+- Baseline checks: `XDEBUG_MODE=off composer ci` passed successfully (25 tests, 95 assertions).
+- Blockers found: None.
+
 ### Exit Criteria
-- [ ] Authorization checks consistently block unauthorized actions.
+- [x] Authorization checks consistently block unauthorized actions.
 
 ## Phase 4 (Weeks 7-8): Programmes, Projects, and Core Domain Model
 
