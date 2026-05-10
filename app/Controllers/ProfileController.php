@@ -33,18 +33,34 @@ class ProfileController extends BaseController
         $rules = [
             'language_preference' => 'permit_empty|in_list[en,fr]',
             'profile_description' => 'permit_empty|max_length[1000]',
-            'avatar_path' => 'permit_empty|max_length[255]',
+            'avatar'              => 'permit_empty|uploaded[avatar]|max_size[avatar,2048]|is_image[avatar]|mime_in[avatar,image/jpeg,image/png,image/gif,image/webp]',
         ];
 
-        if (! $this->validateData($this->request->getPost(), $rules)) {
+        if (! $this->validateData(
+            array_merge($this->request->getPost(), ['avatar' => $this->request->getFile('avatar')]),
+            $rules,
+        )) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $payload = [
             'language_preference' => $this->normalizeOptionalString((string) $this->request->getPost('language_preference')),
             'profile_description' => $this->normalizeOptionalString((string) $this->request->getPost('profile_description')),
-            'avatar_path' => $this->normalizeOptionalString((string) $this->request->getPost('avatar_path')),
         ];
+
+        $avatarFile = $this->request->getFile('avatar');
+
+        if ($avatarFile !== null && $avatarFile->isValid() && ! $avatarFile->hasMoved()) {
+            $avatarDir = WRITEPATH . 'uploads/avatars/';
+
+            if (! is_dir($avatarDir)) {
+                mkdir($avatarDir, 0755, true);
+            }
+
+            $newName = $avatarFile->getRandomName();
+            $avatarFile->move($avatarDir, $newName);
+            $payload['avatar_path'] = 'uploads/avatars/' . $newName;
+        }
 
         (new UserModel())->update((int) $user['id'], $payload);
 

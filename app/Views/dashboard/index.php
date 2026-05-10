@@ -17,6 +17,8 @@
     <div class="container py-3 d-flex justify-content-between align-items-center">
         <h1 class="h5 mb-0"><?= esc(lang('Auth.dashboardTitle')) ?></h1>
         <div class="d-flex gap-2">
+            <a href="<?= site_url('programmes') ?>" class="btn btn-outline-secondary btn-sm"><?= esc(lang('Domain.programmesTitle')) ?></a>
+            <a href="<?= site_url('projects') ?>" class="btn btn-outline-secondary btn-sm"><?= esc(lang('Domain.projectsTitle')) ?></a>
             <a href="<?= site_url('profile') ?>" class="btn btn-outline-primary btn-sm"><?= esc(lang('Auth.profileButton')) ?></a>
             <form method="post" action="<?= site_url('logout') ?>">
                 <?= csrf_field() ?>

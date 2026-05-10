@@ -28,7 +28,6 @@ final class ProfileSystemTest extends CIUnitTestCase
         ])->withBodyFormat('form')->post('/profile', [
             'language_preference' => 'fr',
             'profile_description' => 'Profile description updated in system test.',
-            'avatar_path' => 'uploads/avatars/profileuser.png',
         ]);
 
         $result->assertRedirectTo('/profile');
@@ -36,7 +35,6 @@ final class ProfileSystemTest extends CIUnitTestCase
         $updated = (new UserModel())->find((int) $user['id']);
         $this->assertSame('fr', $updated['language_preference']);
         $this->assertSame('Profile description updated in system test.', $updated['profile_description']);
-        $this->assertSame('uploads/avatars/profileuser.png', $updated['avatar_path']);
 
         $audit = (new AuthAuditLogModel())
             ->where('event_type', 'profile_updated')

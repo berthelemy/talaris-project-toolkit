@@ -10,6 +10,22 @@ use CodeIgniter\HTTP\RedirectResponse;
 
 class ProjectController extends BaseController
 {
+    public function index(): string|RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+
+        if ($actorId === null) {
+            return redirect()->to('/login')->with('error', lang('Auth.loginRequired'));
+        }
+
+        $projects = (new ProjectModel())->orderBy('name', 'ASC')->findAll();
+
+        return view('projects/index', [
+            'projects'  => $projects,
+            'canCreate' => $this->canCreateProject($actorId),
+        ]);
+    }
+
     public function create(): RedirectResponse
     {
         $actorId = $this->sessionUserId();

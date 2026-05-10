@@ -12,6 +12,22 @@ use CodeIgniter\HTTP\RedirectResponse;
 
 class ProgrammeController extends BaseController
 {
+    public function index(): string|RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+
+        if ($actorId === null) {
+            return redirect()->to('/login')->with('error', lang('Auth.loginRequired'));
+        }
+
+        $programmes = (new ProgrammeModel())->orderBy('name', 'ASC')->findAll();
+
+        return view('programmes/index', [
+            'programmes'     => $programmes,
+            'canCreate'      => $this->canCreateProgramme($actorId),
+        ]);
+    }
+
     public function create(): RedirectResponse
     {
         $actorId = $this->sessionUserId();

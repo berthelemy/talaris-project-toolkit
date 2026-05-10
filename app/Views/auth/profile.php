@@ -42,7 +42,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <p class="text-muted mb-4"><?= esc(lang('Auth.profileSubtitle')) ?></p>
-                    <form method="post" action="<?= site_url('profile') ?>" novalidate>
+                    <form method="post" action="<?= site_url('profile') ?>" enctype="multipart/form-data" novalidate>
                         <?= csrf_field() ?>
                         <div class="mb-3">
                             <label for="language_preference" class="form-label"><?= esc(lang('Auth.profileLanguage')) ?></label>
@@ -58,15 +58,14 @@
                             <textarea class="form-control" id="profile_description" name="profile_description" rows="5" maxlength="1000"><?= esc((string) old('profile_description', (string) ($user['profile_description'] ?? ''))) ?></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="avatar_path" class="form-label"><?= esc(lang('Auth.profileAvatarPath')) ?></label>
-                            <input
-                                id="avatar_path"
-                                name="avatar_path"
-                                type="text"
-                                class="form-control"
-                                maxlength="255"
-                                value="<?= esc((string) old('avatar_path', (string) ($user['avatar_path'] ?? ''))) ?>"
-                            >
+                            <label for="avatar" class="form-label"><?= esc(lang('Auth.profileAvatarPath')) ?></label>
+                            <?php if (! empty($user['avatar_path'])): ?>
+                                <div class="mb-2">
+                                    <img src="<?= esc(base_url('uploads/avatars/' . basename((string) $user['avatar_path']))) ?>" alt="<?= esc(lang('Auth.profileAvatarAlt')) ?>" class="rounded-circle" width="64" height="64" style="object-fit:cover;">
+                                </div>
+                            <?php endif; ?>
+                            <input id="avatar" name="avatar" type="file" class="form-control" accept="image/jpeg,image/png,image/gif,image/webp">
+                            <div class="form-text"><?= esc(lang('Auth.profileAvatarHint')) ?></div>
                         </div>
                         <button class="btn btn-primary" type="submit"><?= esc(lang('Auth.profileSaveButton')) ?></button>
                     </form>

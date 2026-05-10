@@ -6,8 +6,13 @@
   "runServices": ["app", "mysql", "mailpit"],
   "workspaceFolder": "/var/www/html",
   "shutdownAction": "stopCompose",
-  "forwardPorts": [8025],
+  "forwardPorts": [80, 8025],
   "portsAttributes": {
+    "80": {
+      "label": "Application",
+      "onAutoForward": "openBrowser",
+      "protocol": "http"
+    },
     "8025": {
       "label": "Mailpit Inbox",
       "onAutoForward": "notify",
