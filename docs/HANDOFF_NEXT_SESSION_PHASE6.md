@@ -104,11 +104,11 @@ app/Models/
 ## Backlog Items for Next Session
 
 ### High Priority
-- [ ] **Add complete PHPDoc documentation**: Ensure all public classes, methods, and interfaces have comprehensive PHPDoc comments (parameters, return types, exceptions, usage examples where applicable)
-- [ ] **Clean up global language files**: Decide whether to keep or delete `app/Language/en|fr/Module.php` (module-specific files now at `app/Modules/*/Language/`)
-- [ ] **Create MODULE_STRUCTURE.md**: Developer reference explaining folder hierarchy and why modular structure is better
-- [ ] **Add integration tests for widgets**: Test widget rendering with enabled/disabled modules, permission checks, error handling
-- [ ] **Documentation**: Add architecture diagram showing module structure to MODULE_AUTHORING_GUIDE.md
+- [x] **Add complete PHPDoc documentation**: Added/expanded PHPDoc across Phase 6 module framework public APIs (`ModuleRegistryService`, `ModuleWidgetInterface`, `ModuleWidgetService`, HelloWorld widget classes, HelloWorld module controllers)
+- [x] **Clean up global language files**: Kept `app/Language/en|fr/Module.php` as canonical shared catalog; converted module-local language files to wrappers to remove duplicate translation maintenance
+- [x] **Create MODULE_STRUCTURE.md**: Added `docs/MODULE_STRUCTURE.md` with hierarchy, required vs optional components, rationale, and widget discovery mapping
+- [x] **Add integration tests for widgets**: Added system coverage for enabled rendering, disabled suppression, access boundary redirects, and graceful handling of widget exceptions
+- [x] **Documentation**: Added Mermaid architecture diagram to `docs/MODULE_AUTHORING_GUIDE.md`
 
 ### Medium Priority
 - [ ] **Module permission boundaries**: Enhance widget access control to check RBAC permissions per module/scope
@@ -124,10 +124,10 @@ app/Models/
 
 ## Known Issues / Considerations
 
-1. **Global vs Module Language Files**: Currently both exist
-   - Module-specific files at `app/Modules/*/Language/en|fr/Module.php`
-   - Global files at `app/Language/en|fr/Module.php`
-   - Decision needed on consolidation strategy
+1. **Global vs Module Language Files**: Consolidation completed
+   - Canonical files: `app/Language/en|fr/Module.php`
+   - Module-specific files at `app/Modules/*/Language/en|fr/Module.php` now delegate to canonical files
+   - Reduces duplication while preserving module structure conventions
 
 2. **Widget Error Handling**: Currently logs warnings but silently skips failed widgets
    - Consider more verbose error reporting in development mode

@@ -6,13 +6,24 @@ use App\Libraries\Modules\ModuleWidgetInterface;
 use App\Libraries\Modules\ModuleRegistryService;
 use App\Models\ModuleHelloWorldEntryModel;
 
+/**
+ * Programme-scope dashboard widget for Hello World module entries.
+ */
 class ModuleWidget implements ModuleWidgetInterface
 {
+    /**
+     * @param int $scopeId Programme identifier.
+     * @return string|null
+     */
     public function getWidgetView(int $scopeId): ?string
     {
         return 'App\Modules\HelloWorldProgramme\Views\widget';
     }
 
+    /**
+     * @param int $scopeId Programme identifier.
+     * @return array{entries: list<array<string, mixed>>, entry_count: int}
+     */
     public function getWidgetData(int $scopeId): array
     {
         $entries = (new ModuleHelloWorldEntryModel())

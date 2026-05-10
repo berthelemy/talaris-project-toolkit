@@ -58,6 +58,8 @@ app/Modules/
 
 Each module is self-contained in a single directory under `app/Modules/<ModuleName>/`. This architecture promotes code organization, makes modules easier to distribute, and simplifies version control.
 
+For a concise hierarchy reference and rationale, see `docs/MODULE_STRUCTURE.md`.
+
 ### Module Structure
 
 ```
@@ -80,6 +82,24 @@ app/Modules/<ModuleName>/
   Database/
     Migrations/
       2026-XX-XX-XXXXXX_Create<ModuleName>Tables.php
+```
+
+### Architecture Diagram
+
+```mermaid
+flowchart TD
+    A[module_registry row\nslug + scope + enabled] --> B[ModuleRegistryService]
+    B --> C[ModuleWidgetService]
+    C --> D[Module Directory\napp/Modules/<ModuleName>]
+    D --> E[Config/routes.php]
+    D --> F[Controllers]
+    D --> G[Models]
+    D --> H[Views]
+    D --> I[Widgets/ModuleWidget]
+    D --> J[Language/en|fr/Module.php]
+    F --> H
+    I --> H
+    C --> K[Programme/Project Detail Pages]
 ```
 
 ### Component Responsibilities

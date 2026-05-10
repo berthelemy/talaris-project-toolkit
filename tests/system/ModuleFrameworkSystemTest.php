@@ -22,6 +22,19 @@ final class ModuleFrameworkSystemTest extends CIUnitTestCase
 
     protected $migrate = true;
     protected $namespace = 'App';
+    /** @var list<string> */
+    private array $temporaryModuleDirectories = [];
+
+    protected function tearDown(): void
+    {
+        foreach ($this->temporaryModuleDirectories as $directory) {
+            $this->removeDirectory($directory);
+        }
+
+        $this->temporaryModuleDirectories = [];
+
+        parent::tearDown();
+    }
 
     public function testAdministratorCanToggleModuleAndAuditIsWritten(): void
     {
@@ -132,6 +145,117 @@ final class ModuleFrameworkSystemTest extends CIUnitTestCase
         $result->assertRedirectTo('/projects/' . $projectId);
     }
 
+    public function testProjectDetailRendersWidgetWhenModuleEnabled(): void
+    {
+        $admin = $this->createUser('widgetenabled', 'widgetenabled@example.com');
+        (new RbacService())->assignRoleToUser((int) $admin['id'], 'administrator', 'system', null, (int) $admin['id']);
+
+        $projectId = (new ProjectModel())->insert([
+            'name' => 'Widget Project',
+            'description' => null,
+            'owner_user_id' => (int) $admin['id'],
+        ], true);
+
+        $this->assertIsInt($projectId);
+
+        (new ModuleHelloWorldEntryModel())->insert([
+            'module_slug' => ModuleRegistryService::HELLO_WORLD_PROJECT,
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'message' => 'Widget visibility check',
+            'created_by_user_id' => (int) $admin['id'],
+        ]);
+
+        $result = $this->withSession($this->authSession($admin))->get('/projects/' . $projectId);
+
+        $result->assertOK();
+        $this->assertStringContainsString('Widget visibility check', $result->getBody());
+    }
+
+    public function testProjectDetailSkipsWidgetWhenModuleDisabled(): void
+    {
+        $admin = $this->createUser('widgetdisabled', 'widgetdisabled@example.com');
+        (new RbacService())->assignRoleToUser((int) $admin['id'], 'administrator', 'system', null, (int) $admin['id']);
+
+        (new ModuleRegistryService())->setEnabled(ModuleRegistryService::HELLO_WORLD_PROJECT, false, (int) $admin['id']);
+
+        $projectId = (new ProjectModel())->insert([
+            'name' => 'Widget Disabled Project',
+            'description' => null,
+            'owner_user_id' => (int) $admin['id'],
+        ], true);
+
+        $this->assertIsInt($projectId);
+
+        (new ModuleHelloWorldEntryModel())->insert([
+            'module_slug' => ModuleRegistryService::HELLO_WORLD_PROJECT,
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'message' => 'Should not render in disabled state',
+            'created_by_user_id' => (int) $admin['id'],
+        ]);
+
+        $result = $this->withSession($this->authSession($admin))->get('/projects/' . $projectId);
+
+        $result->assertOK();
+        $this->assertStringNotContainsString('Should not render in disabled state', $result->getBody());
+    }
+
+    public function testProjectWidgetRenderingRespectsScopeAccessBoundaries(): void
+    {
+        $owner = $this->createUser('widgetowner', 'widgetowner@example.com');
+        $outsider = $this->createUser('widgetoutsider', 'widgetoutsider@example.com');
+
+        $projectId = (new ProjectModel())->insert([
+            'name' => 'Restricted Widget Project',
+            'description' => null,
+            'owner_user_id' => (int) $owner['id'],
+        ], true);
+
+        $this->assertIsInt($projectId);
+
+        $result = $this->withSession($this->authSession($outsider))->get('/projects/' . $projectId);
+
+        $result->assertRedirectTo('/projects');
+    }
+
+    public function testProjectDetailHandlesWidgetExceptionsWithoutBreakingPage(): void
+    {
+        $admin = $this->createUser('widgeterror', 'widgeterror@example.com');
+        (new RbacService())->assignRoleToUser((int) $admin['id'], 'administrator', 'system', null, (int) $admin['id']);
+
+        $projectId = (new ProjectModel())->insert([
+            'name' => 'Widget Error Project',
+            'description' => null,
+            'owner_user_id' => (int) $admin['id'],
+        ], true);
+
+        $this->assertIsInt($projectId);
+
+        (new ModuleHelloWorldEntryModel())->insert([
+            'module_slug' => ModuleRegistryService::HELLO_WORLD_PROJECT,
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'message' => 'Healthy widget still renders',
+            'created_by_user_id' => (int) $admin['id'],
+        ]);
+
+        $brokenSlug = $this->createTemporaryBrokenWidgetModule();
+
+        (new ModuleRegistryModel())->insert([
+            'slug' => $brokenSlug,
+            'name' => 'Broken Widget (Project)',
+            'scope_type' => 'project',
+            'description' => 'Intentional exception for test coverage.',
+            'is_enabled' => 1,
+        ]);
+
+        $result = $this->withSession($this->authSession($admin))->get('/projects/' . $projectId);
+
+        $result->assertOK();
+        $this->assertStringContainsString('Healthy widget still renders', $result->getBody());
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -159,5 +283,66 @@ final class ModuleFrameworkSystemTest extends CIUnitTestCase
             'username' => (string) $user['username'],
             'last_activity_at' => time(),
         ];
+    }
+
+    private function createTemporaryBrokenWidgetModule(): string
+    {
+        $moduleName = 'BrokenWidgetProject';
+        $slug = 'broken_widget_project';
+        $baseDirectory = APPPATH . 'Modules/' . $moduleName;
+        $widgetDirectory = $baseDirectory . '/Widgets';
+
+        if (! is_dir($widgetDirectory)) {
+            mkdir($widgetDirectory, 0777, true);
+        }
+
+        $widgetClass = <<<'PHP'
+<?php
+
+namespace App\Modules\BrokenWidgetProject\Widgets;
+
+use App\Libraries\Modules\ModuleWidgetInterface;
+
+class ModuleWidget implements ModuleWidgetInterface
+{
+    public function getWidgetView(int $scopeId): ?string
+    {
+        return 'App\\Modules\\HelloWorldProject\\Views\\widget';
+    }
+
+    public function getWidgetData(int $scopeId): array
+    {
+        throw new \RuntimeException('Intentional widget failure for system test.');
+    }
+}
+PHP;
+
+        file_put_contents($widgetDirectory . '/ModuleWidget.php', $widgetClass);
+
+        $this->temporaryModuleDirectories[] = $baseDirectory;
+
+        return $slug;
+    }
+
+    private function removeDirectory(string $directory): void
+    {
+        if (! is_dir($directory)) {
+            return;
+        }
+
+        $entries = array_diff(scandir($directory) ?: [], ['.', '..']);
+
+        foreach ($entries as $entry) {
+            $path = $directory . DIRECTORY_SEPARATOR . $entry;
+
+            if (is_dir($path)) {
+                $this->removeDirectory($path);
+                continue;
+            }
+
+            unlink($path);
+        }
+
+        rmdir($directory);
     }
 }

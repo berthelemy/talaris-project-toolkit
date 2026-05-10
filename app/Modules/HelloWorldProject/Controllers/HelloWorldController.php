@@ -10,8 +10,17 @@ use App\Models\ModuleHelloWorldEntryModel;
 use App\Models\ProjectModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
+/**
+ * Project-scope Hello World module endpoints.
+ */
 class HelloWorldController extends BaseController
 {
+    /**
+     * Render the module page with all project-scoped entries.
+     *
+     * @param int $projectId Project identifier.
+     * @return string|RedirectResponse
+     */
     public function index(int $projectId): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -42,6 +51,12 @@ class HelloWorldController extends BaseController
         ]);
     }
 
+    /**
+     * Persist a new project-scoped Hello World entry.
+     *
+     * @param int $projectId Project identifier.
+     * @return RedirectResponse
+     */
     public function create(int $projectId): RedirectResponse
     {
         $actorId = $this->sessionUserId();

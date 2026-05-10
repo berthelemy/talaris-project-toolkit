@@ -20,7 +20,7 @@ class ModuleWidgetService
      * @param string $scopeType 'programme' or 'project'
      * @param int    $scopeId   ID of the programme or project
      *
-     * @return array<string, array{widget: ModuleWidgetInterface, data: array}> Widgets keyed by module slug
+      * @return array<string, array{widget: ModuleWidgetInterface, data: array<string, mixed>, view: string}> Widgets keyed by module slug
      */
     public function getAvailableWidgets(string $scopeType, int $scopeId): array
     {
@@ -89,6 +89,7 @@ class ModuleWidgetService
     /**
      * Load a module widget by slug.
      *
+      * @param string $moduleSlug Module slug (for example, 'hello_world_project').
      * @return ModuleWidgetInterface|null
      */
     private function loadModuleWidget(string $moduleSlug): ?ModuleWidgetInterface
@@ -126,6 +127,9 @@ class ModuleWidgetService
     /**
      * Convert a module directory name to its registry slug.
      * e.g., 'HelloWorldProject' -> 'hello_world_project'
+      *
+      * @param string $module Directory name under app/Modules.
+      * @return string Module slug in snake_case.
      */
     private function directoryToSlug(string $module): string
     {
@@ -139,9 +143,10 @@ class ModuleWidgetService
      * Check if current actor can access this widget.
      * By default, allows access if actor can view the scope.
      *
-     * @param int    $actorId   User ID
+      * @param int    $actorId    User ID
      * @param string $moduleSlug Module slug (e.g., 'hello_world_programme')
-     * @param string $scopeType 'programme' or 'project'
+      * @param string $scopeType  'programme' or 'project'
+      * @return bool True when widget should be visible to the actor.
      */
     private function canAccessWidget(int $actorId, string $moduleSlug, string $scopeType): bool
     {

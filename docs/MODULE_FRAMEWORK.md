@@ -52,6 +52,12 @@ Phase 6 baseline reference modules:
 
 Both modules persist records in `module_hello_world_entries` with explicit `scope_type` and `scope_id`.
 
+## Language Catalog Decision
+
+- Canonical framework/module UI strings remain in `app/Language/en/Module.php` and `app/Language/fr/Module.php`.
+- Module-local `Language/en|fr/Module.php` files are retained as compatibility wrappers that delegate to the canonical shared catalog.
+- This removes duplicate translation maintenance while preserving module folder conventions.
+
 ## Reusable Unit Test Template
 
 - Base template: `tests/_support/Modules/ModuleUnitTestCase.php`

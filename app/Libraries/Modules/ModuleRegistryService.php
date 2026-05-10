@@ -5,12 +5,17 @@ namespace App\Libraries\Modules;
 use App\Libraries\Auth\AuditLogger;
 use App\Models\ModuleRegistryModel;
 
+/**
+ * Registry service for installed modules and lifecycle state changes.
+ */
 class ModuleRegistryService
 {
     public const HELLO_WORLD_PROGRAMME = 'hello_world_programme';
     public const HELLO_WORLD_PROJECT = 'hello_world_project';
 
     /**
+     * Fetch all registered modules ordered by scope then name.
+     *
      * @return list<array<string, mixed>>
      */
     public function allModules(): array
@@ -24,6 +29,7 @@ class ModuleRegistryService
     /**
      * Get all enabled modules for a given scope type.
      *
+      * @param string $scopeType Either 'programme' or 'project'.
      * @return list<array<string, mixed>>
      */
     public function getEnabledModulesByType(string $scopeType): array
@@ -35,6 +41,13 @@ class ModuleRegistryService
             ->findAll();
     }
 
+    /**
+     * Determine whether a specific module slug is enabled for a scope.
+     *
+     * @param string $slug Registered module slug.
+     * @param string $scopeType Either 'programme' or 'project'.
+     * @return bool True when module exists and is enabled for the scope.
+     */
     public function isEnabled(string $slug, string $scopeType): bool
     {
         $module = (new ModuleRegistryModel())
@@ -50,6 +63,11 @@ class ModuleRegistryService
     }
 
     /**
+     * Enable or disable a module and record an audit event for state changes.
+     *
+     * @param string $slug Registered module slug.
+     * @param bool $enabled Desired enabled state.
+     * @param int $actorId Authenticated actor performing the change.
      * @return array{ok: bool, message_key: string}
      */
     public function setEnabled(string $slug, bool $enabled, int $actorId): array

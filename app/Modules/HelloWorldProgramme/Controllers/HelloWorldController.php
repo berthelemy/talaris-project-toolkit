@@ -10,8 +10,17 @@ use App\Models\ModuleHelloWorldEntryModel;
 use App\Models\ProgrammeModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
+/**
+ * Programme-scope Hello World module endpoints.
+ */
 class HelloWorldController extends BaseController
 {
+    /**
+     * Render the module page with all programme-scoped entries.
+     *
+     * @param int $programmeId Programme identifier.
+     * @return string|RedirectResponse
+     */
     public function index(int $programmeId): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -42,6 +51,12 @@ class HelloWorldController extends BaseController
         ]);
     }
 
+    /**
+     * Persist a new programme-scoped Hello World entry.
+     *
+     * @param int $programmeId Programme identifier.
+     * @return RedirectResponse
+     */
     public function create(int $programmeId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
