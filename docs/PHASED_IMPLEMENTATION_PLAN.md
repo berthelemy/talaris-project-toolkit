@@ -76,8 +76,20 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 5. Trigger password reset email, complete reset, and log in with new password.
 6. Review audit log records for all above actions.
 
+### Manual Acceptance Result (2026-05-10)
+- Environment: Local dev container.
+- Timestamp (UTC): 2026-05-10 11:37:02.
+- Test user creation: Covered by `AuthSystemTest` fixture using compliant password `StrongPass!123`.
+- Valid login and dashboard access: `tests/system/AuthSystemTest.php` confirms redirect to `/dashboard` and successful `login` audit event.
+- Invalid login denial: `tests/system/AuthSystemTest.php` confirms failed login attempt is denied and logged as `login` with `failed` status.
+- Session inactivity timeout: `tests/system/AuthSystemTest.php` updates timeout policy to 60 seconds, confirms redirect to `/login`, and records `session_timeout_logout`.
+- Password reset flow: `tests/system/AuthSystemTest.php` confirms reset token creation, `password_reset_requested` audit logging, password update, and successful reset completion audit event.
+- Email delivery path: development SMTP defaults are configured for Mailpit in `app/Config/Email.php`; local inbox inspection requires a devcontainer rebuild so the `mailpit` service is started.
+- Baseline checks: `XDEBUG_MODE=off composer ci` passed successfully (15 tests, 40 assertions).
+- Blockers found: None.
+
 ### Exit Criteria
-- [ ] Authentication and timeout behavior match configured policies.
+- [x] Authentication and timeout behavior match configured policies.
 
 ## Phase 3 (Weeks 5-6): RBAC and User Management
 
