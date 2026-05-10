@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Modules\HelloWorldProgramme\Controllers;
 
+use App\Controllers\BaseController;
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Modules\ModuleRegistryService;
@@ -9,7 +10,7 @@ use App\Models\ModuleHelloWorldEntryModel;
 use App\Models\ProgrammeModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
-class ProgrammeHelloWorldController extends BaseController
+class HelloWorldController extends BaseController
 {
     public function index(int $programmeId): string|RedirectResponse
     {
@@ -35,7 +36,7 @@ class ProgrammeHelloWorldController extends BaseController
             ->orderBy('id', 'DESC')
             ->findAll();
 
-        return view('modules/programme_hello_world', [
+        return view('app/Modules/HelloWorldProgramme/Views/index', [
             'programme' => $programme,
             'entries' => $entries,
         ]);

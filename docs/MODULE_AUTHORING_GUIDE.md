@@ -32,100 +32,89 @@ Before you begin, ensure you have the prerequisites and understand the scope:
 For a module named `risk_register` at project scope, you will create:
 
 ```
-app/
-  Controllers/
-    ProjectRiskRegisterController.php       # Route handlers
-  Models/
-    ModuleRiskRegisterEntryModel.php        # Persistence layer
-  Database/
-    Migrations/
-      2026-XX-XX-XXXXXX_CreateRiskRegisterTables.php
-  Views/
-    modules/
-      project_risk_register.php             # UI template
-app/Language/
-  en/
-    RiskRegister.php                        # English strings
-  fr/
-    RiskRegister.php                        # French strings
-tests/
-  system/
-    ModuleRiskRegisterSystemTest.php        # System/integration tests
-  unit/
-    modules/
-      RiskRegisterModuleTest.php            # Unit tests
+app/Modules/
+  RiskRegister/
+    Controllers/
+      RiskRegisterController.php
+    Models/
+      RiskRegisterEntryModel.php
+    Views/
+      index.php
+    Language/
+      en/
+        Module.php
+      fr/
+        Module.php
+    Config/
+      routes.php
+    Tests/
+      RiskRegisterSystemTest.php
+      RiskRegisterModuleTest.php
 ```
 
 ---
 
 ## Module Anatomy
 
-Each module consists of the following components:
+Each module is self-contained in a single directory under `app/Modules/<ModuleName>/`. This architecture promotes code organization, makes modules easier to distribute, and simplifies version control.
 
-### 1. Database Migration and Models
+### Module Structure
 
-**Purpose**: Define schema and persistence layer for module data.
+```
+app/Modules/<ModuleName>/
+  Controllers/
+    <ModuleName>Controller.php         # HTTP request handlers
+  Models/
+    <ModelName>Model.php               # Data persistence layer(s)
+  Views/
+    index.php                          # Primary UI template
+    (optional) create.php, edit.php    # Additional views
+  Language/
+    en/Module.php                      # English UI strings
+    fr/Module.php                      # French UI strings
+  Config/
+    routes.php                         # Module-specific routes
+  Tests/
+    <ModuleName>SystemTest.php         # System/integration tests
+    <ModuleName>ModuleTest.php         # Unit tests (optional)
+  Database/
+    Migrations/
+      2026-XX-XX-XXXXXX_Create<ModuleName>Tables.php
+```
 
-**Files**:
-- Migration file: `app/Database/Migrations/`
-- Model files: `app/Models/`
+### Component Responsibilities
 
-### 2. Controller(s)
+**1. Controllers** (`Controllers/<ModuleName>Controller.php`)
+- Handle HTTP requests and responses
+- Enforce authorization (scope access + module enabled state)
+- Validate input and persist records
+- Log audit events
 
-**Purpose**: Handle HTTP requests, orchestrate business logic, and enforce authorization.
+**2. Models** (`Models/<ModelName>Model.php`)
+- Define database table structure via allowedFields
+- Manage relationships and timestamps
+- Provide query interface for persistence
 
-**Files**:
-- `app/Controllers/<Scope><ModuleName>Controller.php`
+**3. Views** (`Views/`)
+- Render module UI with localization (lang() helper)
+- Include forms for create/edit and tables/cards for display
+- Bootstrap 5 styled for mobile-first responsiveness
 
-**Pattern**: Scope-aware controller that:
-- Checks actor authentication
-- Verifies scope access (via parent scope authorization)
-- Guards disabled modules at route level
-- Validates input and persists records
-- Logs audit events
+**4. Language Files** (`Language/en|fr/Module.php`)
+- Return associative array of localization keys
+- Cover UI labels, buttons, status messages, notifications
 
-### 3. Views
+**5. Routes** (`Config/routes.php`)
+- Define HTTP verb/path mappings to controller actions
+- Routes are auto-loaded by the framework
 
-**Purpose**: Render module UI with localization and Bootstrap 5 styling.
+**6. Tests** (`Tests/`)
+- System tests verify complete workflows (HTTP + DB + auth)
+- Unit tests verify model/business logic in isolation
 
-**Files**:
-- `app/Views/modules/<scope>_<module_name>.php`
+### Component Templates
 
-**Pattern**: Forms for create/edit, tables or cards for display, error/success alerts.
-
-### 4. Localization
-
-**Purpose**: Provide English and French UI strings with language-aware fallback.
-
-**Files**:
-- `app/Language/en/<ModuleName>.php`
-- `app/Language/fr/<ModuleName>.php`
-
-**Pattern**: Return associative array of keys → strings. Use nested arrays for grouped content (e.g., `scope`, `status`).
-
-### 5. Routes
-
-**Purpose**: Map HTTP verbs and paths to controller actions.
-
-**Location**: `app/Config/Routes.php`
-
-**Pattern**: Routes inherit scope authorization from parent (programme or project).
-
-### 6. Tests
-
-**Purpose**: Verify module behavior across unit, integration, and system levels.
-
-**Files**:
-- `tests/unit/modules/<ModuleName>ModuleTest.php`
-- `tests/system/Module<ModuleName>SystemTest.php`
-
-**Pattern**: Extend `ModuleUnitTestCase` or `CIUnitTestCase` with fixtures and assertions.
-
-### 7. Audit Logging
-
-**Purpose**: Track all mutations with actor, timestamp, and metadata.
-
-**Pattern**: Call `AuditLogger::log()` after successful persistence.
+See **[Component Templates](#component-templates)** section below for copy-paste stubs.
 
 ---
 
@@ -255,16 +244,16 @@ php spark migrate
 
 Create a model class for your module's data.
 
-**File**: `app/Models/ModuleRiskRegisterEntryModel.php`
+**File**: `app/Modules/RiskRegister/Models/RiskRegisterEntryModel.php`
 
 ```php
 <?php
 
-namespace App\Models;
+namespace App\Modules\RiskRegister\Models;
 
 use CodeIgniter\Model;
 
-class ModuleRiskRegisterEntryModel extends Model
+class RiskRegisterEntryModel extends Model
 {
     protected $table            = 'module_risk_register_entries';
     protected $primaryKey       = 'id';
@@ -314,21 +303,22 @@ php spark migrate:refresh
 
 Build a controller that handles HTTP requests with proper authorization and audit logging.
 
-**File**: `app/Controllers/ProjectRiskRegisterController.php`
+**File**: `app/Modules/RiskRegister/Controllers/RiskRegisterController.php`
 
 ```php
 <?php
 
-namespace App\Controllers;
+namespace App\Modules\RiskRegister\Controllers;
 
+use App\Controllers\BaseController;
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Modules\ModuleRegistryService;
-use App\Models\ModuleRiskRegisterEntryModel;
+use App\Modules\RiskRegister\Models\RiskRegisterEntryModel;
 use App\Models\ProjectModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
-class ProjectRiskRegisterController extends BaseController
+class RiskRegisterController extends BaseController
 {
     private const MODULE_SLUG = 'risk_register_project';
 
@@ -354,14 +344,14 @@ class ProjectRiskRegisterController extends BaseController
         }
 
         // Fetch module records
-        $entries = (new ModuleRiskRegisterEntryModel())
+        $entries = (new RiskRegisterEntryModel())
             ->where('project_id', $projectId)
             ->orderBy('status', 'ASC')
             ->orderBy('risk_level', 'DESC')
             ->orderBy('id', 'DESC')
             ->findAll();
 
-        return view('modules/project_risk_register', [
+        return view('app/Modules/RiskRegister/Views/index', [
             'project'  => $project,
             'entries'  => $entries,
             'levels'   => ['low', 'medium', 'high', 'critical'],
@@ -401,7 +391,7 @@ class ProjectRiskRegisterController extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        (new ModuleRiskRegisterEntryModel())->insert([
+        (new RiskRegisterEntryModel())->insert([
             'project_id'         => $projectId,
             'title'              => trim((string) $this->request->getPost('title')),
             'description'        => trim((string) $this->request->getPost('description')),
@@ -442,21 +432,48 @@ class ProjectRiskRegisterController extends BaseController
 
 ### Step 6: Create Routes
 
-Add routes to `app/Config/Routes.php` in the appropriate section:
+Create a module-specific routes file that will be automatically loaded by the framework.
 
-**Location**: Near other module routes in the file.
+**File**: `app/Modules/RiskRegister/Config/routes.php`
 
 ```php
-// Project-scoped Risk Register module
-$routes->get('projects/(:num)/modules/risk-register', 'ProjectRiskRegisterController::index/$1');
-$routes->post('projects/(:num)/modules/risk-register', 'ProjectRiskRegisterController::create/$1');
+<?php
+
+declare(strict_types=1);
+
+namespace App\Modules\RiskRegister\Config;
+
+use CodeIgniter\Router\RouteCollection;
+
+/**
+ * @var RouteCollection $routes
+ */
+$routes->get('projects/(:num)/modules/risk-register', 'RiskRegisterController::index/$1', ['namespace' => 'App\Modules\RiskRegister\Controllers']);
+$routes->post('projects/(:num)/modules/risk-register', 'RiskRegisterController::create/$1', ['namespace' => 'App\Modules\RiskRegister\Controllers']);
 ```
+
+**Auto-Loading**: Routes are automatically loaded from all modules via `app/Config/Routes.php`:
+
+```php
+// Load module routes from each module's Config/routes.php
+$moduleDir = APPPATH . 'Modules';
+if (is_dir($moduleDir)) {
+    foreach (scandir($moduleDir) as $module) {
+        $moduleRoutesFile = $moduleDir . '/' . $module . '/Config/routes.php';
+        if (is_file($moduleRoutesFile)) {
+            include $moduleRoutesFile;
+        }
+    }
+}
+```
+
+No need to manually edit `app/Config/Routes.php` — routes are discovered automatically!
 
 ### Step 7: Create Localization Keys
 
-Define UI strings in English and French.
+Define UI strings in English and French within your module directory.
 
-**File**: `app/Language/en/RiskRegister.php`
+**File**: `app/Modules/RiskRegister/Language/en/Module.php`
 
 ```php
 <?php
@@ -495,7 +512,7 @@ return [
 ];
 ```
 
-**File**: `app/Language/fr/RiskRegister.php`
+**File**: `app/Modules/RiskRegister/Language/fr/Module.php`
 
 ```php
 <?php
@@ -538,7 +555,7 @@ return [
 
 Build the UI template with forms, lists, and localization.
 
-**File**: `app/Views/modules/project_risk_register.php`
+**File**: `app/Modules/RiskRegister/Views/index.php`
 
 ```php
 <!doctype html>
@@ -818,13 +835,13 @@ This section provides copy-paste templates for each component type.
 ```php
 <?php
 
-namespace App\Models;
+namespace App\Modules\<ModuleName>\Models;
 
 use CodeIgniter\Model;
 
-class Module<ModuleName>EntryModel extends Model
+class <ModelName>Model extends Model
 {
-    protected $table            = 'module_<module_slug>_entries';
+    protected $table            = 'module_<table_name>';
     protected $primaryKey       = 'id';
     protected $returnType       = 'array';
     protected $useAutoIncrement = true;
@@ -839,74 +856,95 @@ class Module<ModuleName>EntryModel extends Model
 }
 ```
 
-### Controller Stub (Programme Scope)
+### Controller Stub (Project Scope)
 
 ```php
 <?php
 
-namespace App\Controllers;
+namespace App\Modules\<ModuleName>\Controllers;
 
+use App\Controllers\BaseController;
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Modules\ModuleRegistryService;
-use App\Models\Module<ModuleName>EntryModel;
-use App\Models\ProgrammeModel;
+use App\Modules\<ModuleName>\Models\<ModelName>Model;
+use App\Models\ProjectModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
-class Programme<ModuleName>Controller extends BaseController
+class <ModuleName>Controller extends BaseController
 {
-    private const MODULE_SLUG = '<module_slug>_programme';
+    private const MODULE_SLUG = '<module_slug>_project';
 
-    public function index(int $programmeId): string|RedirectResponse
+    public function index(int $projectId): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
-        $programme = (new ProgrammeModel())->find($programmeId);
+        $project = (new ProjectModel())->find($projectId);
 
         if ($actorId === null) {
             return redirect()->to('/login')->with('error', lang('Auth.loginRequired'));
         }
 
-        if (! is_array($programme) || ! $this->canViewProgramme($actorId, $programme)) {
-            return redirect()->to('/programmes')->with('error', lang('Domain.notAuthorized'));
+        if (! is_array($project) || ! $this->canViewProject($actorId, $project)) {
+            return redirect()->to('/projects')->with('error', lang('Domain.notAuthorized'));
         }
 
-        if (! (new ModuleRegistryService())->isEnabled(self::MODULE_SLUG, 'programme')) {
-            return redirect()->to('/programmes/' . $programmeId)
+        if (! (new ModuleRegistryService())->isEnabled(self::MODULE_SLUG, 'project')) {
+            return redirect()->to('/projects/' . $projectId)
                 ->with('error', lang('<ModuleName>.moduleDisabled'));
         }
 
-        $entries = (new Module<ModuleName>EntryModel())
-            ->where('scope_id', $programmeId)
+        $entries = (new <ModelName>Model())
+            ->where('project_id', $projectId)
             ->orderBy('id', 'DESC')
             ->findAll();
 
-        return view('modules/programme_<module_slug>', [
-            'programme' => $programme,
-            'entries'   => $entries,
+        return view('app/Modules/<ModuleName>/Views/index', [
+            'project' => $project,
+            'entries' => $entries,
         ]);
     }
 
-    public function create(int $programmeId): RedirectResponse
+    public function create(int $projectId): RedirectResponse
     {
         // Similar structure to index() but with validation and insert
     }
 
     /**
-     * @param array<string, mixed> $programme
+     * @param array<string, mixed> $project
      */
-    private function canViewProgramme(int $actorId, array $programme): bool
+    private function canViewProject(int $actorId, array $project): bool
     {
-        if ((int) ($programme['owner_user_id'] ?? 0) === $actorId) {
+        if ((int) ($project['owner_user_id'] ?? 0) === $actorId) {
             return true;
         }
 
         $rbac = new RbacService();
 
-        return $rbac->hasPermission($actorId, 'programme.read_own', 'programme', (int) $programme['id'])
-            || $rbac->hasPermission($actorId, 'programme.update_own', 'programme', (int) $programme['id'])
-            || $rbac->hasPermission($actorId, 'programme.delete_own', 'programme', (int) $programme['id']);
+        return $rbac->hasPermission($actorId, 'project.read_own', 'project', (int) $project['id'])
+            || $rbac->hasPermission($actorId, 'project.update_own', 'project', (int) $project['id'])
+            || $rbac->hasPermission($actorId, 'project.delete_own', 'project', (int) $project['id']);
     }
 }
+```
+
+### Routes Template
+
+**File**: `app/Modules/<ModuleName>/Config/routes.php`
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Modules\<ModuleName>\Config;
+
+use CodeIgniter\Router\RouteCollection;
+
+/**
+ * @var RouteCollection $routes
+ */
+$routes->get('projects/(:num)/modules/<module-name>', '<ModuleName>Controller::index/$1', ['namespace' => 'App\Modules\<ModuleName>\Controllers']);
+$routes->post('projects/(:num)/modules/<module-name>', '<ModuleName>Controller::create/$1', ['namespace' => 'App\Modules\<ModuleName>\Controllers']);
 ```
 
 ### Localization Template
@@ -938,23 +976,15 @@ return [
 
 After implementing your module components, integrate them into the application.
 
-### 1. Add Routes
+### 1. Routes (Auto-Discovered)
 
-Edit `app/Config/Routes.php`:
+Routes are automatically loaded from all modules via the module discovery mechanism in `app/Config/Routes.php`. Your module's `Config/routes.php` file is discovered and loaded automatically.
 
-```php
-// Project-scoped module
-$routes->get('projects/(:num)/modules/<module-name>', 'Project<ModuleName>Controller::index/$1');
-$routes->post('projects/(:num)/modules/<module-name>', 'Project<ModuleName>Controller::create/$1');
-
-// Programme-scoped module
-$routes->get('programmes/(:num)/modules/<module-name>', 'Programme<ModuleName>Controller::index/$1');
-$routes->post('programmes/(:num)/modules/<module-name>', 'Programme<ModuleName>Controller::create/$1');
-```
+**No manual route editing required!**
 
 ### 2. Add Navigation Card
 
-Edit `app/Views/programmes/show.php` and `app/Views/projects/show.php`:
+Edit `app/Views/programmes/show.php` and `app/Views/projects/show.php` to add a module card for your module:
 
 Add a module card in the detail page:
 

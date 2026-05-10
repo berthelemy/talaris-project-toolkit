@@ -50,8 +50,6 @@ $routes->post('programmes/(:num)/delete', 'ProgrammeController::delete/$1', ['fi
 $routes->post('programmes/(:num)/projects/(:num)/link', 'ProgrammeController::linkProject/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('programmes/(:num)/projects/(:num)/unlink', 'ProgrammeController::unlinkProject/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('programmes/(:num)/managers', 'ProgrammeController::assignManager/$1', ['filter' => ['auth', 'sessiontimeout']]);
-$routes->get('programmes/(:num)/modules/hello-world', 'ProgrammeHelloWorldController::index/$1', ['filter' => ['auth', 'sessiontimeout']]);
-$routes->post('programmes/(:num)/modules/hello-world', 'ProgrammeHelloWorldController::create/$1', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('projects', 'ProjectController::index', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->get('projects/(:num)', 'ProjectController::show/$1', ['filter' => ['auth', 'sessiontimeout']]);
@@ -60,5 +58,15 @@ $routes->get('projects/(:num)/edit', 'ProjectController::edit/$1', ['filter' => 
 $routes->post('projects/(:num)', 'ProjectController::update/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('projects/(:num)/delete', 'ProjectController::delete/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('projects/(:num)/managers', 'ProjectController::assignManager/$1', ['filter' => ['auth', 'sessiontimeout']]);
-$routes->get('projects/(:num)/modules/hello-world', 'ProjectHelloWorldController::index/$1', ['filter' => ['auth', 'sessiontimeout']]);
-$routes->post('projects/(:num)/modules/hello-world', 'ProjectHelloWorldController::create/$1', ['filter' => ['auth', 'sessiontimeout']]);
+
+// Load module routes from each module's Config/routes.php
+$moduleDir = APPPATH . 'Modules';
+if (is_dir($moduleDir)) {
+    $modules = array_diff(scandir($moduleDir), ['.', '..']);
+    foreach ($modules as $module) {
+        $moduleRoutesFile = $moduleDir . '/' . $module . '/Config/routes.php';
+        if (is_file($moduleRoutesFile) && is_dir($moduleDir . '/' . $module)) {
+            include $moduleRoutesFile;
+        }
+    }
+}
