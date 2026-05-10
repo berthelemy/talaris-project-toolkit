@@ -123,6 +123,12 @@ class AuthController extends BaseController
             $sent = $mailer->send();
 
             (new AuditLogger())->log('password_reset_requested', $sent ? 'success' : 'queued', (int) $user['id']);
+
+            if (! $sent && ENVIRONMENT === 'development') {
+                return redirect()->to('/forgot-password')
+                    ->with('success', lang('Auth.resetEmailSent'))
+                    ->with('dev_reset_url', $resetUrl);
+            }
         }
 
         return redirect()->to('/forgot-password')->with('success', lang('Auth.resetEmailSent'));
