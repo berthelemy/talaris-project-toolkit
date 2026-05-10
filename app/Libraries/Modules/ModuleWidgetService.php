@@ -133,6 +133,7 @@ class ModuleWidgetService
         $slug = preg_replace('/(?<!^)(?=[A-Z])/', '_', $module);
         // Convert to lowercase (Hello_World_Project -> hello_world_project)
         return strtolower($slug) ?? '';
+    }
 
     /**
      * Check if current actor can access this widget.
