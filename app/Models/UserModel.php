@@ -17,5 +17,8 @@ class UserModel extends Model
         'password_hash',
         'is_active',
         'last_login_at',
+        'language_preference',
+        'profile_description',
+        'avatar_path',
     ];
 }
