@@ -60,6 +60,27 @@ Result:
 - Add reusable module system-test template for enable/disable, routing, and persistence.
 - Add at least one passing system test per Hello World module.
 
+## Phase 6 Kickoff Progress (2026-05-10)
+
+Started implementation against steps 1 to 4 and initial step 5:
+
+- Added migration `2026-05-10-160000_CreateModuleFrameworkTables.php` with:
+  - `module_registry` (module metadata + `is_enabled` lifecycle state)
+  - `module_hello_world_entries` (sample module persistence with scope and actor)
+- Added module lifecycle service `app/Libraries/Modules/ModuleRegistryService.php`.
+- Added admin module registry management routes and controller:
+  - `GET /modules`
+  - `POST /modules/:slug/toggle`
+- Added sample Hello World modules:
+  - Programme scope: `GET/POST /programmes/:id/modules/hello-world`
+  - Project scope: `GET/POST /projects/:id/modules/hello-world`
+- Added module lifecycle and write audit events:
+  - `module_enabled`, `module_disabled`
+  - `module_hello_world_entry_created`
+- Added scope-aware UI entry points from programme/project details pages and route-level disabled-module enforcement.
+- Added module localization files (`en`/`fr`) and scaffold documentation in `docs/MODULE_FRAMEWORK.md`.
+- Added initial system tests in `tests/system/ModuleFrameworkSystemTest.php`.
+
 ## Suggested First Command Next Session
 
 - `XDEBUG_MODE=off composer ci`

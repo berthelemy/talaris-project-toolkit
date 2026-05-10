@@ -246,11 +246,25 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - Establish pluggable module architecture and baseline sample modules.
 
 ### Delivery Checklist
-- [ ] Standard module scaffold defined and documented.
-- [ ] One sample Programme-level Hello World module implemented.
-- [ ] One sample Project-level Hello World module implemented.
-- [ ] Module registration and enable/disable mechanisms implemented.
-- [ ] Module unit test template included for all new modules.
+- [x] Standard module scaffold defined and documented.
+- [x] One sample Programme-level Hello World module implemented.
+- [x] One sample Project-level Hello World module implemented.
+- [x] Module registration and enable/disable mechanisms implemented.
+- [x] Module unit test template included for all new modules.
+- [ ] Backlog: Create full API and module documentation using phpDocumentor (https://phpdoc.org/).
+
+### Implementation Progress (2026-05-10)
+- Added module registry persistence migration with lifecycle flag (`module_registry`) and sample entry persistence table (`module_hello_world_entries`).
+- Added module registry service and admin module management UI at `/modules` with enable/disable actions.
+- Added audit logging for module lifecycle changes (`module_enabled`, `module_disabled`) and Hello World record creation events.
+- Implemented programme-scoped and project-scoped Hello World modules at:
+	- `/programmes/:id/modules/hello-world`
+	- `/projects/:id/modules/hello-world`
+- Added scope-aware launch cards on programme/project details pages and disabled-module access guards.
+- Added EN/FR localization pack for module UI (`app/Language/en/Module.php`, `app/Language/fr/Module.php`).
+- Added module framework scaffold documentation in `docs/MODULE_FRAMEWORK.md`.
+- Added initial system coverage in `tests/system/ModuleFrameworkSystemTest.php` for lifecycle toggles, scope persistence, and disabled-module blocking.
+- Added reusable unit test template scaffolding for modules in `tests/_support/Modules/` with an example in `tests/unit/modules/`.
 
 ### Manual Acceptance Testing
 1. Install and enable both Hello World modules.

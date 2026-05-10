@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
+use App\Libraries\Modules\ModuleRegistryService;
 use App\Models\ProgrammeModel;
 use App\Models\ProgrammeProjectModel;
 use App\Models\ProjectModel;
@@ -98,6 +99,8 @@ class ProjectController extends BaseController
         return view('projects/show', [
             'project' => $project,
             'linkedProgrammes' => $linkedProgrammes,
+            'canOpenHelloModule' => (new ModuleRegistryService())
+                ->isEnabled(ModuleRegistryService::HELLO_WORLD_PROJECT, 'project'),
         ]);
     }
 

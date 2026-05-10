@@ -12,12 +12,15 @@ $logoPath = trim((string) ($theme['logo_path'] ?? ''));
 $userId = session('user_id');
 $canManageTheme = false;
 $canManageUsers = false;
+$canManageModules = false;
 
 if (is_int($userId) || ctype_digit((string) $userId)) {
     $rbac = new RbacService();
     $canManageTheme = $rbac->hasPermission((int) $userId, 'system.theme.manage', 'system', null);
     $canManageUsers = $rbac->hasPermission((int) $userId, 'system.users.invite', 'system', null)
         || $rbac->hasPermission((int) $userId, 'system.users.impersonate', 'system', null);
+    $canManageModules = $rbac->hasPermission((int) $userId, 'system.modules.manage', 'system', null)
+        || $rbac->hasPermission((int) $userId, 'system.modules.add', 'system', null);
 }
 ?>
 <header class="border-bottom bg-white">
@@ -34,6 +37,9 @@ if (is_int($userId) || ctype_digit((string) $userId)) {
             <a href="<?= site_url('projects') ?>" class="btn btn-sm <?= $active === 'projects' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Domain.projectsTitle')) ?></a>
             <?php if ($canManageUsers): ?>
                 <a href="<?= site_url('users') ?>" class="btn btn-sm <?= $active === 'users' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('UserAdmin.navLabel')) ?></a>
+            <?php endif; ?>
+            <?php if ($canManageModules): ?>
+                <a href="<?= site_url('modules') ?>" class="btn btn-sm <?= $active === 'modules' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Module.navLabel')) ?></a>
             <?php endif; ?>
             <a href="<?= site_url('profile') ?>" class="btn btn-sm <?= $active === 'profile' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Auth.profileButton')) ?></a>
             <?php if ($canManageTheme): ?>

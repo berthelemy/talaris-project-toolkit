@@ -30,6 +30,8 @@ $routes->post('profile/password', 'ProfileController::changePassword', ['filter'
 $routes->post('language', 'LanguageController::switch', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->get('theme', 'ThemeSettingsController::edit', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('theme', 'ThemeSettingsController::update', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->get('modules', 'ModuleManagementController::index', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('modules/(:segment)/toggle', 'ModuleManagementController::toggle/$1', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('users', 'UserManagementController::index', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('users', 'UserManagementController::create', ['filter' => ['auth', 'sessiontimeout']]);
@@ -48,6 +50,8 @@ $routes->post('programmes/(:num)/delete', 'ProgrammeController::delete/$1', ['fi
 $routes->post('programmes/(:num)/projects/(:num)/link', 'ProgrammeController::linkProject/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('programmes/(:num)/projects/(:num)/unlink', 'ProgrammeController::unlinkProject/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('programmes/(:num)/managers', 'ProgrammeController::assignManager/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->get('programmes/(:num)/modules/hello-world', 'ProgrammeHelloWorldController::index/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('programmes/(:num)/modules/hello-world', 'ProgrammeHelloWorldController::create/$1', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('projects', 'ProjectController::index', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->get('projects/(:num)', 'ProjectController::show/$1', ['filter' => ['auth', 'sessiontimeout']]);
@@ -56,3 +60,5 @@ $routes->get('projects/(:num)/edit', 'ProjectController::edit/$1', ['filter' => 
 $routes->post('projects/(:num)', 'ProjectController::update/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('projects/(:num)/delete', 'ProjectController::delete/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('projects/(:num)/managers', 'ProjectController::assignManager/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->get('projects/(:num)/modules/hello-world', 'ProjectHelloWorldController::index/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('projects/(:num)/modules/hello-world', 'ProjectHelloWorldController::create/$1', ['filter' => ['auth', 'sessiontimeout']]);
