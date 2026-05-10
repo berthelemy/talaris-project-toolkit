@@ -7,8 +7,16 @@ use App\Libraries\Modules\ModuleRegistryService;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
+/**
+ * ModuleManagementController component.
+ */
 class ModuleManagementController extends BaseController
 {
+    /**
+     * Index operation.
+     *
+     * @return string|RedirectResponse
+     */
     public function index(): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -26,6 +34,12 @@ class ModuleManagementController extends BaseController
         ]);
     }
 
+    /**
+     * Toggle operation.
+     *
+     * @param string $slug
+     * @return RedirectResponse
+     */
     public function toggle(string $slug): RedirectResponse
     {
         $actorId = $this->sessionUserId();

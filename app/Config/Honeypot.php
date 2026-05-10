@@ -4,6 +4,9 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * Honeypot component.
+ */
 class Honeypot extends BaseConfig
 {
     /**

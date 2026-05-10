@@ -4,6 +4,9 @@ namespace App\Libraries\Auth;
 
 use App\Models\AuthAuditLogModel;
 
+/**
+ * AuditLogger component.
+ */
 class AuditLogger
 {
     /**

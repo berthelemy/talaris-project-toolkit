@@ -9,8 +9,16 @@ use App\Models\PasswordResetTokenModel;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
+/**
+ * AuthController component.
+ */
 class AuthController extends BaseController
 {
+    /**
+     * Login operation.
+     *
+     * @return string|RedirectResponse
+     */
     public function login(): string|RedirectResponse
     {
         $session = session();
@@ -22,6 +30,11 @@ class AuthController extends BaseController
         return view('auth/login');
     }
 
+    /**
+     * AttemptLogin operation.
+     *
+     * @return RedirectResponse
+     */
     public function attemptLogin(): RedirectResponse
     {
         $rules = [
@@ -64,6 +77,11 @@ class AuthController extends BaseController
         return redirect()->to('/dashboard')->with('success', lang('Auth.loginSuccess'));
     }
 
+    /**
+     * Logout operation.
+     *
+     * @return RedirectResponse
+     */
     public function logout(): RedirectResponse
     {
         $userId = session('user_id');
@@ -77,11 +95,21 @@ class AuthController extends BaseController
         return redirect()->to('/login')->with('success', lang('Auth.logoutSuccess'));
     }
 
+    /**
+     * ForgotPassword operation.
+     *
+     * @return string
+     */
     public function forgotPassword(): string
     {
         return view('auth/forgot_password');
     }
 
+    /**
+     * SendResetLink operation.
+     *
+     * @return RedirectResponse
+     */
     public function sendResetLink(): RedirectResponse
     {
         $rules = [
@@ -134,6 +162,12 @@ class AuthController extends BaseController
         return redirect()->to('/forgot-password')->with('success', lang('Auth.resetEmailSent'));
     }
 
+    /**
+     * ResetPasswordForm operation.
+     *
+     * @param string $token
+     * @return string|RedirectResponse
+     */
     public function resetPasswordForm(string $token): string|RedirectResponse
     {
         if (! $this->hasValidResetToken($token)) {
@@ -143,6 +177,12 @@ class AuthController extends BaseController
         return view('auth/reset_password', ['token' => $token]);
     }
 
+    /**
+     * ResetPassword operation.
+     *
+     * @param string $token
+     * @return RedirectResponse
+     */
     public function resetPassword(string $token): RedirectResponse
     {
         $tokenRow = $this->findValidResetToken($token);

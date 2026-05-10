@@ -9,13 +9,26 @@ use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 use Throwable;
 
+/**
+ * InstallController component.
+ */
 class InstallController extends BaseController
 {
+    /**
+     * Index operation.
+     *
+     * @return RedirectResponse
+     */
     public function index(): RedirectResponse
     {
         return redirect()->to('/install/admin');
     }
 
+    /**
+     * AdminForm operation.
+     *
+     * @return string|RedirectResponse
+     */
     public function adminForm(): string|RedirectResponse
     {
         if ($this->hasAnyUser()) {
@@ -27,6 +40,11 @@ class InstallController extends BaseController
         ]);
     }
 
+    /**
+     * CreateAdmin operation.
+     *
+     * @return RedirectResponse
+     */
     public function createAdmin(): RedirectResponse
     {
         if ($this->hasAnyUser()) {

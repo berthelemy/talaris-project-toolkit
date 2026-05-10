@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * AuthSettingsModel component.
+ */
 class AuthSettingsModel extends Model
 {
     protected $table            = 'auth_settings';

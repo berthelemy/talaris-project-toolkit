@@ -6,8 +6,16 @@ use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 use Throwable;
 
+/**
+ * Home component.
+ */
 class Home extends BaseController
 {
+    /**
+     * Index operation.
+     *
+     * @return RedirectResponse
+     */
     public function index(): RedirectResponse
     {
         if (! $this->hasAnyUser()) {

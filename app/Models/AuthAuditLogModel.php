@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * AuthAuditLogModel component.
+ */
 class AuthAuditLogModel extends Model
 {
     protected $table            = 'auth_audit_logs';

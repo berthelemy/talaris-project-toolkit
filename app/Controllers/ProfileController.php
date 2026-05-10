@@ -7,8 +7,16 @@ use App\Libraries\Auth\PasswordPolicyService;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
+/**
+ * ProfileController component.
+ */
 class ProfileController extends BaseController
 {
+    /**
+     * Edit operation.
+     *
+     * @return string|RedirectResponse
+     */
     public function edit(): string|RedirectResponse
     {
         $user = $this->currentUser();
@@ -22,6 +30,11 @@ class ProfileController extends BaseController
         ]);
     }
 
+    /**
+     * Update operation.
+     *
+     * @return RedirectResponse
+     */
     public function update(): RedirectResponse
     {
         $user = $this->currentUser();
@@ -68,6 +81,11 @@ class ProfileController extends BaseController
         return redirect()->to('/profile')->with('success', lang('Auth.profileUpdatedSuccess'));
     }
 
+    /**
+     * ChangePassword operation.
+     *
+     * @return RedirectResponse
+     */
     public function changePassword(): RedirectResponse
     {
         $user = $this->currentUser();

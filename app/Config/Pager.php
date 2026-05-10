@@ -4,6 +4,9 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * Pager component.
+ */
 class Pager extends BaseConfig
 {
     /**

@@ -4,6 +4,9 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * Auth component.
+ */
 class Auth extends BaseConfig
 {
     public int $minPasswordLength = 12;

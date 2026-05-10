@@ -15,6 +15,9 @@ use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 
+/**
+ * Filters component.
+ */
 class Filters extends BaseFilters
 {
     /**

@@ -12,8 +12,16 @@ use App\Models\ProjectModel;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
+/**
+ * ProgrammeController component.
+ */
 class ProgrammeController extends BaseController
 {
+    /**
+     * Index operation.
+     *
+     * @return string|RedirectResponse
+     */
     public function index(): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -30,6 +38,11 @@ class ProgrammeController extends BaseController
         ]);
     }
 
+    /**
+     * Create operation.
+     *
+     * @return RedirectResponse
+     */
     public function create(): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -73,6 +86,12 @@ class ProgrammeController extends BaseController
         return redirect()->to('/programmes')->with('success', lang('Domain.programmeCreatedSuccess'));
     }
 
+    /**
+     * Show operation.
+     *
+     * @param int $programmeId
+     * @return string|RedirectResponse
+     */
     public function show(int $programmeId): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -108,6 +127,12 @@ class ProgrammeController extends BaseController
         ]);
     }
 
+    /**
+     * Update operation.
+     *
+     * @param int $programmeId
+     * @return RedirectResponse
+     */
     public function update(int $programmeId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -138,6 +163,12 @@ class ProgrammeController extends BaseController
         return redirect()->to('/programmes')->with('success', lang('Domain.programmeUpdatedSuccess'));
     }
 
+    /**
+     * Delete operation.
+     *
+     * @param int $programmeId
+     * @return RedirectResponse
+     */
     public function delete(int $programmeId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -156,6 +187,12 @@ class ProgrammeController extends BaseController
         return redirect()->to('/programmes')->with('success', lang('Domain.programmeDeletedSuccess'));
     }
 
+    /**
+     * Edit operation.
+     *
+     * @param int $programmeId
+     * @return string|RedirectResponse
+     */
     public function edit(int $programmeId): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -170,6 +207,13 @@ class ProgrammeController extends BaseController
         ]);
     }
 
+    /**
+     * LinkProject operation.
+     *
+     * @param int $programmeId
+     * @param int $projectId
+     * @return RedirectResponse
+     */
     public function linkProject(int $programmeId, int $projectId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -201,6 +245,13 @@ class ProgrammeController extends BaseController
         return redirect()->to('/projects/' . $projectId . '/edit')->with('success', lang('Domain.projectLinkedSuccess'));
     }
 
+    /**
+     * UnlinkProject operation.
+     *
+     * @param int $programmeId
+     * @param int $projectId
+     * @return RedirectResponse
+     */
     public function unlinkProject(int $programmeId, int $projectId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -223,6 +274,12 @@ class ProgrammeController extends BaseController
         return redirect()->to('/projects/' . $projectId . '/edit')->with('success', lang('Domain.projectUnlinkedSuccess'));
     }
 
+    /**
+     * AssignManager operation.
+     *
+     * @param int $programmeId
+     * @return RedirectResponse
+     */
     public function assignManager(int $programmeId): RedirectResponse
     {
         $actorId = $this->sessionUserId();

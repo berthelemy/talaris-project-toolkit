@@ -9,6 +9,9 @@ class ModuleWidgetService
 {
     private ModuleRegistryService $registryService;
 
+    /**
+     * __construct operation.
+     */
     public function __construct()
     {
         $this->registryService = new ModuleRegistryService();

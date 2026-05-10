@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * ThemeSettingsModel component.
+ */
 class ThemeSettingsModel extends Model
 {
     protected $table            = 'theme_settings';

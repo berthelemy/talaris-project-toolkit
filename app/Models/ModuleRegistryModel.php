@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * ModuleRegistryModel component.
+ */
 class ModuleRegistryModel extends Model
 {
     protected $table            = 'module_registry';

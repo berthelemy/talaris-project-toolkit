@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * ProjectModel component.
+ */
 class ProjectModel extends Model
 {
     protected $table            = 'projects';

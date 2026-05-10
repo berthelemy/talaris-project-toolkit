@@ -6,6 +6,9 @@ use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Session\Handlers\BaseHandler;
 use CodeIgniter\Session\Handlers\FileHandler;
 
+/**
+ * Session component.
+ */
 class Session extends BaseConfig
 {
     /**

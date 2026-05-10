@@ -7,8 +7,17 @@ use App\Libraries\Auth\RbacService;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
+/**
+ * ImpersonationController component.
+ */
 class ImpersonationController extends BaseController
 {
+    /**
+     * Start operation.
+     *
+     * @param int $targetUserId
+     * @return RedirectResponse
+     */
     public function start(int $targetUserId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -65,6 +74,11 @@ class ImpersonationController extends BaseController
         ]));
     }
 
+    /**
+     * Stop operation.
+     *
+     * @return RedirectResponse
+     */
     public function stop(): RedirectResponse
     {
         $currentUserId = $this->sessionUserId();

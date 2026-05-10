@@ -8,6 +8,9 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
+/**
+ * LocaleFilter component.
+ */
 class LocaleFilter implements FilterInterface
 {
     public const COOKIE_NAME = 'talaris_locale';
@@ -19,6 +22,13 @@ class LocaleFilter implements FilterInterface
 
     private string $defaultLocale = 'en';
 
+    /**
+     * Before operation.
+     *
+     * @param RequestInterface $request
+     * @param mixed $arguments
+     * @return mixed
+     */
     public function before(RequestInterface $request, $arguments = null)
     {
         if (! $request instanceof IncomingRequest) {
@@ -33,6 +43,14 @@ class LocaleFilter implements FilterInterface
         return null;
     }
 
+    /**
+     * After operation.
+     *
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @param mixed $arguments
+     * @return mixed
+     */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
         return null;

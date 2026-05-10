@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * ModuleHelloWorldEntryModel component.
+ */
 class ModuleHelloWorldEntryModel extends Model
 {
     protected $table            = 'module_hello_world_entries';

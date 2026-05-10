@@ -2,6 +2,9 @@
 
 namespace Config;
 
+/**
+ * DocTypes component.
+ */
 class DocTypes
 {
     /**

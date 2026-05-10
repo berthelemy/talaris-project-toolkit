@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * ProgrammeModel component.
+ */
 class ProgrammeModel extends Model
 {
     protected $table            = 'programmes';

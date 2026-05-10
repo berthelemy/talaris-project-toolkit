@@ -12,6 +12,9 @@ use CodeIgniter\Cache\Handlers\RedisHandler;
 use CodeIgniter\Cache\Handlers\WincacheHandler;
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * Cache component.
+ */
 class Cache extends BaseConfig
 {
     /**

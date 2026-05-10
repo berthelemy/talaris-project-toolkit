@@ -4,6 +4,9 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * Generators component.
+ */
 class Generators extends BaseConfig
 {
     /**

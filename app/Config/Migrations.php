@@ -4,6 +4,9 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * Migrations component.
+ */
 class Migrations extends BaseConfig
 {
     /**

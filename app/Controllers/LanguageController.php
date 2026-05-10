@@ -5,8 +5,16 @@ namespace App\Controllers;
 use App\Filters\LocaleFilter;
 use CodeIgniter\HTTP\RedirectResponse;
 
+/**
+ * LanguageController component.
+ */
 class LanguageController extends BaseController
 {
+    /**
+     * Switch operation.
+     *
+     * @return RedirectResponse
+     */
     public function switch(): RedirectResponse
     {
         $locale = strtolower(trim((string) $this->request->getPost('locale')));

@@ -5,6 +5,9 @@ namespace App\Libraries\Auth;
 use App\Models\AuthSettingsModel;
 use Config\Auth;
 
+/**
+ * AuthSettingsService component.
+ */
 class AuthSettingsService
 {
     /**

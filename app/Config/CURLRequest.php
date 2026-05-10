@@ -4,6 +4,9 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * CURLRequest component.
+ */
 class CURLRequest extends BaseConfig
 {
     /**

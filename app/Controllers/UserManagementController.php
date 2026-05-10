@@ -12,8 +12,16 @@ use App\Models\UserModel;
 use App\Models\UserRoleAssignmentModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
+/**
+ * UserManagementController component.
+ */
 class UserManagementController extends BaseController
 {
+    /**
+     * Index operation.
+     *
+     * @return string|RedirectResponse
+     */
     public function index(): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -46,6 +54,11 @@ class UserManagementController extends BaseController
         ]);
     }
 
+    /**
+     * Create operation.
+     *
+     * @return RedirectResponse
+     */
     public function create(): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -102,6 +115,12 @@ class UserManagementController extends BaseController
         return redirect()->to('/users')->with('success', lang('UserAdmin.createdSuccess'));
     }
 
+    /**
+     * Edit operation.
+     *
+     * @param int $userId
+     * @return string|RedirectResponse
+     */
     public function edit(int $userId): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -132,6 +151,12 @@ class UserManagementController extends BaseController
         ]);
     }
 
+    /**
+     * Update operation.
+     *
+     * @param int $userId
+     * @return RedirectResponse
+     */
     public function update(int $userId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -211,6 +236,12 @@ class UserManagementController extends BaseController
         return redirect()->to('/users/' . $userId . '/edit')->with('success', lang('UserAdmin.updatedSuccess'));
     }
 
+    /**
+     * Deactivate operation.
+     *
+     * @param int $userId
+     * @return RedirectResponse
+     */
     public function deactivate(int $userId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -244,6 +275,12 @@ class UserManagementController extends BaseController
         return redirect()->to('/users')->with('success', lang('UserAdmin.deactivatedSuccess'));
     }
 
+    /**
+     * AssignRole operation.
+     *
+     * @param int $userId
+     * @return RedirectResponse
+     */
     public function assignRole(int $userId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -284,6 +321,12 @@ class UserManagementController extends BaseController
         return redirect()->to('/users/' . $userId . '/edit')->with('success', lang('UserAdmin.roleAssignedSuccess'));
     }
 
+    /**
+     * RevokeRole operation.
+     *
+     * @param int $userId
+     * @return RedirectResponse
+     */
     public function revokeRole(int $userId): RedirectResponse
     {
         $actorId = $this->sessionUserId();

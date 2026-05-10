@@ -2,6 +2,9 @@
 
 namespace Config;
 
+/**
+ * Hostnames component.
+ */
 class Hostnames
 {
     // List of known two-part TLDs for subdomain extraction

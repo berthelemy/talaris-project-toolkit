@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * RoleModel component.
+ */
 class RoleModel extends Model
 {
     protected $table            = 'roles';

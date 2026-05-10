@@ -8,8 +8,18 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
+/**
+ * SessionInactivityFilter component.
+ */
 class SessionInactivityFilter implements FilterInterface
 {
+    /**
+     * Before operation.
+     *
+     * @param RequestInterface $request
+     * @param mixed $arguments
+     * @return mixed
+     */
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
@@ -35,6 +45,14 @@ class SessionInactivityFilter implements FilterInterface
         return null;
     }
 
+    /**
+     * After operation.
+     *
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @param mixed $arguments
+     * @return mixed
+     */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
         return null;

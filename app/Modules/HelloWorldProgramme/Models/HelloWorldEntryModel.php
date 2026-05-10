@@ -4,6 +4,9 @@ namespace App\Modules\HelloWorldProgramme\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * HelloWorldEntryModel component.
+ */
 class HelloWorldEntryModel extends Model
 {
     protected $table            = 'module_hello_world_entries';

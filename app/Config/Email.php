@@ -4,6 +4,9 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * Email component.
+ */
 class Email extends BaseConfig
 {
     public string $fromEmail  = 'noreply@example.com';
@@ -124,6 +127,9 @@ class Email extends BaseConfig
      */
     public bool $DSN = false;
 
+    /**
+     * __construct operation.
+     */
     public function __construct()
     {
         parent::__construct();

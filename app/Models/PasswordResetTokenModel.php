@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * PasswordResetTokenModel component.
+ */
 class PasswordResetTokenModel extends Model
 {
     protected $table            = 'password_reset_tokens';

@@ -4,6 +4,9 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * Roles component.
+ */
 class Roles extends BaseConfig
 {
     /**

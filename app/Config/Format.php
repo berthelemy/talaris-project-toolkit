@@ -6,6 +6,9 @@ use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Format\JSONFormatter;
 use CodeIgniter\Format\XMLFormatter;
 
+/**
+ * Format component.
+ */
 class Format extends BaseConfig
 {
     /**

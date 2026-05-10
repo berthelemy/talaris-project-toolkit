@@ -5,6 +5,9 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 use DateTimeInterface;
 
+/**
+ * Cookie component.
+ */
 class Cookie extends BaseConfig
 {
     /**

@@ -12,8 +12,16 @@ use App\Models\ProjectModel;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
+/**
+ * ProjectController component.
+ */
 class ProjectController extends BaseController
 {
+    /**
+     * Index operation.
+     *
+     * @return string|RedirectResponse
+     */
     public function index(): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -30,6 +38,11 @@ class ProjectController extends BaseController
         ]);
     }
 
+    /**
+     * Create operation.
+     *
+     * @return RedirectResponse
+     */
     public function create(): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -73,6 +86,12 @@ class ProjectController extends BaseController
         return redirect()->to('/projects')->with('success', lang('Domain.projectCreatedSuccess'));
     }
 
+    /**
+     * Show operation.
+     *
+     * @param int $projectId
+     * @return string|RedirectResponse
+     */
     public function show(int $projectId): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -108,6 +127,12 @@ class ProjectController extends BaseController
         ]);
     }
 
+    /**
+     * Update operation.
+     *
+     * @param int $projectId
+     * @return RedirectResponse
+     */
     public function update(int $projectId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -138,6 +163,12 @@ class ProjectController extends BaseController
         return redirect()->to('/projects')->with('success', lang('Domain.projectUpdatedSuccess'));
     }
 
+    /**
+     * Delete operation.
+     *
+     * @param int $projectId
+     * @return RedirectResponse
+     */
     public function delete(int $projectId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -156,6 +187,12 @@ class ProjectController extends BaseController
         return redirect()->to('/projects')->with('success', lang('Domain.projectDeletedSuccess'));
     }
 
+    /**
+     * Edit operation.
+     *
+     * @param int $projectId
+     * @return string|RedirectResponse
+     */
     public function edit(int $projectId): string|RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -182,6 +219,12 @@ class ProjectController extends BaseController
         ]);
     }
 
+    /**
+     * AssignManager operation.
+     *
+     * @param int $projectId
+     * @return RedirectResponse
+     */
     public function assignManager(int $projectId): RedirectResponse
     {
         $actorId = $this->sessionUserId();

@@ -9,6 +9,9 @@ use InvalidArgumentException;
 use RuntimeException;
 use Throwable;
 
+/**
+ * RbacService component.
+ */
 class RbacService
 {
     /**
@@ -16,6 +19,16 @@ class RbacService
      */
     private array $allowedScopes = ['system', 'programme', 'project'];
 
+    /**
+     * AssignRoleToUser operation.
+     *
+     * @param int $userId
+     * @param string $roleSlug
+     * @param string $scopeType
+     * @param ?int $scopeId
+     * @param ?int $actorUserId
+     * @return void
+     */
     public function assignRoleToUser(int $userId, string $roleSlug, string $scopeType, ?int $scopeId, ?int $actorUserId = null): void
     {
         $this->assertScope($scopeType, $scopeId);
@@ -57,6 +70,16 @@ class RbacService
         ]);
     }
 
+    /**
+     * RevokeRoleFromUser operation.
+     *
+     * @param int $userId
+     * @param string $roleSlug
+     * @param string $scopeType
+     * @param ?int $scopeId
+     * @param ?int $actorUserId
+     * @return bool
+     */
     public function revokeRoleFromUser(int $userId, string $roleSlug, string $scopeType, ?int $scopeId, ?int $actorUserId = null): bool
     {
         $this->assertScope($scopeType, $scopeId);
@@ -97,6 +120,15 @@ class RbacService
         return true;
     }
 
+    /**
+     * HasPermission operation.
+     *
+     * @param int $userId
+     * @param string $permission
+     * @param string $scopeType
+     * @param ?int $scopeId
+     * @return bool
+     */
     public function hasPermission(int $userId, string $permission, string $scopeType, ?int $scopeId): bool
     {
         $permissions = $this->permissionsForUser($userId, $scopeType, $scopeId);

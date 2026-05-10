@@ -5,6 +5,9 @@ namespace App\Libraries\Theme;
 use App\Models\ThemeSettingsModel;
 use Throwable;
 
+/**
+ * ThemeSettingsService component.
+ */
 class ThemeSettingsService
 {
     /**

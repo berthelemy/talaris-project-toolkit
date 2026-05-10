@@ -4,6 +4,9 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * App component.
+ */
 class App extends BaseConfig
 {
     /**
@@ -42,6 +45,9 @@ class App extends BaseConfig
      */
     public string $indexPage = 'index.php';
 
+    /**
+     * __construct operation.
+     */
     public function __construct()
     {
         parent::__construct();

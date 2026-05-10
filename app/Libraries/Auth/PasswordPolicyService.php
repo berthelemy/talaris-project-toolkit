@@ -2,8 +2,14 @@
 
 namespace App\Libraries\Auth;
 
+/**
+ * PasswordPolicyService component.
+ */
 class PasswordPolicyService
 {
+    /**
+     * __construct operation.
+     */
     public function __construct(private readonly AuthSettingsService $settingsService = new AuthSettingsService())
     {
     }

@@ -5,8 +5,16 @@ namespace App\Controllers;
 use App\Libraries\Auth\RbacService;
 use App\Models\UserModel;
 
+/**
+ * DashboardController component.
+ */
 class DashboardController extends BaseController
 {
+    /**
+     * Index operation.
+     *
+     * @return string
+     */
     public function index(): string
     {
         $userId = session('user_id');

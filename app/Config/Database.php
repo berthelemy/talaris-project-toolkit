@@ -190,6 +190,9 @@ class Database extends Config
         ],
     ];
 
+    /**
+     * __construct operation.
+     */
     public function __construct()
     {
         parent::__construct();

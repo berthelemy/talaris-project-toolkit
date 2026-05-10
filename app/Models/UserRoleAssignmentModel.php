@@ -4,6 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * UserRoleAssignmentModel component.
+ */
 class UserRoleAssignmentModel extends Model
 {
     protected $table            = 'user_role_assignments';

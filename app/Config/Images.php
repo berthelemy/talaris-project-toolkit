@@ -6,6 +6,9 @@ use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Images\Handlers\GDHandler;
 use CodeIgniter\Images\Handlers\ImageMagickHandler;
 
+/**
+ * Images component.
+ */
 class Images extends BaseConfig
 {
     /**

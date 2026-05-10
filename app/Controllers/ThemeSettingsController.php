@@ -9,8 +9,16 @@ use App\Models\ThemeSettingsModel;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
+/**
+ * ThemeSettingsController component.
+ */
 class ThemeSettingsController extends BaseController
 {
+    /**
+     * Edit operation.
+     *
+     * @return string|RedirectResponse
+     */
     public function edit(): string|RedirectResponse
     {
         $userId = $this->currentUserId();
@@ -31,6 +39,11 @@ class ThemeSettingsController extends BaseController
         ]);
     }
 
+    /**
+     * Update operation.
+     *
+     * @return RedirectResponse
+     */
     public function update(): RedirectResponse
     {
         $userId = $this->currentUserId();
