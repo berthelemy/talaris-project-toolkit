@@ -93,16 +93,16 @@ class ModuleApiController extends BaseController
             return $this->response->setStatusCode(404)->setJSON(['ok' => false, 'error' => 'module_not_found']);
         }
 
-        $scopeType = (string) $this->request->getPost('scope_type');
-        $scopeId = (int) $this->request->getPost('scope_id');
+        $scopeType = $this->requestValue('scope_type');
+        $scopeId = (int) $this->requestValue('scope_id');
 
         if (! (new ModuleApiAuthorizationService())->canWrite($actorId, $scopeType, $scopeId)) {
             return $this->response->setStatusCode(403)->setJSON(['ok' => false, 'error' => 'forbidden']);
         }
 
         $result = (new HelloWorldModuleApi())->update($moduleSlug, $resource, $id, [
-            'message' => (string) $this->request->getPost('message'),
-            'last_updated_at' => (string) $this->request->getPost('last_updated_at'),
+            'message' => $this->requestValue('message'),
+            'last_updated_at' => $this->requestValue('last_updated_at'),
         ], $actorId);
 
         $status = 200;
@@ -147,5 +147,25 @@ class ModuleApiController extends BaseController
         }
 
         return (int) $userId;
+    }
+
+    private function requestValue(string $key): string
+    {
+        $postValue = $this->request->getPost($key);
+        if ($postValue !== null) {
+            return trim((string) $postValue);
+        }
+
+        $varValue = $this->request->getVar($key);
+        if ($varValue !== null) {
+            return trim((string) $varValue);
+        }
+
+        $rawInput = $this->request->getRawInput();
+        if (is_array($rawInput) && array_key_exists($key, $rawInput)) {
+            return trim((string) $rawInput[$key]);
+        }
+
+        return '';
     }
 }

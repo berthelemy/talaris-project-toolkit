@@ -37,6 +37,7 @@ $routes->post('modules/(:segment)/widget-config', 'ModuleManagementController::u
 
 $routes->get('api/modules/(:segment)/(:segment)', 'ModuleApiController::read/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('api/modules/(:segment)/(:segment)', 'ModuleApiController::create/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('api/modules/(:segment)/(:segment)/(:num)', 'ModuleApiController::update/$1/$2/$3', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->put('api/modules/(:segment)/(:segment)/(:num)', 'ModuleApiController::update/$1/$2/$3', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('users', 'UserManagementController::index', ['filter' => ['auth', 'sessiontimeout']]);

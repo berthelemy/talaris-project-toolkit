@@ -251,7 +251,7 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - [x] One sample Project-level Hello World module implemented.
 - [x] Module registration and enable/disable mechanisms implemented.
 - [x] Module unit test template included for all new modules.
-- [ ] Backlog: Create full API and module documentation using phpDocumentor (https://phpdoc.org/).
+- [x] Backlog: Create full API and module documentation using phpDocumentor (https://phpdoc.org/).
 
 ### Implementation Progress (2026-05-10)
 - Added module registry persistence migration with lifecycle flag (`module_registry`) and sample entry persistence table (`module_hello_world_entries`).
@@ -274,20 +274,20 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 5. Run module-specific tests and verify pass status.
 
 ### Exit Criteria
-- [ ] Team can build new modules from scaffold with consistent structure.
+- [x] Team can build new modules from scaffold with consistent structure.
 
 ### Phase 6 Outstanding Backlog (from handoff follow-up)
 
-- [ ] Enforce module permission boundaries for widgets (RBAC-aware per module and scope).
-- [ ] Add widget data/render caching strategy for heavier modules.
-- [ ] Add administrator-controlled widget ordering on programme/project pages.
-- [ ] Add additional reference modules (for example Risk Register, Issue Tracker) to validate scalability.
-- [ ] Add module version metadata support in registry and discovery.
-- [ ] Add module dependency declarations and dependency validation.
-- [ ] Add widget usage metrics for observability and adoption tracking.
-- [ ] Add module-exposed widget configuration options for end users/admins.
-- [ ] Improve widget failure visibility in development mode and provide admin-facing failure signals.
-- [ ] Add tests for module directory-to-slug discovery with varied naming conventions.
+- [x] Enforce module permission boundaries for widgets (RBAC-aware per module and scope).
+- [x] Add widget data/render caching strategy for heavier modules.
+- [x] Add administrator-controlled widget ordering on programme/project pages.
+- [x] Add additional reference modules (for example Risk Register, Issue Tracker) to validate scalability.
+- [x] Add module version metadata support in registry and discovery.
+- [x] Add module dependency declarations and dependency validation.
+- [x] Add widget usage metrics for observability and adoption tracking.
+- [x] Add module-exposed widget configuration options for end users/admins.
+- [x] Improve widget failure visibility in development mode and provide admin-facing failure signals.
+- [x] Add tests for module directory-to-slug discovery with varied naming conventions.
 
 ## Phase 7 (Weeks 13-14): Internal Module APIs and Autosave
 
@@ -295,11 +295,23 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - Enable module-to-module integration and live persistence.
 
 ### Delivery Checklist
-- [ ] Internal API contract format defined and documented.
-- [ ] Authentication/authorization checks added to internal APIs.
-- [ ] Autosave endpoints and frontend behavior implemented for editable module fields.
-- [ ] Error handling for autosave failures and concurrency conflicts implemented.
-- [ ] Audit logs include autosave and internal API mutation events.
+- [x] Internal API contract format defined and documented.
+- [x] Authentication/authorization checks added to internal APIs.
+- [x] Autosave endpoints and frontend behavior implemented for editable module fields.
+- [x] Error handling for autosave failures and concurrency conflicts implemented.
+- [x] Audit logs include autosave and internal API mutation events.
+
+### Implementation Progress (2026-05-10)
+- Added module metadata discovery via `module.json` files and synchronized version/dependency/config fields into `module_registry`.
+- Added dependency validation before module enablement and lifecycle-safe widget cache invalidation.
+- Added widget RBAC permission checks, data/HTML caching, usage metrics, and failure logging signals.
+- Added admin controls on `/modules` for widget display order and module widget config (`max_entries`).
+- Added two additional project reference modules (`risk_register_project`, `issue_tracker_project`) with routes, controllers, views, and widgets.
+- Added internal module API endpoints under `/api/modules/...` with authorization service and audit events.
+- Added autosave endpoints for Hello World programme/project entries, including optimistic conflict handling (`409`).
+- Added frontend autosave client (`public/js/autosave.js`) with debounced save, status messaging, and conflict refresh behavior.
+- Added tests: `tests/system/ModuleApiSystemTest.php`, `tests/system/ModuleAutosaveSystemTest.php`, and `tests/unit/modules/DirectoryToSlugTest.php`.
+- Added API/autosave contract documentation in `docs/MODULE_INTERNAL_API.md`.
 
 ### Manual Acceptance Testing
 1. Trigger an internal API read from Module A into Module B context.
@@ -309,7 +321,7 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 5. Retry after reconnect and confirm successful persistence.
 
 ### Exit Criteria
-- [ ] Cross-module reads/updates are reliable and secure.
+- [x] Cross-module reads/updates are reliable and secure.
 
 ## Phase 8 (Weeks 15-16): Concurrency Locking and Checkout Flow
 
