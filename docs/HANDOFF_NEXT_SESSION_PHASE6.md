@@ -104,6 +104,7 @@ app/Models/
 ## Backlog Items for Next Session
 
 ### High Priority
+- [ ] **Add complete PHPDoc documentation**: Ensure all public classes, methods, and interfaces have comprehensive PHPDoc comments (parameters, return types, exceptions, usage examples where applicable)
 - [ ] **Clean up global language files**: Decide whether to keep or delete `app/Language/en|fr/Module.php` (module-specific files now at `app/Modules/*/Language/`)
 - [ ] **Create MODULE_STRUCTURE.md**: Developer reference explaining folder hierarchy and why modular structure is better
 - [ ] **Add integration tests for widgets**: Test widget rendering with enabled/disabled modules, permission checks, error handling
