@@ -97,8 +97,14 @@ class ModuleWidgetService
         $modules = array_diff(scandir($moduleDir) ?? [], ['.', '..']);
 
         foreach ($modules as $module) {
-            $registrySlug = str_replace('HelloWorld', 'hello_world_', strtolower($module));
-            $registrySlug = str_replace('_', '_', $registrySlug);
+            // Convert module directory name to registry slug
+            // e.g., 'HelloWorldProject' -> 'hello_world_project'
+            $computedSlug = $this->directoryToSlug($module);
+
+            // Only load widget if slug matches
+            if ($computedSlug !== $moduleSlug) {
+                continue;
+            }
 
             // Try common widget class locations
             $classNames = [
@@ -116,6 +122,17 @@ class ModuleWidgetService
 
         return null;
     }
+
+    /**
+     * Convert a module directory name to its registry slug.
+     * e.g., 'HelloWorldProject' -> 'hello_world_project'
+     */
+    private function directoryToSlug(string $module): string
+    {
+        // Insert underscore before capital letters (HelloWorldProject -> Hello_World_Project)
+        $slug = preg_replace('/(?<!^)(?=[A-Z])/', '_', $module);
+        // Convert to lowercase (Hello_World_Project -> hello_world_project)
+        return strtolower($slug) ?? '';
 
     /**
      * Check if current actor can access this widget.
