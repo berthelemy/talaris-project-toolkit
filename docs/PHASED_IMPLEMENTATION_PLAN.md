@@ -145,8 +145,19 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 4. Attempt invalid payloads and confirm validation errors are shown.
 5. Confirm all create/update/delete actions are present in audit logs.
 
+### Manual Acceptance Result (2026-05-10)
+- Environment: Local dev container.
+- Timestamp (UTC): 2026-05-10 13:58:00.
+- Programme/project CRUD: Verified via list pages, modal edit pages, and detail pages (`/programmes/:id`, `/projects/:id`) with owner-based authorization checks.
+- Linking behavior: Verified link/unlink from project edit page and reflected state in linked-programmes and linked-projects sections.
+- Role boundaries: Confirmed by automated domain/system tests and RBAC permission checks in controller flows.
+- Validation handling: Confirmed via create/update validation rules and error surfacing on forms.
+- Audit coverage: Confirmed events for create/update/delete/link/unlink and manager assignment flows.
+- Baseline checks: `XDEBUG_MODE=off composer ci` and focused system tests passed in-session (coverage warning only).
+- Blockers found: None.
+
 ### Exit Criteria
-- [ ] Domain model supports required programme/project workflows.
+- [x] Domain model supports required programme/project workflows.
 
 ## Phase 5 (Weeks 9-10): Localization and Theming
 
