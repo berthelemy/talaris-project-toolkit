@@ -66,7 +66,7 @@
                         <tbody>
                             <?php foreach ($projects as $project): ?>
                                 <tr>
-                                    <td><?= esc((string) $project['name']) ?></td>
+                                    <td><a href="<?= site_url('projects/' . (int) $project['id']) ?>"><?= esc((string) $project['name']) ?></a></td>
                                     <td class="d-none d-md-table-cell text-muted"><?= esc((string) ($project['description'] ?? '')) ?></td>
                                     <td class="d-none d-sm-table-cell text-muted"><?= esc((string) ($project['created_at'] ?? '')) ?></td>
                                     <td><a href="<?= site_url('projects/' . (int) $project['id'] . '/edit') ?>" class="btn btn-outline-primary btn-sm"><?= esc(lang('Domain.projectEditTitle')) ?></a></td>

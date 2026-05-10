@@ -29,6 +29,7 @@ $routes->post('profile', 'ProfileController::update', ['filter' => ['auth', 'ses
 $routes->post('profile/password', 'ProfileController::changePassword', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('programmes', 'ProgrammeController::index', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->get('programmes/(:num)', 'ProgrammeController::show/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('programmes', 'ProgrammeController::create', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->get('programmes/(:num)/edit', 'ProgrammeController::edit/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('programmes/(:num)', 'ProgrammeController::update/$1', ['filter' => ['auth', 'sessiontimeout']]);
@@ -38,6 +39,7 @@ $routes->post('programmes/(:num)/projects/(:num)/unlink', 'ProgrammeController::
 $routes->post('programmes/(:num)/managers', 'ProgrammeController::assignManager/$1', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('projects', 'ProjectController::index', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->get('projects/(:num)', 'ProjectController::show/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('projects', 'ProjectController::create', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->get('projects/(:num)/edit', 'ProjectController::edit/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('projects/(:num)', 'ProjectController::update/$1', ['filter' => ['auth', 'sessiontimeout']]);

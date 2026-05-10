@@ -71,6 +71,36 @@ class ProgrammeController extends BaseController
         return redirect()->to('/programmes')->with('success', lang('Domain.programmeCreatedSuccess'));
     }
 
+    public function show(int $programmeId): string|RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+        $programme = (new ProgrammeModel())->find($programmeId);
+
+        if ($actorId === null) {
+            return redirect()->to('/login')->with('error', lang('Auth.loginRequired'));
+        }
+
+        if ($programme === null) {
+            return redirect()->to('/programmes')->with('error', lang('Domain.programmeNotFound'));
+        }
+
+        if (! $this->canViewProgramme($actorId, $programme)) {
+            return redirect()->to('/programmes')->with('error', lang('Domain.notAuthorized'));
+        }
+
+        $linkedProjects = (new ProgrammeProjectModel())
+            ->select('projects.id, projects.name, projects.description, projects.created_at')
+            ->join('projects', 'projects.id = programme_projects.project_id')
+            ->where('programme_projects.programme_id', $programmeId)
+            ->orderBy('projects.name', 'ASC')
+            ->findAll();
+
+        return view('programmes/show', [
+            'programme' => $programme,
+            'linkedProjects' => $linkedProjects,
+        ]);
+    }
+
     public function update(int $programmeId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -230,6 +260,23 @@ class ProgrammeController extends BaseController
         $rbac = new RbacService();
 
         return $rbac->hasPermission($actorId, 'programme.update_own', 'programme', (int) $programme['id'])
+            || $rbac->hasPermission($actorId, 'programme.delete_own', 'programme', (int) $programme['id'])
+            || $this->isSystemAdministrator($actorId);
+    }
+
+    /**
+     * @param array<string, mixed> $programme
+     */
+    private function canViewProgramme(int $actorId, array $programme): bool
+    {
+        if ((int) ($programme['owner_user_id'] ?? 0) === $actorId) {
+            return true;
+        }
+
+        $rbac = new RbacService();
+
+        return $rbac->hasPermission($actorId, 'programme.read_own', 'programme', (int) $programme['id'])
+            || $rbac->hasPermission($actorId, 'programme.update_own', 'programme', (int) $programme['id'])
             || $rbac->hasPermission($actorId, 'programme.delete_own', 'programme', (int) $programme['id'])
             || $this->isSystemAdministrator($actorId);
     }

@@ -71,6 +71,36 @@ class ProjectController extends BaseController
         return redirect()->to('/projects')->with('success', lang('Domain.projectCreatedSuccess'));
     }
 
+    public function show(int $projectId): string|RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+        $project = (new ProjectModel())->find($projectId);
+
+        if ($actorId === null) {
+            return redirect()->to('/login')->with('error', lang('Auth.loginRequired'));
+        }
+
+        if ($project === null) {
+            return redirect()->to('/projects')->with('error', lang('Domain.projectNotFound'));
+        }
+
+        if (! $this->canViewProject($actorId, $project)) {
+            return redirect()->to('/projects')->with('error', lang('Domain.notAuthorized'));
+        }
+
+        $linkedProgrammes = (new ProgrammeProjectModel())
+            ->select('programmes.id, programmes.name, programmes.description, programmes.created_at')
+            ->join('programmes', 'programmes.id = programme_projects.programme_id')
+            ->where('programme_projects.project_id', $projectId)
+            ->orderBy('programmes.name', 'ASC')
+            ->findAll();
+
+        return view('projects/show', [
+            'project' => $project,
+            'linkedProgrammes' => $linkedProgrammes,
+        ]);
+    }
+
     public function update(int $projectId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -189,6 +219,23 @@ class ProjectController extends BaseController
         $rbac = new RbacService();
 
         return $rbac->hasPermission($actorId, 'project.update_own', 'project', (int) $project['id'])
+            || $rbac->hasPermission($actorId, 'project.delete_own', 'project', (int) $project['id'])
+            || $this->isSystemAdministrator($actorId);
+    }
+
+    /**
+     * @param array<string, mixed> $project
+     */
+    private function canViewProject(int $actorId, array $project): bool
+    {
+        if ((int) ($project['owner_user_id'] ?? 0) === $actorId) {
+            return true;
+        }
+
+        $rbac = new RbacService();
+
+        return $rbac->hasPermission($actorId, 'project.read_own', 'project', (int) $project['id'])
+            || $rbac->hasPermission($actorId, 'project.update_own', 'project', (int) $project['id'])
             || $rbac->hasPermission($actorId, 'project.delete_own', 'project', (int) $project['id'])
             || $this->isSystemAdministrator($actorId);
     }
