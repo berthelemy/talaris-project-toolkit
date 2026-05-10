@@ -12,6 +12,9 @@
 <?= view('layouts/app_header', ['pageTitle' => lang('Domain.projectDetailsTitle'), 'active' => 'projects']) ?>
 <main class="container py-4">
     <?php $canOpenHelloModule = (bool) ($canOpenHelloModule ?? false); ?>
+    <?php $canOpenRiskModule = (bool) ($canOpenRiskModule ?? false); ?>
+    <?php $canOpenIssueModule = (bool) ($canOpenIssueModule ?? false); ?>
+    <?php $widgets = (string) ($widgets ?? ''); ?>
     <?php if (session('error') !== null): ?>
         <div class="alert alert-danger" role="alert"><?= esc((string) session('error')) ?></div>
     <?php endif; ?>
@@ -35,6 +38,34 @@
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
             <div>
+                <h3 class="h6 mb-1"><?= esc(lang('Module.riskRegisterTitle')) ?></h3>
+                <p class="mb-0 text-muted"><?= esc(lang('Module.riskRegisterDescription')) ?></p>
+            </div>
+            <?php if ($canOpenRiskModule): ?>
+                <a class="btn btn-outline-primary" href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/modules/risk-register') ?>"><?= esc(lang('Module.riskRegisterTitle')) ?></a>
+            <?php else: ?>
+                <span class="badge text-bg-secondary align-self-start align-self-md-center"><?= esc(lang('Module.statusDisabled')) ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+            <div>
+                <h3 class="h6 mb-1"><?= esc(lang('Module.issueTrackerTitle')) ?></h3>
+                <p class="mb-0 text-muted"><?= esc(lang('Module.issueTrackerDescription')) ?></p>
+            </div>
+            <?php if ($canOpenIssueModule): ?>
+                <a class="btn btn-outline-primary" href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/modules/issue-tracker') ?>"><?= esc(lang('Module.issueTrackerTitle')) ?></a>
+            <?php else: ?>
+                <span class="badge text-bg-secondary align-self-start align-self-md-center"><?= esc(lang('Module.statusDisabled')) ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+            <div>
                 <h3 class="h6 mb-1"><?= esc(lang('Module.projectHelloWorldTitle')) ?></h3>
                 <p class="mb-0 text-muted"><?= esc(lang('Module.projectHelloWorldDescription')) ?></p>
             </div>
@@ -46,7 +77,7 @@
         </div>
     </div>
 
-    <?php if (! empty($widgets ?? '')): ?>
+    <?php if ($widgets !== ''): ?>
         <div class="mb-4">
             <?= $widgets ?>
         </div>

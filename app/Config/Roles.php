@@ -51,6 +51,10 @@ class Roles extends BaseConfig
             'system.modules.manage',
             'system.modules.add',
             'system.users.impersonate',
+            'module.hello_world_programme.widget.read',
+            'module.hello_world_project.widget.read',
+            'module.risk_register_project.widget.read',
+            'module.issue_tracker_project.widget.read',
         ],
         'programme_manager' => [
             'programme.create',
@@ -58,6 +62,7 @@ class Roles extends BaseConfig
             'programme.update_own',
             'programme.delete_own',
             'programme.projects.attach',
+            'module.hello_world_programme.widget.read',
         ],
         'project_manager' => [
             'project.create',
@@ -65,9 +70,15 @@ class Roles extends BaseConfig
             'project.update_own',
             'project.delete_own',
             'project.content.update',
+            'module.hello_world_project.widget.read',
+            'module.risk_register_project.widget.read',
+            'module.issue_tracker_project.widget.read',
         ],
         'team_member' => [
             'project.read',
+            'module.hello_world_project.widget.read',
+            'module.risk_register_project.widget.read',
+            'module.issue_tracker_project.widget.read',
         ],
         'stakeholder' => [
             'reports.read_stakeholder',

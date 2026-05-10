@@ -310,9 +310,14 @@ class ModuleWidget implements ModuleWidgetInterface
         return 'App\\Modules\\HelloWorldProject\\Views\\widget';
     }
 
-    public function getWidgetData(int $scopeId): array
+    public function getWidgetData(int $scopeId, array $config = []): array
     {
         throw new \RuntimeException('Intentional widget failure for system test.');
+    }
+
+    public function getDefaultConfig(): array
+    {
+        return ['max_entries' => 5];
     }
 }
 PHP;

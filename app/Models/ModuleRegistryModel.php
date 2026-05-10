@@ -19,6 +19,16 @@ class ModuleRegistryModel extends Model
         'name',
         'scope_type',
         'description',
+        'display_order',
         'is_enabled',
+        'version',
+        'dependencies_json',
+        'widget_permission',
+        'widget_config_json',
+    ];
+
+    protected array $casts = [
+        'is_enabled' => 'boolean',
+        'display_order' => 'integer',
     ];
 }

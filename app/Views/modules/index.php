@@ -33,6 +33,7 @@
                                 <th><?= esc(lang('Module.columnName')) ?></th>
                                 <th><?= esc(lang('Module.columnSlug')) ?></th>
                                 <th><?= esc(lang('Module.columnScope')) ?></th>
+                                <th><?= esc(lang('Module.columnVersion')) ?></th>
                                 <th><?= esc(lang('Module.columnStatus')) ?></th>
                                 <th class="text-end"><?= esc(lang('Module.columnActions')) ?></th>
                             </tr>
@@ -40,27 +41,54 @@
                         <tbody>
                             <?php foreach ($modules as $module): ?>
                                 <?php $enabled = (bool) ($module['is_enabled'] ?? false); ?>
+                                <?php $moduleSlug = (string) ($module['slug'] ?? ''); ?>
+                                <?php $widgetConfig = json_decode((string) ($module['widget_config_json'] ?? ''), true); ?>
+                                <?php if (! is_array($widgetConfig)) {
+                                    $widgetConfig = [];
+                                } ?>
+                                <?php $maxEntries = (int) ($widgetConfig['max_entries'] ?? 5); ?>
+                                <?php $failureCount = (int) (($recentFailures[$moduleSlug] ?? 0)); ?>
                                 <tr>
                                     <td>
                                         <div><?= esc((string) ($module['name'] ?? '')) ?></div>
                                         <div class="text-muted small"><?= esc((string) ($module['description'] ?? '')) ?></div>
+                                        <?php if ($failureCount > 0): ?>
+                                            <div class="small text-danger mt-1"><?= esc(lang('Module.failureSignal', [$failureCount])) ?></div>
+                                        <?php endif; ?>
                                     </td>
-                                    <td><code><?= esc((string) ($module['slug'] ?? '')) ?></code></td>
+                                    <td><code><?= esc($moduleSlug) ?></code></td>
                                     <td><?= esc(lang('Module.scope.' . (string) ($module['scope_type'] ?? 'unknown'))) ?></td>
+                                    <td><?= esc((string) ($module['version'] ?? 'n/a')) ?></td>
                                     <td>
                                         <?php if ($enabled): ?>
                                             <span class="badge text-bg-success"><?= esc(lang('Module.statusEnabled')) ?></span>
                                         <?php else: ?>
                                             <span class="badge text-bg-secondary"><?= esc(lang('Module.statusDisabled')) ?></span>
                                         <?php endif; ?>
+                                        <?php if (! empty($module['dependencies_json'])): ?>
+                                            <div class="text-muted small mt-1">
+                                                <?= esc(lang('Module.dependenciesLabel')) ?>:
+                                                <?= esc((string) $module['dependencies_json']) ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="text-end">
-                                        <form method="post" action="<?= site_url('modules/' . rawurlencode((string) ($module['slug'] ?? '')) . '/toggle') ?>" class="d-inline">
+                                        <form method="post" action="<?= site_url('modules/' . rawurlencode($moduleSlug) . '/toggle') ?>" class="d-inline">
                                             <?= csrf_field() ?>
                                             <input type="hidden" name="is_enabled" value="<?= $enabled ? '0' : '1' ?>">
                                             <button class="btn btn-sm <?= $enabled ? 'btn-outline-secondary' : 'btn-primary' ?>" type="submit">
                                                 <?= esc($enabled ? lang('Module.disableButton') : lang('Module.enableButton')) ?>
                                             </button>
+                                        </form>
+                                        <form method="post" action="<?= site_url('modules/' . rawurlencode($moduleSlug) . '/ordering') ?>" class="d-inline-flex align-items-center gap-1 ms-1">
+                                            <?= csrf_field() ?>
+                                            <input class="form-control form-control-sm" style="width: 72px;" name="display_order" type="number" min="0" value="<?= esc((string) ((int) ($module['display_order'] ?? 0))) ?>">
+                                            <button class="btn btn-sm btn-outline-primary" type="submit"><?= esc(lang('Module.updateOrderButton')) ?></button>
+                                        </form>
+                                        <form method="post" action="<?= site_url('modules/' . rawurlencode($moduleSlug) . '/widget-config') ?>" class="d-inline-flex align-items-center gap-1 ms-1">
+                                            <?= csrf_field() ?>
+                                            <input class="form-control form-control-sm" style="width: 72px;" name="max_entries" type="number" min="1" max="25" value="<?= esc((string) $maxEntries) ?>">
+                                            <button class="btn btn-sm btn-outline-secondary" type="submit"><?= esc(lang('Module.updateConfigButton')) ?></button>
                                         </form>
                                     </td>
                                 </tr>

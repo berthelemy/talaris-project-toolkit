@@ -1,0 +1,9 @@
+{
+  "slug": "risk_register_project",
+  "version": "0.1.0",
+  "dependencies": ["hello_world_project"],
+  "widget_permission": "module.risk_register_project.widget.read",
+  "widget_config": {
+    "max_entries": 5
+  }
+}

@@ -124,6 +124,10 @@ class ProjectController extends BaseController
             'widgets' => $widgets,
             'canOpenHelloModule' => (new ModuleRegistryService())
                 ->isEnabled(ModuleRegistryService::HELLO_WORLD_PROJECT, 'project'),
+            'canOpenRiskModule' => (new ModuleRegistryService())
+                ->isEnabled('risk_register_project', 'project'),
+            'canOpenIssueModule' => (new ModuleRegistryService())
+                ->isEnabled('issue_tracker_project', 'project'),
         ]);
     }
 

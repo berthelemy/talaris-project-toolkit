@@ -9,6 +9,7 @@ use App\Libraries\Modules\ModuleRegistryService;
 use App\Models\ModuleHelloWorldEntryModel;
 use App\Models\ProgrammeModel;
 use CodeIgniter\HTTP\RedirectResponse;
+use CodeIgniter\HTTP\ResponseInterface;
 
 /**
  * Programme-scope Hello World module endpoints.
@@ -98,6 +99,65 @@ class HelloWorldController extends BaseController
 
         return redirect()->to('/programmes/' . $programmeId . '/modules/hello-world')
             ->with('success', lang('Module.entryCreatedSuccess'));
+    }
+
+    /**
+     * Autosave an editable Hello World entry message for programme scope.
+     */
+    public function autosave(int $programmeId, int $entryId): ResponseInterface
+    {
+        $actorId = $this->sessionUserId();
+        $programme = (new ProgrammeModel())->find($programmeId);
+
+        if ($actorId === null) {
+            return $this->response->setStatusCode(401)->setJSON(['ok' => false, 'error' => 'unauthorized']);
+        }
+
+        if (! is_array($programme) || ! $this->canViewProgramme($actorId, $programme)) {
+            return $this->response->setStatusCode(403)->setJSON(['ok' => false, 'error' => 'forbidden']);
+        }
+
+        $entryModel = new ModuleHelloWorldEntryModel();
+        $entry = $entryModel->find($entryId);
+
+        if (! is_array($entry)
+            || (string) ($entry['module_slug'] ?? '') !== ModuleRegistryService::HELLO_WORLD_PROGRAMME
+            || (int) ($entry['scope_id'] ?? 0) !== $programmeId
+        ) {
+            return $this->response->setStatusCode(404)->setJSON(['ok' => false, 'error' => 'entry_not_found']);
+        }
+
+        $message = trim((string) $this->request->getPost('message'));
+        if ($message === '' || strlen($message) > 500) {
+            return $this->response->setStatusCode(422)->setJSON(['ok' => false, 'error' => 'invalid_message']);
+        }
+
+        $lastUpdatedAt = (string) $this->request->getPost('last_updated_at');
+        if ($lastUpdatedAt !== '' && $lastUpdatedAt !== (string) ($entry['updated_at'] ?? '')) {
+            return $this->response->setStatusCode(409)->setJSON([
+                'ok' => false,
+                'error' => 'conflict',
+                'current' => [
+                    'message' => (string) ($entry['message'] ?? ''),
+                    'updated_at' => (string) ($entry['updated_at'] ?? ''),
+                ],
+            ]);
+        }
+
+        $entryModel->update($entryId, ['message' => $message]);
+        $updated = $entryModel->find($entryId);
+
+        (new AuditLogger())->log('autosave_update', 'success', $actorId, [
+            'module_slug' => ModuleRegistryService::HELLO_WORLD_PROGRAMME,
+            'scope_type' => 'programme',
+            'scope_id' => $programmeId,
+            'entry_id' => $entryId,
+        ]);
+
+        return $this->response->setJSON([
+            'ok' => true,
+            'entry' => $updated,
+        ]);
     }
 
     /**

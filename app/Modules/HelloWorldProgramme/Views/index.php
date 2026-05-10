@@ -56,7 +56,27 @@
                 <ul class="list-group list-group-flush">
                     <?php foreach ($entries as $entry): ?>
                         <li class="list-group-item">
-                            <div><?= esc((string) ($entry['message'] ?? '')) ?></div>
+                            <input
+                                id="entry-message-<?= (int) ($entry['id'] ?? 0) ?>"
+                                name="message"
+                                type="text"
+                                class="form-control"
+                                value="<?= esc((string) ($entry['message'] ?? '')) ?>"
+                                maxlength="500"
+                                data-autosave="true"
+                                data-autosave-url="<?= site_url('programmes/' . (int) ($programme['id'] ?? 0) . '/modules/hello-world/entries/' . (int) ($entry['id'] ?? 0) . '/autosave') ?>"
+                                data-last-updated-at="<?= esc((string) ($entry['updated_at'] ?? '')) ?>"
+                                data-autosave-status="entry-status-<?= (int) ($entry['id'] ?? 0) ?>"
+                                data-status-saving="<?= esc(lang('Module.autosaveSaving')) ?>"
+                                data-status-saved="<?= esc(lang('Module.autosaveSaved')) ?>"
+                                data-status-error="<?= esc(lang('Module.autosaveError')) ?>"
+                                data-status-conflict="<?= esc(lang('Module.autosaveConflict')) ?>"
+                                data-csrf-name="<?= esc(csrf_token()) ?>"
+                                data-csrf-value="<?= esc(csrf_hash()) ?>"
+                            >
+                            <div id="entry-status-<?= (int) ($entry['id'] ?? 0) ?>" class="small text-muted mt-1">
+                                <?= esc(lang('Module.autosaveIdle')) ?>
+                            </div>
                             <div class="text-muted small"><?= esc((string) ($entry['created_at'] ?? '')) ?></div>
                         </li>
                     <?php endforeach; ?>
@@ -65,5 +85,6 @@
         </div>
     </div>
 </main>
+<script src="<?= base_url('js/autosave.js') ?>"></script>
 </body>
 </html>

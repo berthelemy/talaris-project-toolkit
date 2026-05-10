@@ -12,6 +12,7 @@
 <?= view('layouts/app_header', ['pageTitle' => lang('Domain.programmeDetailsTitle'), 'active' => 'programmes']) ?>
 <main class="container py-4">
     <?php $canOpenHelloModule = (bool) ($canOpenHelloModule ?? false); ?>
+    <?php $widgets = (string) ($widgets ?? ''); ?>
     <?php if (session('error') !== null): ?>
         <div class="alert alert-danger" role="alert"><?= esc((string) session('error')) ?></div>
     <?php endif; ?>
@@ -46,7 +47,7 @@
         </div>
     </div>
 
-    <?php if (! empty($widgets ?? '')): ?>
+    <?php if ($widgets !== ''): ?>
         <div class="mb-4">
             <?= $widgets ?>
         </div>

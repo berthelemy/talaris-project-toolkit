@@ -1,0 +1,151 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Libraries\Auth\AuditLogger;
+use App\Libraries\Modules\HelloWorldModuleApi;
+use App\Libraries\Modules\ModuleApiAuthorizationService;
+use App\Models\ModuleRegistryModel;
+use App\Models\UserModel;
+use CodeIgniter\HTTP\ResponseInterface;
+
+class ModuleApiController extends BaseController
+{
+    public function read(string $moduleSlug, string $resource): ResponseInterface
+    {
+        $actorId = $this->sessionUserId();
+        if ($actorId === null) {
+            return $this->response->setStatusCode(401)->setJSON(['ok' => false, 'error' => 'unauthorized']);
+        }
+
+        $module = $this->moduleBySlug($moduleSlug);
+        if (! is_array($module) || ! (bool) ($module['is_enabled'] ?? false)) {
+            return $this->response->setStatusCode(404)->setJSON(['ok' => false, 'error' => 'module_not_found']);
+        }
+
+        $scopeType = (string) $this->request->getGet('scope_type');
+        $scopeId = (int) $this->request->getGet('scope_id');
+
+        if (! (new ModuleApiAuthorizationService())->canRead($actorId, $scopeType, $scopeId)) {
+            return $this->response->setStatusCode(403)->setJSON(['ok' => false, 'error' => 'forbidden']);
+        }
+
+        $result = (new HelloWorldModuleApi())->read($moduleSlug, $resource, [
+            'scope_type' => $scopeType,
+            'scope_id' => $scopeId,
+        ], $actorId);
+
+        (new AuditLogger())->log('module_api_read', 'success', $actorId, [
+            'module_slug' => $moduleSlug,
+            'resource' => $resource,
+            'scope_type' => $scopeType,
+            'scope_id' => $scopeId,
+        ]);
+
+        return $this->response->setJSON($result);
+    }
+
+    public function create(string $moduleSlug, string $resource): ResponseInterface
+    {
+        $actorId = $this->sessionUserId();
+        if ($actorId === null) {
+            return $this->response->setStatusCode(401)->setJSON(['ok' => false, 'error' => 'unauthorized']);
+        }
+
+        $module = $this->moduleBySlug($moduleSlug);
+        if (! is_array($module) || ! (bool) ($module['is_enabled'] ?? false)) {
+            return $this->response->setStatusCode(404)->setJSON(['ok' => false, 'error' => 'module_not_found']);
+        }
+
+        $scopeType = (string) $this->request->getPost('scope_type');
+        $scopeId = (int) $this->request->getPost('scope_id');
+
+        if (! (new ModuleApiAuthorizationService())->canWrite($actorId, $scopeType, $scopeId)) {
+            return $this->response->setStatusCode(403)->setJSON(['ok' => false, 'error' => 'forbidden']);
+        }
+
+        $result = (new HelloWorldModuleApi())->create($moduleSlug, $resource, [
+            'scope_type' => $scopeType,
+            'scope_id' => $scopeId,
+            'message' => (string) $this->request->getPost('message'),
+        ], $actorId);
+
+        (new AuditLogger())->log('module_api_write', $result['ok'] ? 'success' : 'failed', $actorId, [
+            'module_slug' => $moduleSlug,
+            'resource' => $resource,
+            'scope_type' => $scopeType,
+            'scope_id' => $scopeId,
+            'action' => 'create',
+        ]);
+
+        return $this->response->setStatusCode($result['ok'] ? 200 : 422)->setJSON($result);
+    }
+
+    public function update(string $moduleSlug, string $resource, int $id): ResponseInterface
+    {
+        $actorId = $this->sessionUserId();
+        if ($actorId === null) {
+            return $this->response->setStatusCode(401)->setJSON(['ok' => false, 'error' => 'unauthorized']);
+        }
+
+        $module = $this->moduleBySlug($moduleSlug);
+        if (! is_array($module) || ! (bool) ($module['is_enabled'] ?? false)) {
+            return $this->response->setStatusCode(404)->setJSON(['ok' => false, 'error' => 'module_not_found']);
+        }
+
+        $scopeType = (string) $this->request->getPost('scope_type');
+        $scopeId = (int) $this->request->getPost('scope_id');
+
+        if (! (new ModuleApiAuthorizationService())->canWrite($actorId, $scopeType, $scopeId)) {
+            return $this->response->setStatusCode(403)->setJSON(['ok' => false, 'error' => 'forbidden']);
+        }
+
+        $result = (new HelloWorldModuleApi())->update($moduleSlug, $resource, $id, [
+            'message' => (string) $this->request->getPost('message'),
+            'last_updated_at' => (string) $this->request->getPost('last_updated_at'),
+        ], $actorId);
+
+        $status = 200;
+        if (! $result['ok']) {
+            $status = ($result['error'] ?? '') === 'conflict' ? 409 : 422;
+        }
+
+        (new AuditLogger())->log('module_api_write', $result['ok'] ? 'success' : 'failed', $actorId, [
+            'module_slug' => $moduleSlug,
+            'resource' => $resource,
+            'scope_type' => $scopeType,
+            'scope_id' => $scopeId,
+            'action' => 'update',
+            'target_id' => $id,
+        ]);
+
+        return $this->response->setStatusCode($status)->setJSON($result);
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private function moduleBySlug(string $slug): ?array
+    {
+        $module = (new ModuleRegistryModel())->where('slug', $slug)->first();
+
+        return is_array($module) ? $module : null;
+    }
+
+    private function sessionUserId(): ?int
+    {
+        $userId = session('user_id');
+
+        if (! is_int($userId) && ! ctype_digit((string) $userId)) {
+            return null;
+        }
+
+        $user = (new UserModel())->find((int) $userId);
+
+        if (! is_array($user)) {
+            return null;
+        }
+
+        return (int) $userId;
+    }
+}

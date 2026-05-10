@@ -11,3 +11,4 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('projects/(:num)/modules/hello-world', 'HelloWorldController::index/$1', ['namespace' => 'App\Modules\HelloWorldProject\Controllers']);
 $routes->post('projects/(:num)/modules/hello-world', 'HelloWorldController::create/$1', ['namespace' => 'App\Modules\HelloWorldProject\Controllers']);
+$routes->post('projects/(:num)/modules/hello-world/entries/(:num)/autosave', 'HelloWorldController::autosave/$1/$2', ['namespace' => 'App\Modules\HelloWorldProject\Controllers']);

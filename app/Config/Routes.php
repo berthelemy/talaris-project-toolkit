@@ -32,6 +32,12 @@ $routes->get('theme', 'ThemeSettingsController::edit', ['filter' => ['auth', 'se
 $routes->post('theme', 'ThemeSettingsController::update', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->get('modules', 'ModuleManagementController::index', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('modules/(:segment)/toggle', 'ModuleManagementController::toggle/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('modules/(:segment)/ordering', 'ModuleManagementController::updateOrdering/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('modules/(:segment)/widget-config', 'ModuleManagementController::updateWidgetConfig/$1', ['filter' => ['auth', 'sessiontimeout']]);
+
+$routes->get('api/modules/(:segment)/(:segment)', 'ModuleApiController::read/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('api/modules/(:segment)/(:segment)', 'ModuleApiController::create/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->put('api/modules/(:segment)/(:segment)/(:num)', 'ModuleApiController::update/$1/$2/$3', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('users', 'UserManagementController::index', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('users', 'UserManagementController::create', ['filter' => ['auth', 'sessiontimeout']]);

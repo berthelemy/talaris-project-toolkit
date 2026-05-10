@@ -1,29 +1,17 @@
 <?php
 
-namespace App\Modules\HelloWorldProject\Widgets;
+namespace App\Modules\IssueTrackerProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
-use App\Libraries\Modules\ModuleRegistryService;
 use App\Models\ModuleHelloWorldEntryModel;
 
-/**
- * Project-scope dashboard widget for Hello World module entries.
- */
 class ModuleWidget implements ModuleWidgetInterface
 {
-    /**
-     * @param int $scopeId Project identifier.
-     * @return string|null
-     */
     public function getWidgetView(int $scopeId): ?string
     {
-        return 'App\Modules\HelloWorldProject\Views\widget';
+        return 'App\Modules\IssueTrackerProject\Views\widget';
     }
 
-    /**
-     * @param int $scopeId Project identifier.
-     * @return array{entries: list<array<string, mixed>>, entry_count: int}
-     */
     public function getWidgetData(int $scopeId, array $config = []): array
     {
         $maxEntries = (int) ($config['max_entries'] ?? 5);
@@ -32,7 +20,7 @@ class ModuleWidget implements ModuleWidgetInterface
         }
 
         $entries = (new ModuleHelloWorldEntryModel())
-            ->where('module_slug', ModuleRegistryService::HELLO_WORLD_PROJECT)
+            ->where('module_slug', 'issue_tracker_project')
             ->where('scope_type', 'project')
             ->where('scope_id', $scopeId)
             ->orderBy('id', 'DESC')
@@ -45,9 +33,6 @@ class ModuleWidget implements ModuleWidgetInterface
         ];
     }
 
-    /**
-     * @return array{max_entries: int}
-     */
     public function getDefaultConfig(): array
     {
         return ['max_entries' => 5];

@@ -20,8 +20,11 @@ class ModuleRegistryService
      */
     public function allModules(): array
     {
+        $this->syncDiscoveredMetadata();
+
         return (new ModuleRegistryModel())
             ->orderBy('scope_type', 'ASC')
+            ->orderBy('display_order', 'ASC')
             ->orderBy('name', 'ASC')
             ->findAll();
     }
@@ -34,9 +37,12 @@ class ModuleRegistryService
      */
     public function getEnabledModulesByType(string $scopeType): array
     {
+        $this->syncDiscoveredMetadata();
+
         return (new ModuleRegistryModel())
             ->where('scope_type', $scopeType)
             ->where('is_enabled', 1)
+            ->orderBy('display_order', 'ASC')
             ->orderBy('name', 'ASC')
             ->findAll();
     }
@@ -88,9 +94,22 @@ class ModuleRegistryService
             ];
         }
 
+        if ($enabled) {
+            $dependencyResult = (new ModuleDependencyResolver())->validateEnable($slug);
+
+            if (! $dependencyResult['ok']) {
+                return [
+                    'ok' => false,
+                    'message_key' => 'Module.dependenciesMissing',
+                ];
+            }
+        }
+
         $model->update((int) $module['id'], [
             'is_enabled' => $enabled ? 1 : 0,
         ]);
+
+        $this->clearWidgetCaches((string) ($module['scope_type'] ?? ''));
 
         (new AuditLogger())->log($enabled ? 'module_enabled' : 'module_disabled', 'success', $actorId, [
             'module_slug' => (string) $module['slug'],
@@ -101,5 +120,62 @@ class ModuleRegistryService
             'ok' => true,
             'message_key' => $enabled ? 'Module.enabledSuccess' : 'Module.disabledSuccess',
         ];
+    }
+
+    /**
+     * @return void
+     */
+    private function syncDiscoveredMetadata(): void
+    {
+        $moduleDir = APPPATH . 'Modules';
+
+        if (! is_dir($moduleDir)) {
+            return;
+        }
+
+        $directories = array_diff(scandir($moduleDir) ?: [], ['.', '..']);
+        $reader = new ModuleMetadataReader();
+        $registry = new ModuleRegistryModel();
+
+        foreach ($directories as $directory) {
+            if (! is_string($directory) || ! is_dir($moduleDir . '/' . $directory)) {
+                continue;
+            }
+
+            $metadata = $reader->read($directory);
+            if (! is_array($metadata) || ! is_string($metadata['slug'] ?? null)) {
+                continue;
+            }
+
+            $module = $registry->where('slug', $metadata['slug'])->first();
+            if (! is_array($module)) {
+                continue;
+            }
+
+            $registry->update((int) $module['id'], [
+                'version' => $metadata['version'] ?? null,
+                'dependencies_json' => json_encode($metadata['dependencies'] ?? []),
+                'widget_permission' => $metadata['widget_permission'] ?? null,
+                'widget_config_json' => json_encode($metadata['widget_config'] ?? []),
+            ]);
+        }
+    }
+
+    private function clearWidgetCaches(string $scopeType): void
+    {
+        if ($scopeType === '') {
+            return;
+        }
+
+        $cache = cache();
+
+        if (method_exists($cache, 'deleteMatching')) {
+            $cache->deleteMatching('widgets_' . $scopeType . '_*');
+            $cache->deleteMatching('widgets_html_' . $scopeType . '_*');
+
+            return;
+        }
+
+        $cache->clean();
     }
 }

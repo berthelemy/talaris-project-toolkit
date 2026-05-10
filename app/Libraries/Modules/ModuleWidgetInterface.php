@@ -24,5 +24,12 @@ interface ModuleWidgetInterface
      * @param int $scopeId Programme or project identifier for the current page context.
      * @return array<string, mixed> Data to be passed to the view
      */
-    public function getWidgetData(int $scopeId): array;
+    public function getWidgetData(int $scopeId, array $config = []): array;
+
+    /**
+     * Provide default widget configuration values.
+     *
+     * @return array<string, mixed>
+     */
+    public function getDefaultConfig(): array;
 }
