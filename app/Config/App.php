@@ -5,7 +5,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * App component.
+ * Application-level runtime and request configuration.
  */
 class App extends BaseConfig
 {
@@ -46,7 +46,7 @@ class App extends BaseConfig
     public string $indexPage = 'index.php';
 
     /**
-     * __construct operation.
+     * Derive runtime base URL and index-page behavior from current request context.
      */
     public function __construct()
     {

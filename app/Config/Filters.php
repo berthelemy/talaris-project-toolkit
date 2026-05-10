@@ -16,7 +16,7 @@ use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 
 /**
- * Filters component.
+ * Global and route-level filter pipeline configuration.
  */
 class Filters extends BaseFilters
 {

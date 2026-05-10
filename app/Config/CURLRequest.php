@@ -5,7 +5,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * CURLRequest component.
+ * Outbound HTTP client defaults for cURL requests.
  */
 class CURLRequest extends BaseConfig
 {

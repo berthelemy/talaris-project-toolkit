@@ -6,7 +6,7 @@ use CodeIgniter\Config\BaseConfig;
 use DateTimeInterface;
 
 /**
- * Cookie component.
+ * Cookie handling defaults and security attributes.
  */
 class Cookie extends BaseConfig
 {

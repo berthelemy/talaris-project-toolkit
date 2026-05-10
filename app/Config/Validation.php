@@ -9,7 +9,7 @@ use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\Rules;
 
 /**
- * Validation component.
+ * Validation rulesets and shared validation templates.
  */
 class Validation extends BaseConfig
 {

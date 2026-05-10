@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * ModuleHelloWorldEntryModel component.
+ * Persistence model for shared Hello World module entries.
  */
 class ModuleHelloWorldEntryModel extends Model
 {

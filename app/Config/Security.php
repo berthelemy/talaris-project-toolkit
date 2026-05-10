@@ -5,7 +5,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * Security component.
+ * CSRF and general request security configuration.
  */
 class Security extends BaseConfig
 {

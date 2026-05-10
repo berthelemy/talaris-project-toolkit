@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * UserRoleAssignmentModel component.
+ * Persistence model for scoped user-role assignment rows.
  */
 class UserRoleAssignmentModel extends Model
 {

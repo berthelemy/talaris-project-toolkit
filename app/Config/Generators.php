@@ -5,7 +5,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * Generators component.
+ * Code generator namespace and template settings.
  */
 class Generators extends BaseConfig
 {

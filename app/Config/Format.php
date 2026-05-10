@@ -7,7 +7,7 @@ use CodeIgniter\Format\JSONFormatter;
 use CodeIgniter\Format\XMLFormatter;
 
 /**
- * Format component.
+ * Data formatter and response format defaults.
  */
 class Format extends BaseConfig
 {

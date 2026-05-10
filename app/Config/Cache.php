@@ -13,7 +13,7 @@ use CodeIgniter\Cache\Handlers\WincacheHandler;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * Cache component.
+ * Caching adapters and cache-store configuration.
  */
 class Cache extends BaseConfig
 {

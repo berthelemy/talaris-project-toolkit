@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * AuthAuditLogModel component.
+ * Persistence model for authentication and authorization audit events.
  */
 class AuthAuditLogModel extends Model
 {

@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * ProjectModel component.
+ * Persistence model for project entities.
  */
 class ProjectModel extends Model
 {

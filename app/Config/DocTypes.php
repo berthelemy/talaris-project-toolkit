@@ -3,7 +3,7 @@
 namespace Config;
 
 /**
- * DocTypes component.
+ * HTML and XML document type mappings.
  */
 class DocTypes
 {

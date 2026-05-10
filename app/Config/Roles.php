@@ -5,7 +5,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * Roles component.
+ * Predefined RBAC role-to-permission mappings.
  */
 class Roles extends BaseConfig
 {

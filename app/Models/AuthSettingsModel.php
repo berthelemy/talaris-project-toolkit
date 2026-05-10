@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * AuthSettingsModel component.
+ * Persistence model for authentication settings key/value pairs.
  */
 class AuthSettingsModel extends Model
 {

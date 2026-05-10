@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * ModuleRegistryModel component.
+ * Persistence model for registered module metadata and enabled state.
  */
 class ModuleRegistryModel extends Model
 {

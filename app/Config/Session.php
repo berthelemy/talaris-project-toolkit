@@ -7,7 +7,7 @@ use CodeIgniter\Session\Handlers\BaseHandler;
 use CodeIgniter\Session\Handlers\FileHandler;
 
 /**
- * Session component.
+ * Session driver, storage, and cookie session settings.
  */
 class Session extends BaseConfig
 {

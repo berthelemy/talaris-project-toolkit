@@ -5,7 +5,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * Migrations component.
+ * Migration namespace and table tracking configuration.
  */
 class Migrations extends BaseConfig
 {

@@ -5,7 +5,7 @@ namespace App\Modules\HelloWorldProject\Models;
 use CodeIgniter\Model;
 
 /**
- * HelloWorldEntryModel component.
+ * Legacy wrapper model for project Hello World entries.
  */
 class HelloWorldEntryModel extends Model
 {

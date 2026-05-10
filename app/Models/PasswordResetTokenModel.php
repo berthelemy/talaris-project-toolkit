@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * PasswordResetTokenModel component.
+ * Persistence model for password reset token lifecycle records.
  */
 class PasswordResetTokenModel extends Model
 {

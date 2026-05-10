@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * ProgrammeModel component.
+ * Persistence model for programme entities.
  */
 class ProgrammeModel extends Model
 {

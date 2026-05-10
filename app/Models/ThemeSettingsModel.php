@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * ThemeSettingsModel component.
+ * Persistence model for theme and branding settings.
  */
 class ThemeSettingsModel extends Model
 {

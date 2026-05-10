@@ -5,7 +5,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * Email component.
+ * SMTP and email delivery configuration loaded from environment.
  */
 class Email extends BaseConfig
 {
@@ -128,7 +128,7 @@ class Email extends BaseConfig
     public bool $DSN = false;
 
     /**
-     * __construct operation.
+     * Hydrate email transport settings from environment overrides.
      */
     public function __construct()
     {

@@ -5,7 +5,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * Auth component.
+ * Authentication policy and session security configuration.
  */
 class Auth extends BaseConfig
 {

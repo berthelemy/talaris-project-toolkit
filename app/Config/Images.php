@@ -7,7 +7,7 @@ use CodeIgniter\Images\Handlers\GDHandler;
 use CodeIgniter\Images\Handlers\ImageMagickHandler;
 
 /**
- * Images component.
+ * Image handler and processing library configuration.
  */
 class Images extends BaseConfig
 {

@@ -5,7 +5,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * Pager component.
+ * Pagination templates and display defaults.
  */
 class Pager extends BaseConfig
 {

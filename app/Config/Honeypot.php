@@ -5,7 +5,7 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * Honeypot component.
+ * Honeypot anti-spam field and template configuration.
  */
 class Honeypot extends BaseConfig
 {

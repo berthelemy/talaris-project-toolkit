@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * ProgrammeProjectModel component.
+ * Persistence model for programme-to-project link rows.
  */
 class ProgrammeProjectModel extends Model
 {

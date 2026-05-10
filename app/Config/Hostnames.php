@@ -3,7 +3,7 @@
 namespace Config;
 
 /**
- * Hostnames component.
+ * Trusted hostname and host-routing configuration.
  */
 class Hostnames
 {

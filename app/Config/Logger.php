@@ -7,7 +7,7 @@ use CodeIgniter\Log\Handlers\FileHandler;
 use CodeIgniter\Log\Handlers\HandlerInterface;
 
 /**
- * Logger component.
+ * Logging thresholds, handlers, and output behavior.
  */
 class Logger extends BaseConfig
 {

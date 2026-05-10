@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * UserModel component.
+ * Persistence model for platform user accounts and profile fields.
  */
 class UserModel extends Model
 {

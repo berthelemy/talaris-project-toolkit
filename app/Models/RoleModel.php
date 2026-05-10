@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 /**
- * RoleModel component.
+ * Persistence model for RBAC role definitions.
  */
 class RoleModel extends Model
 {
