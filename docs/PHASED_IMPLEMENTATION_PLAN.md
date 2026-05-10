@@ -276,6 +276,19 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 ### Exit Criteria
 - [ ] Team can build new modules from scaffold with consistent structure.
 
+### Phase 6 Outstanding Backlog (from handoff follow-up)
+
+- [ ] Enforce module permission boundaries for widgets (RBAC-aware per module and scope).
+- [ ] Add widget data/render caching strategy for heavier modules.
+- [ ] Add administrator-controlled widget ordering on programme/project pages.
+- [ ] Add additional reference modules (for example Risk Register, Issue Tracker) to validate scalability.
+- [ ] Add module version metadata support in registry and discovery.
+- [ ] Add module dependency declarations and dependency validation.
+- [ ] Add widget usage metrics for observability and adoption tracking.
+- [ ] Add module-exposed widget configuration options for end users/admins.
+- [ ] Improve widget failure visibility in development mode and provide admin-facing failure signals.
+- [ ] Add tests for module directory-to-slug discovery with varied naming conventions.
+
 ## Phase 7 (Weeks 13-14): Internal Module APIs and Autosave
 
 ### Objectives
@@ -401,6 +414,7 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - [ ] Jekyll docs completed for Features and Documentation sections.
 - [ ] README finalized with installation, license, screenshots, and product summary.
 - [ ] GPL/legal header compliance check completed.
+- [ ] Add a standardized legal notice at the top of all text files stating that the name "Talaris Project Toolkit" is a trademark of Mark Berthelemy Consulting, and referencing the GPL license.
 
 ### Manual Acceptance Testing
 1. Execute end-to-end smoke tests for admin, programme manager, project manager, team member, and stakeholder personas.
