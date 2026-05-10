@@ -31,6 +31,12 @@ This document defines the baseline migration approach for the toolkit.
 - `auth_audit_logs`: traceable auth events (login/logout/failures/reset actions).
 - `auth_settings`: administrator-configurable password policy and timeout settings.
 
+## Current Domain Tables (Phase 4)
+
+- `programmes`: programme entities with owner semantics (`owner_user_id`).
+- `projects`: project entities with owner semantics (`owner_user_id`).
+- `programme_projects`: explicit many-to-many linking table for programme/project association.
+
 ## Authoring Rules
 
 - Always implement both `up()` and `down()` methods.

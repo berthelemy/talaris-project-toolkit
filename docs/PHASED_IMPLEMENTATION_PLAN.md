@@ -132,11 +132,11 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - Implement core entities and ownership relations.
 
 ### Delivery Checklist
-- [ ] CRUD for Programmes and Projects with ownership semantics.
-- [ ] Programme-to-project linking implemented.
-- [ ] Project and Programme manager assignments implemented.
-- [ ] Validation rules and business constraints are enforced.
-- [ ] Audit logging enabled for all domain mutations.
+- [x] CRUD for Programmes and Projects with ownership semantics.
+- [x] Programme-to-project linking implemented.
+- [x] Project and Programme manager assignments implemented.
+- [x] Validation rules and business constraints are enforced.
+- [x] Audit logging enabled for all domain mutations.
 
 ### Manual Acceptance Testing
 1. Create programme and multiple projects.
