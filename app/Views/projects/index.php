@@ -68,6 +68,7 @@
                                 <th><?= esc(lang('Domain.projectName')) ?></th>
                                 <th class="d-none d-md-table-cell"><?= esc(lang('Domain.projectDescription')) ?></th>
                                 <th class="d-none d-sm-table-cell"><?= esc(lang('Domain.projectCreatedAt')) ?></th>
+                                <th><?= esc(lang('Domain.projectActions')) ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,6 +77,7 @@
                                     <td><?= esc((string) $project['name']) ?></td>
                                     <td class="d-none d-md-table-cell text-muted"><?= esc((string) ($project['description'] ?? '')) ?></td>
                                     <td class="d-none d-sm-table-cell text-muted"><?= esc((string) ($project['created_at'] ?? '')) ?></td>
+                                    <td><a href="<?= site_url('projects/' . (int) $project['id'] . '/edit') ?>" class="btn btn-outline-primary btn-sm"><?= esc(lang('Domain.projectEditTitle')) ?></a></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

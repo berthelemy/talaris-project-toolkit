@@ -34,7 +34,7 @@ final class ProgrammeProjectDomainSystemTest extends CIUnitTestCase
                 'description' => 'Programme description',
             ]);
 
-        $programmeCreate->assertRedirectTo('/dashboard');
+        $programmeCreate->assertRedirectTo('/programmes');
 
         $programme = (new ProgrammeModel())->where('name', 'Programme Alpha')->first();
         $this->assertNotNull($programme);
@@ -47,7 +47,7 @@ final class ProgrammeProjectDomainSystemTest extends CIUnitTestCase
                 'description' => 'Project description',
             ]);
 
-        $projectCreate->assertRedirectTo('/dashboard');
+        $projectCreate->assertRedirectTo('/projects');
 
         $project = (new ProjectModel())->where('name', 'Project One')->first();
         $this->assertNotNull($project);
@@ -59,13 +59,13 @@ final class ProgrammeProjectDomainSystemTest extends CIUnitTestCase
                 'description' => 'Updated programme',
             ]);
 
-        $programmeUpdate->assertRedirectTo('/dashboard');
+        $programmeUpdate->assertRedirectTo('/programmes');
 
         $projectDelete = $this->withSession($this->sessionForUser($actor))
             ->withBodyFormat('form')
             ->post('/projects/' . (int) $project['id'] . '/delete');
 
-        $projectDelete->assertRedirectTo('/dashboard');
+        $projectDelete->assertRedirectTo('/projects');
 
         $deletedProject = (new ProjectModel())->find((int) $project['id']);
         $this->assertNull($deletedProject);

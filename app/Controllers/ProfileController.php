@@ -33,13 +33,10 @@ class ProfileController extends BaseController
         $rules = [
             'language_preference' => 'permit_empty|in_list[en,fr]',
             'profile_description' => 'permit_empty|max_length[1000]',
-            'avatar'              => 'permit_empty|uploaded[avatar]|max_size[avatar,2048]|is_image[avatar]|mime_in[avatar,image/jpeg,image/png,image/gif,image/webp]',
+            'avatar'              => 'permit_empty|max_size[avatar,2048]|is_image[avatar]|mime_in[avatar,image/jpeg,image/png,image/gif,image/webp]',
         ];
 
-        if (! $this->validateData(
-            array_merge($this->request->getPost(), ['avatar' => $this->request->getFile('avatar')]),
-            $rules,
-        )) {
+        if (! $this->validate($rules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 

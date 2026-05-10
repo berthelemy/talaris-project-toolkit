@@ -66,7 +66,7 @@ class ProjectController extends BaseController
             'owner_user_id' => $ownerId,
         ]);
 
-        return redirect()->to('/dashboard')->with('success', lang('Domain.projectCreatedSuccess'));
+        return redirect()->to('/projects')->with('success', lang('Domain.projectCreatedSuccess'));
     }
 
     public function update(int $projectId): RedirectResponse
@@ -96,7 +96,7 @@ class ProjectController extends BaseController
             'project_id' => $projectId,
         ]);
 
-        return redirect()->to('/dashboard')->with('success', lang('Domain.projectUpdatedSuccess'));
+        return redirect()->to('/projects')->with('success', lang('Domain.projectUpdatedSuccess'));
     }
 
     public function delete(int $projectId): RedirectResponse
@@ -114,7 +114,21 @@ class ProjectController extends BaseController
             'project_id' => $projectId,
         ]);
 
-        return redirect()->to('/dashboard')->with('success', lang('Domain.projectDeletedSuccess'));
+        return redirect()->to('/projects')->with('success', lang('Domain.projectDeletedSuccess'));
+    }
+
+    public function edit(int $projectId): string|RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+        $project = (new ProjectModel())->find($projectId);
+
+        if ($actorId === null || $project === null || ! $this->canManageProject($actorId, $project)) {
+            return redirect()->to('/projects')->with('error', lang('Domain.notAuthorized'));
+        }
+
+        return view('projects/edit', [
+            'project' => $project,
+        ]);
     }
 
     public function assignManager(int $projectId): RedirectResponse

@@ -68,6 +68,7 @@
                                 <th><?= esc(lang('Domain.programmeName')) ?></th>
                                 <th class="d-none d-md-table-cell"><?= esc(lang('Domain.programmeDescription')) ?></th>
                                 <th class="d-none d-sm-table-cell"><?= esc(lang('Domain.programmeCreatedAt')) ?></th>
+                                <th><?= esc(lang('Domain.programmeActions')) ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,6 +77,7 @@
                                     <td><?= esc((string) $programme['name']) ?></td>
                                     <td class="d-none d-md-table-cell text-muted"><?= esc((string) ($programme['description'] ?? '')) ?></td>
                                     <td class="d-none d-sm-table-cell text-muted"><?= esc((string) ($programme['created_at'] ?? '')) ?></td>
+                                    <td><a href="<?= site_url('programmes/' . (int) $programme['id'] . '/edit') ?>" class="btn btn-outline-primary btn-sm"><?= esc(lang('Domain.programmeEditTitle')) ?></a></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

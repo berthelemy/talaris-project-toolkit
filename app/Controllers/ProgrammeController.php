@@ -68,7 +68,7 @@ class ProgrammeController extends BaseController
             'owner_user_id' => $ownerId,
         ]);
 
-        return redirect()->to('/dashboard')->with('success', lang('Domain.programmeCreatedSuccess'));
+        return redirect()->to('/programmes')->with('success', lang('Domain.programmeCreatedSuccess'));
     }
 
     public function update(int $programmeId): RedirectResponse
@@ -98,7 +98,7 @@ class ProgrammeController extends BaseController
             'programme_id' => $programmeId,
         ]);
 
-        return redirect()->to('/dashboard')->with('success', lang('Domain.programmeUpdatedSuccess'));
+        return redirect()->to('/programmes')->with('success', lang('Domain.programmeUpdatedSuccess'));
     }
 
     public function delete(int $programmeId): RedirectResponse
@@ -116,7 +116,21 @@ class ProgrammeController extends BaseController
             'programme_id' => $programmeId,
         ]);
 
-        return redirect()->to('/dashboard')->with('success', lang('Domain.programmeDeletedSuccess'));
+        return redirect()->to('/programmes')->with('success', lang('Domain.programmeDeletedSuccess'));
+    }
+
+    public function edit(int $programmeId): string|RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+        $programme = (new ProgrammeModel())->find($programmeId);
+
+        if ($actorId === null || $programme === null || ! $this->canManageProgramme($actorId, $programme)) {
+            return redirect()->to('/programmes')->with('error', lang('Domain.notAuthorized'));
+        }
+
+        return view('programmes/edit', [
+            'programme' => $programme,
+        ]);
     }
 
     public function linkProject(int $programmeId, int $projectId): RedirectResponse
