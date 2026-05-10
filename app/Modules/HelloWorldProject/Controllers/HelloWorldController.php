@@ -157,6 +157,7 @@ class HelloWorldController extends BaseController
         return $this->response->setJSON([
             'ok' => true,
             'entry' => $updated,
+            'csrf_hash' => csrf_hash(),
         ]);
     }
 

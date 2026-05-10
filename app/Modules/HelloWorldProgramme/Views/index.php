@@ -73,6 +73,7 @@
                                 data-status-conflict="<?= esc(lang('Module.autosaveConflict')) ?>"
                                 data-csrf-name="<?= esc(csrf_token()) ?>"
                                 data-csrf-value="<?= esc(csrf_hash()) ?>"
+                                data-csrf-cookie-name="<?= esc(config('Security')->cookieName) ?>"
                             >
                             <div id="entry-status-<?= (int) ($entry['id'] ?? 0) ?>" class="small text-muted mt-1">
                                 <?= esc(lang('Module.autosaveIdle')) ?>

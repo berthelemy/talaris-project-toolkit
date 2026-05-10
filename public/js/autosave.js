@@ -1,6 +1,13 @@
 (function () {
     'use strict';
 
+    function readCookie(name) {
+        const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const match = document.cookie.match(new RegExp('(?:^|; )' + escapedName + '=([^;]*)'));
+
+        return match ? decodeURIComponent(match[1]) : '';
+    }
+
     function debounce(fn, delay) {
         let timer = null;
 
@@ -52,15 +59,18 @@
         const field = input.getAttribute('name');
         const csrfName = input.getAttribute('data-csrf-name');
         const csrfValue = input.getAttribute('data-csrf-value');
+        const csrfCookieName = input.getAttribute('data-csrf-cookie-name');
 
-        if (!url || !field || !csrfName || !csrfValue) {
+        if (!url || !field || !csrfName || !csrfValue || !csrfCookieName) {
             return;
         }
+
+        const currentCsrfValue = readCookie(csrfCookieName) || csrfValue;
 
         const payload = new URLSearchParams();
         payload.append(field, input.value);
         payload.append('last_updated_at', input.getAttribute('data-last-updated-at') || '');
-        payload.append(csrfName, csrfValue);
+        payload.append(csrfName, currentCsrfValue);
 
         setStatus(input, 'saving', input.getAttribute('data-status-saving') || 'Saving...');
 
@@ -90,6 +100,10 @@
 
             if (result.entry && result.entry.updated_at) {
                 input.setAttribute('data-last-updated-at', result.entry.updated_at);
+            }
+
+            if (result.csrf_hash) {
+                input.setAttribute('data-csrf-value', result.csrf_hash);
             }
 
             setStatus(input, 'saved', input.getAttribute('data-status-saved') || 'Saved');
