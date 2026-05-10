@@ -100,8 +100,8 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - [x] Implement predefined roles: Administrator, Programme manager, Project manager, Team member, Stakeholder.
 - [x] Support role assignment at system/programme/project scope.
 - [x] Support multiple roles per user in a context.
-- [ ] Implement user profile updates including avatar, description, language preference.
-- [ ] Enforce current-password requirement for password change in profile.
+- [x] Implement user profile updates including avatar, description, language preference.
+- [x] Enforce current-password requirement for password change in profile.
 - [ ] Add impersonation capability for administrators with strict audit logging.
 
 ### Manual Acceptance Testing
