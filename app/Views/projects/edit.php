@@ -6,14 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= esc(lang('Domain.projectEditTitle')) ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .modal-edit-page {
+            min-height: calc(100vh - 82px);
+            isolation: isolate;
+        }
+
+        .modal-edit-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(17, 24, 39, 0.35);
+            backdrop-filter: blur(8px);
+            z-index: 1;
+        }
+
+        .modal-edit-shell {
+            position: relative;
+            z-index: 2;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .modal-edit-card {
+            border-radius: 1rem;
+            box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.2);
+        }
+    </style>
 </head>
 <body class="bg-light">
-<header class="border-bottom bg-white">
-    <div class="container py-3">
-        <h1 class="h5 mb-0"><?= esc(lang('Domain.projectEditTitle')) ?></h1>
-    </div>
-</header>
-<main class="container py-4">
+<?= view('layouts/app_header', ['pageTitle' => lang('Domain.projectEditTitle'), 'active' => 'projects']) ?>
+<main class="modal-edit-page">
+    <div class="modal-edit-backdrop" aria-hidden="true"></div>
+    <div class="container modal-edit-shell">
     <?php if (session('error') !== null): ?>
         <div class="alert alert-danger" role="alert"><?= esc((string) session('error')) ?></div>
     <?php endif; ?>
@@ -30,7 +54,9 @@
         </div>
     <?php endif; ?>
 
-    <div class="row g-4">
+    <div class="card border-0 modal-edit-card">
+        <div class="card-body p-4 p-lg-5">
+            <div class="row g-4">
         <div class="col-12 col-lg-7">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
@@ -135,6 +161,9 @@
                 </div>
             </div>
         </div>
+    </div>
+        </div>
+    </div>
     </div>
 </main>
 </body>

@@ -8,15 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body class="bg-light">
-<header class="border-bottom bg-white">
-    <div class="container py-3 d-flex justify-content-between align-items-center gap-3">
-        <h1 class="h5 mb-0"><?= esc(lang('Domain.projectsTitle')) ?></h1>
-        <div class="d-flex gap-2">
-            <a href="<?= site_url('dashboard') ?>" class="btn btn-outline-secondary btn-sm"><?= esc(lang('Auth.dashboardTitle')) ?></a>
-            <a href="<?= site_url('programmes') ?>" class="btn btn-outline-secondary btn-sm"><?= esc(lang('Domain.programmesTitle')) ?></a>
-        </div>
-    </div>
-</header>
+<?= view('layouts/app_header', ['pageTitle' => lang('Domain.projectsTitle'), 'active' => 'projects']) ?>
 <main class="container py-4">
     <?php if (session('error') !== null): ?>
         <div class="alert alert-danger" role="alert"><?= esc((string) session('error')) ?></div>
