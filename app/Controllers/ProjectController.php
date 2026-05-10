@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
+use App\Models\ProgrammeModel;
+use App\Models\ProgrammeProjectModel;
 use App\Models\ProjectModel;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -126,8 +128,20 @@ class ProjectController extends BaseController
             return redirect()->to('/projects')->with('error', lang('Domain.notAuthorized'));
         }
 
+        $programmes = (new ProgrammeModel())->orderBy('name', 'ASC')->findAll();
+        $linkedRows = (new ProgrammeProjectModel())
+            ->select('programme_id')
+            ->where('project_id', $projectId)
+            ->findAll();
+        $linkedProgrammeIds = array_values(array_map(
+            static fn (array $row): int => (int) ($row['programme_id'] ?? 0),
+            $linkedRows,
+        ));
+
         return view('projects/edit', [
             'project' => $project,
+            'programmes' => $programmes,
+            'linkedProgrammeIds' => $linkedProgrammeIds,
         ]);
     }
 

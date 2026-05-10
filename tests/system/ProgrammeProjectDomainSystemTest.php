@@ -100,7 +100,7 @@ final class ProgrammeProjectDomainSystemTest extends CIUnitTestCase
         $this->withSession($this->sessionForUser($actor))
             ->withBodyFormat('form')
             ->post('/programmes/' . (int) $programme['id'] . '/projects/' . (int) $project['id'] . '/link')
-            ->assertRedirectTo('/dashboard');
+            ->assertRedirectTo('/projects/' . (int) $project['id'] . '/edit');
 
         $link = (new ProgrammeProjectModel())
             ->where('programme_id', (int) $programme['id'])
@@ -132,7 +132,7 @@ final class ProgrammeProjectDomainSystemTest extends CIUnitTestCase
         $this->withSession($this->sessionForUser($actor))
             ->withBodyFormat('form')
             ->post('/programmes/' . (int) $programme['id'] . '/projects/' . (int) $project['id'] . '/unlink')
-            ->assertRedirectTo('/dashboard');
+            ->assertRedirectTo('/projects/' . (int) $project['id'] . '/edit');
 
         $removedLink = (new ProgrammeProjectModel())
             ->where('programme_id', (int) $programme['id'])

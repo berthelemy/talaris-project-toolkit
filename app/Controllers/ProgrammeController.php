@@ -147,7 +147,7 @@ class ProgrammeController extends BaseController
         $existing = $links->where('programme_id', $programmeId)->where('project_id', $projectId)->first();
 
         if ($existing !== null) {
-            return redirect()->to('/dashboard')->with('success', lang('Domain.projectAlreadyLinked'));
+            return redirect()->to('/projects/' . $projectId . '/edit')->with('success', lang('Domain.projectAlreadyLinked'));
         }
 
         $links->insert([
@@ -161,7 +161,7 @@ class ProgrammeController extends BaseController
             'project_id' => $projectId,
         ]);
 
-        return redirect()->to('/dashboard')->with('success', lang('Domain.projectLinkedSuccess'));
+        return redirect()->to('/projects/' . $projectId . '/edit')->with('success', lang('Domain.projectLinkedSuccess'));
     }
 
     public function unlinkProject(int $programmeId, int $projectId): RedirectResponse
@@ -183,7 +183,7 @@ class ProgrammeController extends BaseController
             'project_id' => $projectId,
         ]);
 
-        return redirect()->to('/dashboard')->with('success', lang('Domain.projectUnlinkedSuccess'));
+        return redirect()->to('/projects/' . $projectId . '/edit')->with('success', lang('Domain.projectUnlinkedSuccess'));
     }
 
     public function assignManager(int $programmeId): RedirectResponse

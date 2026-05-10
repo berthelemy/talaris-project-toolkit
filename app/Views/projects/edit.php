@@ -9,9 +9,8 @@
 </head>
 <body class="bg-light">
 <header class="border-bottom bg-white">
-    <div class="container py-3 d-flex justify-content-between align-items-center gap-3">
+    <div class="container py-3">
         <h1 class="h5 mb-0"><?= esc(lang('Domain.projectEditTitle')) ?></h1>
-        <a href="<?= site_url('projects') ?>" class="btn btn-outline-secondary btn-sm">&larr; <?= esc(lang('Domain.projectsTitle')) ?></a>
     </div>
 </header>
 <main class="container py-4">
@@ -42,13 +41,58 @@
                         </div>
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary"><?= esc(lang('Domain.projectSaveButton')) ?></button>
-                            <a href="<?= site_url('projects') ?>" class="btn btn-outline-secondary"><?= esc(lang('Auth.backToLoginLink')) ?></a>
+                            <a href="<?= site_url('projects') ?>" class="btn btn-outline-secondary"><?= esc(lang('Domain.cancelButton')) ?></a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
         <div class="col-12 col-lg-5">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h6 mb-3"><?= esc(lang('Domain.projectLinkSectionTitle')) ?></h2>
+                    <?php if (empty($programmes)): ?>
+                        <p class="text-muted mb-0"><?= esc(lang('Domain.noProgrammesAvailable')) ?></p>
+                    <?php else: ?>
+                        <form method="post" action="#" id="link-programme-form" novalidate>
+                            <?= csrf_field() ?>
+                            <div class="mb-3">
+                                <label for="programme_id" class="form-label"><?= esc(lang('Domain.selectProgrammeLabel')) ?></label>
+                                <select id="programme_id" name="programme_id" class="form-select" required>
+                                    <option value="">--</option>
+                                    <?php foreach ($programmes as $programme): ?>
+                                        <?php $programmeId = (int) ($programme['id'] ?? 0); ?>
+                                        <?php $isLinked = in_array($programmeId, (array) ($linkedProgrammeIds ?? []), true); ?>
+                                        <option value="<?= $programmeId ?>" <?= $isLinked ? 'disabled' : '' ?>>
+                                            <?= esc((string) ($programme['name'] ?? '')) ?><?= $isLinked ? ' (' . esc(lang('Domain.projectAlreadyLinked')) . ')' : '' ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-outline-primary btn-sm"><?= esc(lang('Domain.linkToProgrammeButton')) ?></button>
+                        </form>
+                        <script>
+                            (function () {
+                                var form = document.getElementById('link-programme-form');
+                                var select = document.getElementById('programme_id');
+                                if (!form || !select) {
+                                    return;
+                                }
+
+                                form.addEventListener('submit', function (event) {
+                                    var programmeId = String(select.value || '').trim();
+                                    if (programmeId === '') {
+                                        event.preventDefault();
+                                        return;
+                                    }
+
+                                    form.action = '<?= site_url('programmes') ?>/' + encodeURIComponent(programmeId) + '/projects/<?= (int) ($project['id'] ?? 0) ?>/link';
+                                });
+                            })();
+                        </script>
+                    <?php endif; ?>
+                </div>
+            </div>
             <div class="card border-0 shadow-sm border-danger">
                 <div class="card-body">
                     <h2 class="h6 text-danger mb-3"><?= esc(lang('Domain.projectDeleteButton')) ?></h2>

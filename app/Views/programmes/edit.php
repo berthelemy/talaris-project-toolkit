@@ -9,9 +9,8 @@
 </head>
 <body class="bg-light">
 <header class="border-bottom bg-white">
-    <div class="container py-3 d-flex justify-content-between align-items-center gap-3">
+    <div class="container py-3">
         <h1 class="h5 mb-0"><?= esc(lang('Domain.programmeEditTitle')) ?></h1>
-        <a href="<?= site_url('programmes') ?>" class="btn btn-outline-secondary btn-sm">&larr; <?= esc(lang('Domain.programmesTitle')) ?></a>
     </div>
 </header>
 <main class="container py-4">
@@ -42,7 +41,7 @@
                         </div>
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary"><?= esc(lang('Domain.programmeSaveButton')) ?></button>
-                            <a href="<?= site_url('programmes') ?>" class="btn btn-outline-secondary"><?= esc(lang('Auth.backToLoginLink')) ?></a>
+                            <a href="<?= site_url('programmes') ?>" class="btn btn-outline-secondary"><?= esc(lang('Domain.cancelButton')) ?></a>
                         </div>
                     </form>
                 </div>
