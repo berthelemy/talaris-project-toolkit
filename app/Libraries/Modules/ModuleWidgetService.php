@@ -2,20 +2,16 @@
 
 namespace App\Libraries\Modules;
 
-use CodeIgniter\HTTP\IncomingRequest;
-
 /**
  * Service for managing and rendering module widgets on Programme/Project pages.
  */
 class ModuleWidgetService
 {
     private ModuleRegistryService $registryService;
-    private IncomingRequest $request;
 
     public function __construct()
     {
         $this->registryService = new ModuleRegistryService();
-        $this->request = service('request');
     }
 
     /**
@@ -29,7 +25,7 @@ class ModuleWidgetService
     public function getAvailableWidgets(string $scopeType, int $scopeId): array
     {
         $widgets = [];
-        $actorId = (int) ($this->request->session('user_id') ?? 0);
+        $actorId = (int) (session('user_id') ?? 0);
 
         if ($actorId === 0) {
             return $widgets;
