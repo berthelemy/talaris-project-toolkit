@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Modules\RiskRegisterProject\Controllers;
+namespace App\Modules\DependenciesRegisterProject\Controllers;
 
 use App\Modules\RaidShared\Controllers\BaseProjectRaidController;
 
-class RiskRegisterController extends BaseProjectRaidController
+class DependenciesRegisterController extends BaseProjectRaidController
 {
     protected function moduleSlug(): string
     {
-        return 'risk_register_project';
+        return 'dependencies_register_project';
     }
 
     protected function moduleRouteSegment(): string
     {
-        return 'risk-register';
+        return 'dependencies-register';
     }
 
     protected function moduleTitleLangKey(): string
     {
-        return 'Module.riskRegisterTitle';
+        return 'Module.dependenciesRegisterTitle';
     }
 
     protected function moduleDescriptionLangKey(): string
     {
-        return 'Module.riskRegisterDescription';
+        return 'Module.dependenciesRegisterDescription';
     }
 }

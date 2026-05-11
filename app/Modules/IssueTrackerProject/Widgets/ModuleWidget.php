@@ -3,7 +3,7 @@
 namespace App\Modules\IssueTrackerProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
-use App\Models\ModuleHelloWorldEntryModel;
+use App\Models\ModuleRaidEntryModel;
 
 class ModuleWidget implements ModuleWidgetInterface
 {
@@ -19,10 +19,11 @@ class ModuleWidget implements ModuleWidgetInterface
             $maxEntries = 5;
         }
 
-        $entries = (new ModuleHelloWorldEntryModel())
+        $entries = (new ModuleRaidEntryModel())
             ->where('module_slug', 'issue_tracker_project')
             ->where('scope_type', 'project')
             ->where('scope_id', $scopeId)
+            ->where('status !=', 'closed')
             ->orderBy('id', 'DESC')
             ->limit($maxEntries)
             ->findAll();

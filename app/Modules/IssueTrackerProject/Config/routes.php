@@ -11,3 +11,5 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('projects/(:num)/modules/issue-tracker', 'IssueTrackerController::index/$1', ['namespace' => 'App\Modules\IssueTrackerProject\Controllers']);
 $routes->post('projects/(:num)/modules/issue-tracker', 'IssueTrackerController::create/$1', ['namespace' => 'App\Modules\IssueTrackerProject\Controllers']);
+$routes->post('projects/(:num)/modules/issue-tracker/(:num)/update', 'IssueTrackerController::update/$1/$2', ['namespace' => 'App\Modules\IssueTrackerProject\Controllers']);
+$routes->post('projects/(:num)/modules/issue-tracker/(:num)/close', 'IssueTrackerController::close/$1/$2', ['namespace' => 'App\Modules\IssueTrackerProject\Controllers']);

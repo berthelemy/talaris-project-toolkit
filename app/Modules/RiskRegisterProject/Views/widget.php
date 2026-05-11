@@ -1,6 +1,6 @@
 <?php
 /**
- * @var array<int, array{id: int, message: string, created_at: string}> $entries
+ * @var array<int, array{id: int, title: string, created_at: string}> $entries
  * @var int $entry_count
  * @var int $scope_id
  */
@@ -15,7 +15,7 @@
         <?php else: ?>
             <ul class="list-group list-group-flush">
                 <?php foreach ($entries as $entry): ?>
-                    <li class="list-group-item px-0"><?= esc($entry['message']) ?></li>
+                    <li class="list-group-item px-0"><?= esc((string) ($entry['title'] ?? '')) ?></li>
                 <?php endforeach; ?>
             </ul>
             <?php if ($entry_count >= 5): ?>

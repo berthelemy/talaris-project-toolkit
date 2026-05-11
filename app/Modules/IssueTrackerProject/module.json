@@ -1,7 +1,7 @@
 {
   "slug": "issue_tracker_project",
-  "version": "0.1.0",
-  "dependencies": ["hello_world_project"],
+  "version": "1.0.0",
+  "dependencies": [],
   "widget_permission": "module.issue_tracker_project.widget.read",
   "widget_config": {
     "max_entries": 5

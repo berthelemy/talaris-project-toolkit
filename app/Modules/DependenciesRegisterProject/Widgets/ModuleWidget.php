@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\RiskRegisterProject\Widgets;
+namespace App\Modules\DependenciesRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
 use App\Models\ModuleRaidEntryModel;
@@ -9,7 +9,7 @@ class ModuleWidget implements ModuleWidgetInterface
 {
     public function getWidgetView(int $scopeId): ?string
     {
-        return 'App\Modules\RiskRegisterProject\Views\widget';
+        return 'App\Modules\DependenciesRegisterProject\Views\widget';
     }
 
     public function getWidgetData(int $scopeId, array $config = []): array
@@ -20,7 +20,7 @@ class ModuleWidget implements ModuleWidgetInterface
         }
 
         $entries = (new ModuleRaidEntryModel())
-            ->where('module_slug', 'risk_register_project')
+            ->where('module_slug', 'dependencies_register_project')
             ->where('scope_type', 'project')
             ->where('scope_id', $scopeId)
             ->where('status !=', 'closed')

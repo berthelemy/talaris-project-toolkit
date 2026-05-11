@@ -128,6 +128,10 @@ class ProjectController extends BaseController
                 ->isEnabled('risk_register_project', 'project'),
             'canOpenIssueModule' => (new ModuleRegistryService())
                 ->isEnabled('issue_tracker_project', 'project'),
+            'canOpenAssumptionsModule' => (new ModuleRegistryService())
+                ->isEnabled('assumptions_register_project', 'project'),
+            'canOpenDependenciesModule' => (new ModuleRegistryService())
+                ->isEnabled('dependencies_register_project', 'project'),
         ]);
     }
 

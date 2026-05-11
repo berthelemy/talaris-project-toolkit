@@ -374,6 +374,30 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - [ ] Shared lifecycle/status/owner/date patterns standardized across RAID modules.
 - [ ] Role-aware visibility and edit controls applied.
 
+### Implementation Progress (2026-05-11)
+- Added shared RAID persistence table `module_raid_entries` with common governance fields: title, description, owner, status, priority, target/review dates, closed timestamp, and audit actor metadata.
+- Added production registry migration updates for all four project RAID modules:
+	- `risk_register_project`
+	- `issue_tracker_project`
+	- `assumptions_register_project`
+	- `dependencies_register_project`
+- Refactored Risk and Issue controllers onto shared RAID project controller behaviors (create, update, close, filter/search/sort).
+- Added new production modules for Assumptions and Dependencies with routes, controllers, widgets, metadata, and project detail-page entry points.
+- Standardized role-aware behavior:
+	- Read access uses project scope authorization checks.
+	- Create/update/close mutation paths require project write permission.
+	- Read-only mode messaging is shown to non-writers.
+- Added standardized lifecycle/status/owner/date UX and query controls on RAID module pages.
+- Added audit logging for RAID mutations: `raid_entry_created`, `raid_entry_updated`, and `raid_entry_closed`.
+- Added system test coverage in `tests/system/RaidModulesSystemTest.php` for:
+	- CRUD close workflow on Risk module.
+	- Role-based mutation restriction for read-only users.
+	- Assumptions and Dependencies module record creation.
+	- Filter/search/sort behavior on Issue module.
+- Validation results:
+	- `XDEBUG_MODE=off php spark migrate` passed.
+	- `XDEBUG_MODE=off composer ci` passed (60 tests, 298 assertions).
+
 ### Manual Acceptance Testing
 1. Create, edit, and close records in each RAID module.
 2. Verify each record supports owner, status, and due/review metadata.
