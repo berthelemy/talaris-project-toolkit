@@ -11,6 +11,15 @@
 <body class="bg-light">
 <?= view('layouts/app_header', ['pageTitle' => lang('Module.programmeHelloWorldTitle'), 'active' => 'programmes']) ?>
 <main class="container py-4">
+    <?php
+    $lockDeniedData = [];
+    if (isset($lockDenied) && is_array($lockDenied)) {
+        $lockDeniedData = $lockDenied;
+    }
+    ?>
+    <div class="mb-3">
+        <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('programmes/' . (int) ($programme['id'] ?? 0)) ?>"><?= esc(lang('Module.backToProgramme')) ?></a>
+    </div>
     <?php if (session('error') !== null): ?>
         <div class="alert alert-danger" role="alert"><?= esc((string) session('error')) ?></div>
     <?php endif; ?>
@@ -24,10 +33,10 @@
     <?php endif; ?>
     <?php if (($isReadOnly ?? false) === true): ?>
         <div class="alert alert-warning" role="alert">
-            <?php if (is_array($lockDenied ?? null)): ?>
+            <?php if ($lockDeniedData !== []): ?>
                 <?= esc(lang('Module.lockedByOtherEditor', [
-                    (string) (($lockDenied['locked_by_username'] ?? '') !== '' ? $lockDenied['locked_by_username'] : ('#' . (int) ($lockDenied['locked_by_user_id'] ?? 0))),
-                    (string) ($lockDenied['expires_at'] ?? ''),
+                    (string) (($lockDeniedData['locked_by_username'] ?? '') !== '' ? $lockDeniedData['locked_by_username'] : ('#' . (int) ($lockDeniedData['locked_by_user_id'] ?? 0))),
+                    (string) ($lockDeniedData['expires_at'] ?? ''),
                 ])) ?>
             <?php else: ?>
                 <?= esc(lang('Module.readOnlyNotice')) ?>
@@ -87,7 +96,7 @@
                                 data-status-locked="<?= esc(lang('Module.autosaveLocked')) ?>"
                                 data-csrf-name="<?= esc(csrf_token()) ?>"
                                 data-csrf-value="<?= esc(csrf_hash()) ?>"
-                                data-csrf-cookie-name="<?= esc(config('Security')->cookieName) ?>"
+                                data-csrf-cookie-name="<?= esc((string) config('Security')->cookieName) ?>"
                             >
                             <div id="entry-status-<?= (int) ($entry['id'] ?? 0) ?>" class="small text-muted mt-1">
                                 <?= esc(($isReadOnly ?? false) ? lang('Module.readOnlyNotice') : lang('Module.autosaveIdle')) ?>

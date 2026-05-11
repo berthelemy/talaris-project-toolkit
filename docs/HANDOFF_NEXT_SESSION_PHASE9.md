@@ -53,6 +53,30 @@ XDEBUG_MODE=off composer ci
 
 - Result: passed (`60 tests`, `298 assertions`).
 
+## Follow-up Enhancements Applied (2026-05-11)
+
+- Risk register now supports `mitigation_actions`, `impact`, and `likelihood`; risk priority is automatically calculated from impact x likelihood.
+- Assumptions register now supports `impact_if_not_valid`.
+- Added new Decisions module (`decisions_register_project`) with fields:
+  - Description
+  - Date
+  - Made by
+- Added module-to-context return actions:
+  - module pages include direct return links to project/programme context.
+- Added sortable/searchable table behavior via DataTables on key module/admin/project/programme tables.
+- Added inline module-entry quick forms inside project/programme widgets, plus direct widget links to module pages.
+- Fixed widget visibility behavior for scope readers/owners when explicit widget permission is not present.
+
+- Validation rerun after enhancements:
+
+```bash
+cd /var/www/html
+XDEBUG_MODE=off php spark migrate
+XDEBUG_MODE=off composer ci
+```
+
+- Result: passed (`61 tests`, `305 assertions`).
+
 ## Important Artifacts and Evidence
 
 - RAID shared implementation:

@@ -32,9 +32,11 @@ final class RaidModulesSystemTest extends CIUnitTestCase
             ->post('/projects/' . $projectId . '/modules/risk-register', [
                 'title' => 'Late vendor delivery',
                 'description' => 'Critical package may be delayed.',
+                'mitigation_actions' => 'Escalate to procurement and add alternate supplier.',
                 'owner_user_id' => (int) $manager['id'],
                 'status' => 'open',
-                'priority' => 'high',
+                'impact' => 'high',
+                'likelihood' => 'high',
                 'target_date' => '2026-06-01',
                 'review_date' => '2026-05-20',
             ]);
@@ -48,6 +50,7 @@ final class RaidModulesSystemTest extends CIUnitTestCase
 
         $this->assertIsArray($entry);
         $this->assertSame('Late vendor delivery', (string) $entry['title']);
+        $this->assertSame('critical', (string) $entry['priority']);
 
         $entryId = (int) $entry['id'];
 
@@ -56,9 +59,11 @@ final class RaidModulesSystemTest extends CIUnitTestCase
             ->post('/projects/' . $projectId . '/modules/risk-register/' . $entryId . '/update', [
                 'title' => 'Late vendor delivery updated',
                 'description' => 'Updated mitigation actions.',
+                'mitigation_actions' => 'Escalation completed.',
                 'owner_user_id' => (int) $manager['id'],
                 'status' => 'in_review',
-                'priority' => 'critical',
+                'impact' => 'medium',
+                'likelihood' => 'high',
                 'target_date' => '2026-06-10',
                 'review_date' => '2026-05-25',
             ]);
@@ -165,6 +170,33 @@ final class RaidModulesSystemTest extends CIUnitTestCase
 
         $this->assertIsArray($assumptionEntry);
         $this->assertIsArray($dependencyEntry);
+    }
+
+    public function testDecisionsModuleCreatesRecordWithDateAndActor(): void
+    {
+        $manager = $this->createUser('raidmanager4', 'raidmanager4@example.com');
+        $projectId = $this->createProject((int) $manager['id'], 'RAID Project 5');
+
+        (new RbacService())->assignRoleToUser((int) $manager['id'], 'project_manager', 'project', $projectId, (int) $manager['id']);
+
+        $create = $this->withSession($this->authSession($manager))
+            ->withBodyFormat('form')
+            ->post('/projects/' . $projectId . '/modules/decisions-register', [
+                'description' => 'Approved moving milestone two by one week.',
+                'decision_date' => '2026-05-11',
+                'made_by_user_id' => (int) $manager['id'],
+            ]);
+
+        $create->assertRedirectTo('/projects/' . $projectId . '/modules/decisions-register');
+
+        $entry = (new ModuleRaidEntryModel())
+            ->where('module_slug', 'decisions_register_project')
+            ->where('scope_id', $projectId)
+            ->first();
+
+        $this->assertIsArray($entry);
+        $this->assertSame('2026-05-11', (string) ($entry['decision_date'] ?? ''));
+        $this->assertSame((int) $manager['id'], (int) ($entry['made_by_user_id'] ?? 0));
     }
 
     public function testIssueModuleFilterAndSortWorkForOperationalUsage(): void

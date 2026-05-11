@@ -132,6 +132,8 @@ class ProjectController extends BaseController
                 ->isEnabled('assumptions_register_project', 'project'),
             'canOpenDependenciesModule' => (new ModuleRegistryService())
                 ->isEnabled('dependencies_register_project', 'project'),
+            'canOpenDecisionsModule' => (new ModuleRegistryService())
+                ->isEnabled('decisions_register_project', 'project'),
         ]);
     }
 

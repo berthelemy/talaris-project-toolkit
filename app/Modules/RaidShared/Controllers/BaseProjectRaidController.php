@@ -64,6 +64,11 @@ abstract class BaseProjectRaidController extends BaseController
             'owners' => $this->ownerOptions(),
             'statusOptions' => $this->statusOptions(),
             'priorityOptions' => $this->priorityOptions(),
+            'riskScaleOptions' => $this->riskScaleOptions(),
+            'isRiskModule' => $this->isRiskModule(),
+            'isAssumptionModule' => $this->isAssumptionModule(),
+            'isDecisionModule' => $this->isDecisionModule(),
+            'backUrl' => '/projects/' . $projectId,
             'filters' => [
                 'q' => trim((string) $this->request->getGet('q')),
                 'status' => trim((string) $this->request->getGet('status')),
@@ -87,9 +92,43 @@ abstract class BaseProjectRaidController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $ownerId = (int) $this->request->getPost('owner_user_id');
+        $ownerId = (int) ($this->request->getPost('owner_user_id') ?: $actorId);
         if (! $this->isActiveUser($ownerId)) {
             return redirect()->back()->withInput()->with('error', lang('Domain.ownerInvalid'));
+        }
+
+        $status = trim((string) ($this->request->getPost('status') ?: 'open'));
+        $impact = trim((string) $this->request->getPost('impact'));
+        $likelihood = trim((string) $this->request->getPost('likelihood'));
+
+        if ($impact === '') {
+            $impact = (string) ($entry['impact'] ?? 'low');
+        }
+
+        if ($likelihood === '') {
+            $likelihood = (string) ($entry['likelihood'] ?? 'low');
+        }
+
+        $priority = $this->isRiskModule()
+            ? $this->calculateRiskPriority(
+                $impact,
+                $likelihood,
+            )
+            : trim((string) ($this->request->getPost('priority') ?: 'medium'));
+
+        $description = $this->nullableString((string) $this->request->getPost('description'));
+        if ($this->isDecisionModule() && $description === null) {
+            $description = $this->nullableString((string) $this->request->getPost('title'));
+        }
+
+        $decisionDate = $this->nullableDate((string) $this->request->getPost('decision_date'));
+        if ($this->isDecisionModule() && $decisionDate === null) {
+            return redirect()->back()->withInput()->with('error', (string) lang('Validation.valid_date', [lang('Module.decisionsDateLabel')]));
+        }
+
+        $title = $this->nullableString((string) $this->request->getPost('title'));
+        if ($title === null && $this->isDecisionModule()) {
+            $title = substr((string) $description, 0, 200);
         }
 
         $entryModel = new ModuleRaidEntryModel();
@@ -97,14 +136,20 @@ abstract class BaseProjectRaidController extends BaseController
             'module_slug' => $this->moduleSlug(),
             'scope_type' => 'project',
             'scope_id' => $projectId,
-            'title' => trim((string) $this->request->getPost('title')),
-            'description' => $this->nullableString((string) $this->request->getPost('description')),
+            'title' => (string) $title,
+            'description' => $description,
+            'mitigation_actions' => $this->nullableString((string) $this->request->getPost('mitigation_actions')),
             'owner_user_id' => $ownerId,
-            'status' => trim((string) $this->request->getPost('status')),
-            'priority' => trim((string) $this->request->getPost('priority')),
+            'status' => $status,
+            'priority' => $priority,
+            'impact' => $this->nullableString($impact),
+            'likelihood' => $this->nullableString($likelihood),
+            'impact_if_not_valid' => $this->nullableString((string) $this->request->getPost('impact_if_not_valid')),
             'target_date' => $this->nullableDate((string) $this->request->getPost('target_date')),
             'review_date' => $this->nullableDate((string) $this->request->getPost('review_date')),
-            'closed_at' => trim((string) $this->request->getPost('status')) === 'closed' ? date('Y-m-d H:i:s') : null,
+            'decision_date' => $decisionDate,
+            'made_by_user_id' => $this->nullableUserId((string) ($this->request->getPost('made_by_user_id') ?: (string) $actorId)),
+            'closed_at' => $status === 'closed' ? date('Y-m-d H:i:s') : null,
             'created_by_user_id' => $actorId,
             'updated_by_user_id' => $actorId,
         ], true);
@@ -139,21 +184,43 @@ abstract class BaseProjectRaidController extends BaseController
             return $this->redirectModule($projectId)->with('error', lang('Module.raidEntryNotFound'));
         }
 
-        $ownerId = (int) $this->request->getPost('owner_user_id');
+        $ownerId = (int) ($this->request->getPost('owner_user_id') ?: $actorId);
         if (! $this->isActiveUser($ownerId)) {
             return redirect()->back()->withInput()->with('error', lang('Domain.ownerInvalid'));
         }
 
-        $status = trim((string) $this->request->getPost('status'));
+        $status = trim((string) ($this->request->getPost('status') ?: 'open'));
+        $priority = $this->isRiskModule()
+            ? $this->calculateRiskPriority(
+                trim((string) $this->request->getPost('impact')),
+                trim((string) $this->request->getPost('likelihood')),
+            )
+            : trim((string) ($this->request->getPost('priority') ?: 'medium'));
+
+        $description = $this->nullableString((string) $this->request->getPost('description'));
+        if ($this->isDecisionModule() && $description === null) {
+            $description = $this->nullableString((string) $this->request->getPost('title'));
+        }
+
+        $title = $this->nullableString((string) $this->request->getPost('title'));
+        if ($title === null && $this->isDecisionModule()) {
+            $title = substr((string) $description, 0, 200);
+        }
 
         $entryModel->update($entryId, [
-            'title' => trim((string) $this->request->getPost('title')),
-            'description' => $this->nullableString((string) $this->request->getPost('description')),
+            'title' => (string) $title,
+            'description' => $description,
+            'mitigation_actions' => $this->nullableString((string) $this->request->getPost('mitigation_actions')),
             'owner_user_id' => $ownerId,
             'status' => $status,
-            'priority' => trim((string) $this->request->getPost('priority')),
+            'priority' => $priority,
+            'impact' => $this->nullableString(trim((string) $this->request->getPost('impact'))),
+            'likelihood' => $this->nullableString(trim((string) $this->request->getPost('likelihood'))),
+            'impact_if_not_valid' => $this->nullableString((string) $this->request->getPost('impact_if_not_valid')),
             'target_date' => $this->nullableDate((string) $this->request->getPost('target_date')),
             'review_date' => $this->nullableDate((string) $this->request->getPost('review_date')),
+            'decision_date' => $this->nullableDate((string) $this->request->getPost('decision_date')),
+            'made_by_user_id' => $this->nullableUserId((string) ($this->request->getPost('made_by_user_id') ?: (string) $actorId)),
             'closed_at' => $status === 'closed' ? (($entry['closed_at'] ?? null) ?: date('Y-m-d H:i:s')) : null,
             'updated_by_user_id' => $actorId,
         ]);
@@ -205,8 +272,9 @@ abstract class BaseProjectRaidController extends BaseController
     private function queryEntries(ModuleRaidEntryModel $entryModel, int $projectId): array
     {
         $builder = $entryModel
-            ->select('module_raid_entries.*, users.username as owner_username')
+            ->select('module_raid_entries.*, users.username as owner_username, made_by.username as made_by_username')
             ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
+            ->join('users as made_by', 'made_by.id = module_raid_entries.made_by_user_id', 'left')
             ->where('module_raid_entries.module_slug', $this->moduleSlug())
             ->where('module_raid_entries.scope_type', 'project')
             ->where('module_raid_entries.scope_id', $projectId);
@@ -284,14 +352,24 @@ abstract class BaseProjectRaidController extends BaseController
      */
     private function entryValidationRules(): array
     {
+        $titleRule = $this->isDecisionModule() ? 'permit_empty|max_length[200]' : 'required|max_length[200]';
+        $descriptionRule = $this->isDecisionModule() ? 'required|max_length[5000]' : 'permit_empty|max_length[5000]';
+        $decisionDateRule = 'permit_empty|valid_date[Y-m-d]';
+
         return [
-            'title' => 'required|max_length[200]',
-            'description' => 'permit_empty|max_length[5000]',
-            'owner_user_id' => 'required|is_natural_no_zero',
-            'status' => 'required|in_list[open,in_review,closed]',
-            'priority' => 'required|in_list[low,medium,high,critical]',
+            'title' => $titleRule,
+            'description' => $descriptionRule,
+            'mitigation_actions' => 'permit_empty|max_length[5000]',
+            'owner_user_id' => 'permit_empty|is_natural_no_zero',
+            'status' => 'permit_empty|in_list[open,in_review,closed]',
+            'priority' => 'permit_empty|in_list[low,medium,high,critical]',
+            'impact' => 'permit_empty|in_list[low,medium,high]',
+            'likelihood' => 'permit_empty|in_list[low,medium,high]',
+            'impact_if_not_valid' => 'permit_empty|max_length[5000]',
             'target_date' => 'permit_empty|valid_date[Y-m-d]',
             'review_date' => 'permit_empty|valid_date[Y-m-d]',
+            'decision_date' => $decisionDateRule,
+            'made_by_user_id' => 'permit_empty|is_natural_no_zero',
         ];
     }
 
@@ -352,6 +430,69 @@ abstract class BaseProjectRaidController extends BaseController
         $trimmed = trim($value);
 
         return $trimmed === '' ? null : $trimmed;
+    }
+
+    private function nullableUserId(string $value): ?int
+    {
+        $trimmed = trim($value);
+
+        if ($trimmed === '' || ! ctype_digit($trimmed)) {
+            return null;
+        }
+
+        $userId = (int) $trimmed;
+
+        return $userId > 0 ? $userId : null;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function riskScaleOptions(): array
+    {
+        return ['low', 'medium', 'high'];
+    }
+
+    private function isRiskModule(): bool
+    {
+        return $this->moduleSlug() === 'risk_register_project';
+    }
+
+    private function isAssumptionModule(): bool
+    {
+        return $this->moduleSlug() === 'assumptions_register_project';
+    }
+
+    private function isDecisionModule(): bool
+    {
+        return $this->moduleSlug() === 'decisions_register_project';
+    }
+
+    private function calculateRiskPriority(string $impact, string $likelihood): string
+    {
+        $scale = [
+            'low' => 1,
+            'medium' => 2,
+            'high' => 3,
+        ];
+
+        $impactScore = $scale[$impact] ?? 1;
+        $likelihoodScore = $scale[$likelihood] ?? 1;
+        $score = $impactScore * $likelihoodScore;
+
+        if ($score >= 8) {
+            return 'critical';
+        }
+
+        if ($score >= 4) {
+            return 'high';
+        }
+
+        if ($score >= 2) {
+            return 'medium';
+        }
+
+        return 'low';
     }
 
     private function redirectModule(int $projectId): RedirectResponse

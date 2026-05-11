@@ -7,13 +7,27 @@
 ?>
 
 <div class="card mb-4">
-    <div class="card-header bg-light">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">
             <i class="bi bi-chat-left-text"></i>
             <?= lang('Module.projectHelloWorldTitle') ?>
         </h5>
+        <a href="<?= base_url('projects/' . $scope_id . '/modules/hello-world') ?>" class="btn btn-sm btn-outline-primary">
+            <?= lang('Module.openModule') ?>
+        </a>
     </div>
     <div class="card-body">
+        <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/hello-world') ?>" class="row g-2 mb-3">
+            <?= csrf_field() ?>
+            <div class="col-12">
+                <label class="form-label" for="hello-project-message-<?= $scope_id ?>"><?= lang('Module.entryLabel') ?></label>
+                <input id="hello-project-message-<?= $scope_id ?>" class="form-control form-control-sm" type="text" name="message" maxlength="500" required>
+            </div>
+            <div class="col-12 d-grid">
+                <button class="btn btn-sm btn-primary" type="submit"><?= lang('Module.entryCreateButton') ?></button>
+            </div>
+        </form>
+
         <?php if (empty($entries)): ?>
             <p class="text-muted mb-0"><?= lang('Module.entriesNone') ?></p>
         <?php else: ?>

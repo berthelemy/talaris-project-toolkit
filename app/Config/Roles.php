@@ -57,6 +57,7 @@ class Roles extends BaseConfig
             'module.issue_tracker_project.widget.read',
             'module.assumptions_register_project.widget.read',
             'module.dependencies_register_project.widget.read',
+            'module.decisions_register_project.widget.read',
         ],
         'programme_manager' => [
             'programme.create',
@@ -77,6 +78,7 @@ class Roles extends BaseConfig
             'module.issue_tracker_project.widget.read',
             'module.assumptions_register_project.widget.read',
             'module.dependencies_register_project.widget.read',
+            'module.decisions_register_project.widget.read',
         ],
         'team_member' => [
             'project.read',
@@ -85,6 +87,7 @@ class Roles extends BaseConfig
             'module.issue_tracker_project.widget.read',
             'module.assumptions_register_project.widget.read',
             'module.dependencies_register_project.widget.read',
+            'module.decisions_register_project.widget.read',
         ],
         'stakeholder' => [
             'reports.read_stakeholder',

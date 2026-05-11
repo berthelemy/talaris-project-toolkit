@@ -4,6 +4,7 @@ namespace App\Libraries\Modules;
 
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
+use App\Libraries\Modules\ModuleApiAuthorizationService;
 use App\Models\ModuleWidgetFailureModel;
 use App\Models\ModuleWidgetMetricModel;
 
@@ -227,7 +228,15 @@ class ModuleWidgetService
             return true;
         }
 
-        return (new RbacService())->hasPermission($actorId, $permission, $scopeType, $scopeType === 'system' ? null : $scopeId);
+        if ((new RbacService())->hasPermission($actorId, $permission, $scopeType, $scopeType === 'system' ? null : $scopeId)) {
+            return true;
+        }
+
+        if ($scopeType === 'system') {
+            return false;
+        }
+
+        return (new ModuleApiAuthorizationService())->canRead($actorId, $scopeType, $scopeId);
     }
 
     /**

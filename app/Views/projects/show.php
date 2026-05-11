@@ -16,6 +16,7 @@
     <?php $canOpenIssueModule = (bool) ($canOpenIssueModule ?? false); ?>
     <?php $canOpenAssumptionsModule = (bool) ($canOpenAssumptionsModule ?? false); ?>
     <?php $canOpenDependenciesModule = (bool) ($canOpenDependenciesModule ?? false); ?>
+    <?php $canOpenDecisionsModule = (bool) ($canOpenDecisionsModule ?? false); ?>
     <?php $widgets = (string) ($widgets ?? ''); ?>
     <?php if (session('error') !== null): ?>
         <div class="alert alert-danger" role="alert"><?= esc((string) session('error')) ?></div>
@@ -96,6 +97,20 @@
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
             <div>
+                <h3 class="h6 mb-1"><?= esc(lang('Module.decisionsRegisterTitle')) ?></h3>
+                <p class="mb-0 text-muted"><?= esc(lang('Module.decisionsRegisterDescription')) ?></p>
+            </div>
+            <?php if ($canOpenDecisionsModule): ?>
+                <a class="btn btn-outline-primary" href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/modules/decisions-register') ?>"><?= esc(lang('Module.decisionsRegisterTitle')) ?></a>
+            <?php else: ?>
+                <span class="badge text-bg-secondary align-self-start align-self-md-center"><?= esc(lang('Module.statusDisabled')) ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+            <div>
                 <h3 class="h6 mb-1"><?= esc(lang('Module.projectHelloWorldTitle')) ?></h3>
                 <p class="mb-0 text-muted"><?= esc(lang('Module.projectHelloWorldDescription')) ?></p>
             </div>
@@ -122,7 +137,7 @@
                 <p class="text-muted p-4 mb-0"><?= esc(lang('Domain.noLinkedProgrammes')) ?></p>
             <?php else: ?>
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0">
+                    <table class="table table-hover mb-0 js-datatable">
                         <thead class="table-light">
                             <tr>
                                 <th><?= esc(lang('Domain.programmeName')) ?></th>
@@ -145,5 +160,6 @@
         </div>
     </div>
 </main>
+<?= view('layouts/datatable_assets') ?>
 </body>
 </html>

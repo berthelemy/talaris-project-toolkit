@@ -394,6 +394,18 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 	- Role-based mutation restriction for read-only users.
 	- Assumptions and Dependencies module record creation.
 	- Filter/search/sort behavior on Issue module.
+	- Decisions module record creation.
+- Added risk-specific fields and computed governance priority:
+	- `mitigation_actions`
+	- `impact` (high/medium/low)
+	- `likelihood` (high/medium/low)
+	- `priority` auto-calculated from impact x likelihood.
+- Added assumptions-specific field `impact_if_not_valid`.
+- Added a new project module `decisions_register_project` with fields for description, decision date, and decision owner (`made_by_user_id`).
+- Added direct return navigation from module pages back to owning project/programme context.
+- Added DataTables.net integration for sortable/searchable table rendering on module/admin/project/programme table views.
+- Added inline quick-create forms inside module widgets on project/programme pages, with direct links from each widget to the full module page.
+- Fixed widget visibility fallback so project/programme readers are not blocked when explicit widget permission assignment is absent.
 - Validation results:
 	- `XDEBUG_MODE=off php spark migrate` passed.
 	- `XDEBUG_MODE=off composer ci` passed (60 tests, 298 assertions).

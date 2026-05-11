@@ -28,7 +28,7 @@
                 <p class="text-muted p-4 mb-0"><?= esc(lang('Module.noneRegistered')) ?></p>
             <?php else: ?>
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0">
+                    <table class="table table-hover mb-0 js-datatable">
                         <thead class="table-light">
                             <tr>
                                 <th><?= esc(lang('Module.columnName')) ?></th>
@@ -111,7 +111,7 @@
                 <p class="text-muted p-4 mb-0"><?= esc(lang('Module.activeLocksNone')) ?></p>
             <?php else: ?>
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0">
+                    <table class="table table-hover mb-0 js-datatable">
                         <thead class="table-light">
                             <tr>
                                 <th><?= esc(lang('Module.lockColumnModule')) ?></th>
@@ -150,5 +150,6 @@
         </div>
     </div>
 </main>
+<?= view('layouts/datatable_assets') ?>
 </body>
 </html>
