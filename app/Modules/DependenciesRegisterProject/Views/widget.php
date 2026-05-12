@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= lang('Common.cancel') ?></button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= lang('Domain.cancelButton') ?></button>
                     <button type="submit" class="btn btn-primary"><?= lang('Module.raidCreateButton') ?></button>
                 </div>
             </form>
@@ -82,19 +82,3 @@
     </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const card = document.querySelector('#dependencyModalAdd').closest('.card');
-    if (card) {
-        const table = card.querySelector('.js-datatable');
-        if (table && typeof DataTable !== 'undefined') {
-            new DataTable(table, {
-                paging: false,
-                searching: false,
-                info: false,
-                columnDefs: [{targets: 'no-sort', orderable: false}]
-            });
-        }
-    }
-});
-</script>

@@ -146,3 +146,43 @@ XDEBUG_MODE=off composer ci
 ```bash
 cd /var/www/html && XDEBUG_MODE=off php spark migrate && XDEBUG_MODE=off composer ci
 ```
+
+## Session Update (2026-05-12)
+
+### User-Reported Defects Resolved
+
+1. RAID widget modal popups did not open on `/projects/{id}`.
+2. JavaScript console errors occurred on `/projects/1`.
+3. Cancel buttons rendered raw language key `Common.cancel`.
+
+### Root Causes
+
+1. Bootstrap JavaScript bundle was not loaded in shared table assets, so `data-bs-toggle="modal"` had no runtime handler.
+2. Each RAID widget injected an inline DataTable init snippet using unsafe DOM chaining (`closest('.card')`) and a non-project-standard constructor path, causing runtime errors.
+3. The key `Common.cancel` does not exist in this repository's language packs.
+
+### Fixes Applied
+
+1. Added Bootstrap bundle script include in shared assets:
+  - `app/Views/layouts/datatable_assets.php`
+2. Removed broken per-widget inline JS from:
+  - `app/Modules/RiskRegisterProject/Views/widget.php`
+  - `app/Modules/IssueTrackerProject/Views/widget.php`
+  - `app/Modules/AssumptionsRegisterProject/Views/widget.php`
+  - `app/Modules/DependenciesRegisterProject/Views/widget.php`
+  - `app/Modules/DecisionsRegisterProject/Views/widget.php`
+3. Replaced invalid cancel key usage with existing key `Domain.cancelButton` in all RAID widget modals.
+
+### Validation
+
+```bash
+cd /var/www/html
+XDEBUG_MODE=off composer ci
+```
+
+Result: passed (`61 tests`, `305 assertions`).
+
+### Notes For Next Session
+
+1. Modal behavior and localized cancel text are now functioning on project overview pages.
+2. The UI direction draft is captured in `docs/UI_CHANGES_2026_05_12.md` for the upcoming desktop-style layout phase.
