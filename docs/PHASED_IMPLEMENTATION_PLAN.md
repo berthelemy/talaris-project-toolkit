@@ -420,7 +420,40 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 ### Exit Criteria
 - [ ] RAID modules are usable for day-to-day project governance.
 
-## Phase 10 (Weeks 19-20): Dashboards, Drill-Downs, and Traceability
+## Phase 10 (Weeks 19-20): Desktop-Oriented UI Overhaul and Navigation
+
+### Objectives
+- Implement the major UI redesign to make the app feel desktop-oriented while preserving mobile-first and accessibility commitments.
+
+### Delivery Checklist
+- [ ] Header updated to include logo, site title, and navbar.
+- [ ] Navbar structure implemented: Programmes, Projects, Admin (Users/Modules/Theme), Profile, language selector, and sign in/sign out.
+- [ ] Programmes list (`/programmes`) redesigned to card-based navigation with clickable cards.
+- [ ] Programme detail (`/programmes/:id`) redesigned with computed programme status and clickable related-project cards.
+- [ ] Projects list (`/projects`) redesigned to card-based navigation with programme filter including unlinked projects.
+- [ ] Project detail (`/projects/:id`) redesigned into hideable navigation panel (2/12) + main content panel.
+- [ ] Project overview section implemented with module widgets and quick actions as defined in `docs/UI_CHANGES_2026_05_12.md`.
+- [ ] Project module sections (Risks, Assumptions, Issues, Decisions, Dependencies) rendered as datatable-driven views.
+- [ ] Widget visibility controls implemented for administrators (default widgets) and project managers (per-project show/hide).
+- [ ] Modal quick-create flows return users to the launching page context after close.
+- [ ] Footer updated with centered "Powered by Talaris" link.
+
+### Manual Acceptance Testing
+1. Verify header shows logo, site title, and complete navbar structure on desktop and mobile widths.
+2. Open `/programmes` and confirm card-based list with fully clickable cards.
+3. Open a programme detail page and confirm computed status and clickable related project cards.
+4. Open `/projects`, apply programme filters (including no-programme), and confirm results and navigation behavior.
+5. Open `/projects/:id`, collapse/expand side panel, and confirm module navigation and overview behavior.
+6. Validate overview widgets display expected data and quick-create modal flows return to the same page context.
+7. Validate admin default-widget controls and project-manager widget show/hide controls.
+8. Open each module section (Risks/Assumptions/Issues/Decisions/Dependencies) and confirm datatable rendering/interaction.
+9. Verify footer displays centered "Powered by Talaris" link.
+10. Run responsive and WCAG 2.2 AA spot checks for navigation, cards, panel toggle, and modal flows.
+
+### Exit Criteria
+- [ ] New desktop-oriented UI shell and page layouts are production-ready with localization, accessibility, and responsive behavior validated.
+
+## Phase 11 (Weeks 21-22): Dashboards, Drill-Downs, and Traceability
 
 ### Objectives
 - Provide programme/project dashboards with traceable source navigation.
@@ -442,7 +475,7 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 ### Exit Criteria
 - [ ] Dashboard metrics are accurate, navigable, and explainable.
 
-## Phase 11 (Weeks 21-22): Cross-Module Reports and Email Scheduling
+## Phase 12 (Weeks 23-24): Cross-Module Reports and Email Scheduling
 
 ### Objectives
 - Implement reporting and scheduled email distribution.
@@ -464,7 +497,7 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 ### Exit Criteria
 - [ ] Scheduled report delivery is reliable and auditable.
 
-## Phase 12 (Weeks 23-24): Hardening, Accessibility, Docs, and Release Readiness
+## Phase 13 (Weeks 25-26): Hardening, Accessibility, Docs, and Release Readiness
 
 ### Objectives
 - Finalize quality, compliance, and deployment readiness.
