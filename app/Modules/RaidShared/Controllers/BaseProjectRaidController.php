@@ -65,9 +65,12 @@ abstract class BaseProjectRaidController extends BaseController
             'statusOptions' => $this->statusOptions(),
             'priorityOptions' => $this->priorityOptions(),
             'riskScaleOptions' => $this->riskScaleOptions(),
+            'impactLevelOptions' => $this->impactLevelOptions(),
             'isRiskModule' => $this->isRiskModule(),
             'isAssumptionModule' => $this->isAssumptionModule(),
             'isDecisionModule' => $this->isDecisionModule(),
+            'isIssueModule' => $this->isIssueModule(),
+            'isDependencyModule' => $this->isDependencyModule(),
             'backUrl' => '/projects/' . $projectId,
             'filters' => [
                 'q' => trim((string) $this->request->getGet('q')),
@@ -138,6 +141,8 @@ abstract class BaseProjectRaidController extends BaseController
             'scope_id' => $projectId,
             'title' => (string) $title,
             'description' => $description,
+            'date_reported' => $this->isIssueModule() ? $this->nullableDate((string) $this->request->getPost('date_reported')) : null,
+            'reporter_user_id' => $this->isIssueModule() ? $this->nullableUserId((string) ($this->request->getPost('reporter_user_id') ?: (string) $actorId)) : null,
             'mitigation_actions' => $this->nullableString((string) $this->request->getPost('mitigation_actions')),
             'owner_user_id' => $ownerId,
             'status' => $status,
@@ -145,6 +150,7 @@ abstract class BaseProjectRaidController extends BaseController
             'impact' => $this->nullableString($impact),
             'likelihood' => $this->nullableString($likelihood),
             'impact_if_not_valid' => $this->nullableString((string) $this->request->getPost('impact_if_not_valid')),
+            'impact_level' => $this->isAssumptionModule() || $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('impact_level')) : null,
             'target_date' => $this->nullableDate((string) $this->request->getPost('target_date')),
             'review_date' => $this->nullableDate((string) $this->request->getPost('review_date')),
             'decision_date' => $decisionDate,
@@ -210,6 +216,8 @@ abstract class BaseProjectRaidController extends BaseController
         $entryModel->update($entryId, [
             'title' => (string) $title,
             'description' => $description,
+            'date_reported' => $this->isIssueModule() ? $this->nullableDate((string) $this->request->getPost('date_reported')) : ($entry['date_reported'] ?? null),
+            'reporter_user_id' => $this->isIssueModule() ? $this->nullableUserId((string) ($this->request->getPost('reporter_user_id') ?: (string) ($entry['reporter_user_id'] ?? 0))) : ($entry['reporter_user_id'] ?? null),
             'mitigation_actions' => $this->nullableString((string) $this->request->getPost('mitigation_actions')),
             'owner_user_id' => $ownerId,
             'status' => $status,
@@ -217,10 +225,11 @@ abstract class BaseProjectRaidController extends BaseController
             'impact' => $this->nullableString(trim((string) $this->request->getPost('impact'))),
             'likelihood' => $this->nullableString(trim((string) $this->request->getPost('likelihood'))),
             'impact_if_not_valid' => $this->nullableString((string) $this->request->getPost('impact_if_not_valid')),
+            'impact_level' => $this->isAssumptionModule() || $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('impact_level')) : ($entry['impact_level'] ?? null),
             'target_date' => $this->nullableDate((string) $this->request->getPost('target_date')),
             'review_date' => $this->nullableDate((string) $this->request->getPost('review_date')),
             'decision_date' => $this->nullableDate((string) $this->request->getPost('decision_date')),
-            'made_by_user_id' => $this->nullableUserId((string) ($this->request->getPost('made_by_user_id') ?: (string) $actorId)),
+            'made_by_user_id' => $this->nullableUserId((string) ($this->request->getPost('made_by_user_id') ?: (string) ($entry['made_by_user_id'] ?? 0))),
             'closed_at' => $status === 'closed' ? (($entry['closed_at'] ?? null) ?: date('Y-m-d H:i:s')) : null,
             'updated_by_user_id' => $actorId,
         ]);
@@ -359,6 +368,8 @@ abstract class BaseProjectRaidController extends BaseController
         return [
             'title' => $titleRule,
             'description' => $descriptionRule,
+            'date_reported' => 'permit_empty|valid_date[Y-m-d]',
+            'reporter_user_id' => 'permit_empty|is_natural_no_zero',
             'mitigation_actions' => 'permit_empty|max_length[5000]',
             'owner_user_id' => 'permit_empty|is_natural_no_zero',
             'status' => 'permit_empty|in_list[open,in_review,closed]',
@@ -366,6 +377,7 @@ abstract class BaseProjectRaidController extends BaseController
             'impact' => 'permit_empty|in_list[low,medium,high]',
             'likelihood' => 'permit_empty|in_list[low,medium,high]',
             'impact_if_not_valid' => 'permit_empty|max_length[5000]',
+            'impact_level' => 'permit_empty|in_list[low,medium,high]',
             'target_date' => 'permit_empty|valid_date[Y-m-d]',
             'review_date' => 'permit_empty|valid_date[Y-m-d]',
             'decision_date' => $decisionDateRule,
@@ -453,6 +465,14 @@ abstract class BaseProjectRaidController extends BaseController
         return ['low', 'medium', 'high'];
     }
 
+    /**
+     * @return list<string>
+     */
+    private function impactLevelOptions(): array
+    {
+        return ['low', 'medium', 'high'];
+    }
+
     private function isRiskModule(): bool
     {
         return $this->moduleSlug() === 'risk_register_project';
@@ -466,6 +486,16 @@ abstract class BaseProjectRaidController extends BaseController
     private function isDecisionModule(): bool
     {
         return $this->moduleSlug() === 'decisions_register_project';
+    }
+
+    private function isIssueModule(): bool
+    {
+        return $this->moduleSlug() === 'issue_tracker_project';
+    }
+
+    private function isDependencyModule(): bool
+    {
+        return $this->moduleSlug() === 'dependencies_register_project';
     }
 
     private function calculateRiskPriority(string $impact, string $likelihood): string

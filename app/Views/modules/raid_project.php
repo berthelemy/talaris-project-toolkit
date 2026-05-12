@@ -11,11 +11,14 @@
  * @var list<string> $statusOptions
  * @var list<string> $priorityOptions
  * @var list<string> $riskScaleOptions
+ * @var list<string> $impactLevelOptions
  * @var array{q:string,status:string,owner_user_id:int,sort:string} $filters
  * @var bool $isReadOnly
  * @var bool $isRiskModule
  * @var bool $isAssumptionModule
  * @var bool $isDecisionModule
+ * @var bool $isIssueModule
+ * @var bool $isDependencyModule
  * @var string $backUrl
  */
 ?>
@@ -172,6 +175,34 @@
                         <div class="col-12">
                             <label class="form-label" for="impact_if_not_valid"><?= esc(lang('Module.raidColumnImpactIfNotValid')) ?></label>
                             <textarea id="impact_if_not_valid" name="impact_if_not_valid" rows="2" class="form-control"></textarea>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="form-label" for="impact_level"><?= esc(lang('Module.raidColumnImpactLevel')) ?></label>
+                            <select id="impact_level" name="impact_level" class="form-select">
+                                <option value=""></option>
+                                <?php foreach ($impactLevelOptions as $option): ?>
+                                    <option value="<?= esc($option) ?>"><?= esc((string) lang('Module.impactLevel' . ucfirst($option))) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($isDependencyModule): ?>
+                        <div class="col-6 col-md-3">
+                            <label class="form-label" for="impact_level"><?= esc(lang('Module.raidColumnImpactLevel')) ?></label>
+                            <select id="impact_level" name="impact_level" class="form-select">
+                                <option value=""></option>
+                                <?php foreach ($impactLevelOptions as $option): ?>
+                                    <option value="<?= esc($option) ?>"><?= esc((string) lang('Module.impactLevel' . ucfirst($option))) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($isIssueModule): ?>
+                        <div class="col-6 col-md-3">
+                            <label class="form-label" for="date_reported"><?= esc(lang('Module.raidColumnReported')) ?></label>
+                            <input id="date_reported" name="date_reported" type="date" class="form-control">
                         </div>
                     <?php endif; ?>
 

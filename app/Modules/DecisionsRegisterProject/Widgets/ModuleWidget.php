@@ -22,11 +22,11 @@ class ModuleWidget implements ModuleWidgetInterface
         $entries = (new ModuleRaidEntryModel())
             ->select('module_raid_entries.*, made_by.username as made_by_username')
             ->join('users as made_by', 'made_by.id = module_raid_entries.made_by_user_id', 'left')
-            ->where('module_slug', 'decisions_register_project')
-            ->where('scope_type', 'project')
-            ->where('scope_id', $scopeId)
-            ->orderBy('decision_date', 'DESC')
-            ->orderBy('id', 'DESC')
+            ->where('module_raid_entries.module_slug', 'decisions_register_project')
+            ->where('module_raid_entries.scope_type', 'project')
+            ->where('module_raid_entries.scope_id', $scopeId)
+            ->orderBy('module_raid_entries.decision_date', 'DESC')
+            ->orderBy('module_raid_entries.id', 'DESC')
             ->limit($maxEntries)
             ->findAll();
 

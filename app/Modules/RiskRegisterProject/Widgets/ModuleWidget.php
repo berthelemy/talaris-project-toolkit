@@ -20,11 +20,15 @@ class ModuleWidget implements ModuleWidgetInterface
         }
 
         $entries = (new ModuleRaidEntryModel())
-            ->where('module_slug', 'risk_register_project')
-            ->where('scope_type', 'project')
-            ->where('scope_id', $scopeId)
-            ->where('status !=', 'closed')
-            ->orderBy('id', 'DESC')
+            ->select('module_raid_entries.*, users.username as owner_username')
+            ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
+            ->where('module_raid_entries.module_slug', 'risk_register_project')
+            ->where('module_raid_entries.scope_type', 'project')
+            ->where('module_raid_entries.scope_id', $scopeId)
+            ->where('module_raid_entries.status !=', 'closed')
+            ->whereIn('module_raid_entries.priority', ['high', 'critical'])
+            ->orderBy('module_raid_entries.priority', 'DESC')
+            ->orderBy('module_raid_entries.updated_at', 'DESC')
             ->limit($maxEntries)
             ->findAll();
 

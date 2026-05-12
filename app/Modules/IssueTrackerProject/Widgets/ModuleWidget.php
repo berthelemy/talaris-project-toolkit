@@ -20,11 +20,14 @@ class ModuleWidget implements ModuleWidgetInterface
         }
 
         $entries = (new ModuleRaidEntryModel())
-            ->where('module_slug', 'issue_tracker_project')
-            ->where('scope_type', 'project')
-            ->where('scope_id', $scopeId)
-            ->where('status !=', 'closed')
-            ->orderBy('id', 'DESC')
+            ->select('module_raid_entries.*, users.username as owner_username, reporter.username as reporter_username')
+            ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
+            ->join('users as reporter', 'reporter.id = module_raid_entries.reporter_user_id', 'left')
+            ->where('module_raid_entries.module_slug', 'issue_tracker_project')
+            ->where('module_raid_entries.scope_type', 'project')
+            ->where('module_raid_entries.scope_id', $scopeId)
+            ->whereIn('module_raid_entries.status', ['open', 'in_review'])
+            ->orderBy('module_raid_entries.updated_at', 'DESC')
             ->limit($maxEntries)
             ->findAll();
 
