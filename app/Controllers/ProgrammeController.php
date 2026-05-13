@@ -31,6 +31,32 @@ class ProgrammeController extends BaseController
         }
 
         $programmes = (new ProgrammeModel())->orderBy('name', 'ASC')->findAll();
+        $programmeIds = array_values(array_filter(array_map(
+            static fn (array $programme): int => (int) ($programme['id'] ?? 0),
+            $programmes,
+        )));
+
+        $statusesByProgramme = [];
+        if ($programmeIds !== []) {
+            $rows = (new ProgrammeProjectModel())
+                ->select('programme_projects.programme_id, projects.status')
+                ->join('projects', 'projects.id = programme_projects.project_id')
+                ->whereIn('programme_projects.programme_id', $programmeIds)
+                ->findAll();
+
+            foreach ($rows as $row) {
+                $programmeId = (int) ($row['programme_id'] ?? 0);
+                $statusesByProgramme[$programmeId] ??= [];
+                $statusesByProgramme[$programmeId][] = (string) ($row['status'] ?? 'not_started');
+            }
+        }
+
+        foreach ($programmes as $index => $programme) {
+            $programmeId = (int) ($programme['id'] ?? 0);
+            $programmes[$index]['calculated_status'] = $this->computeProgrammeStatusFromStatuses(
+                $statusesByProgramme[$programmeId] ?? [],
+            );
+        }
 
         return view('programmes/index', [
             'programmes'     => $programmes,
@@ -110,16 +136,19 @@ class ProgrammeController extends BaseController
         }
 
         $linkedProjects = (new ProgrammeProjectModel())
-            ->select('projects.id, projects.name, projects.description, projects.created_at')
+            ->select('projects.id, projects.name, projects.description, projects.status, projects.created_at')
             ->join('projects', 'projects.id = programme_projects.project_id')
             ->where('programme_projects.programme_id', $programmeId)
             ->orderBy('projects.name', 'ASC')
             ->findAll();
 
+        $programmeStatus = $this->computeProgrammeStatus($linkedProjects);
+
         $widgets = (new ModuleWidgetService())->renderWidgets('programme', $programmeId);
 
         return view('programmes/show', [
             'programme' => $programme,
+            'programmeStatus' => $programmeStatus,
             'linkedProjects' => $linkedProjects,
             'widgets' => $widgets,
             'canOpenHelloModule' => (new ModuleRegistryService())
@@ -403,5 +432,63 @@ class ProgrammeController extends BaseController
         $trimmed = trim($value);
 
         return $trimmed === '' ? null : $trimmed;
+    }
+
+    /**
+     * @param list<array<string, mixed>> $linkedProjects
+     */
+    private function computeProgrammeStatus(array $linkedProjects): string
+    {
+        if ($linkedProjects === []) {
+            return 'not_started';
+        }
+
+        $statuses = array_values(array_filter(array_map(
+            static fn (array $project): string => (string) ($project['status'] ?? 'not_started'),
+            $linkedProjects,
+        )));
+
+        if (count(array_diff($statuses, ['completed'])) === 0) {
+            return 'completed';
+        }
+
+
+        return $this->computeProgrammeStatusFromStatuses($statuses);
+    }
+
+    /**
+     * @param list<string> $statuses
+     */
+    private function computeProgrammeStatusFromStatuses(array $statuses): string
+    {
+        if ($statuses === []) {
+            return 'not_started';
+        }
+
+        if (count(array_diff($statuses, ['completed'])) === 0) {
+            return 'completed';
+        }
+
+        if (in_array('blocked', $statuses, true)) {
+            return 'blocked';
+        }
+
+        if (in_array('at_risk', $statuses, true)) {
+            return 'at_risk';
+        }
+
+        if (in_array('in_progress', $statuses, true) || in_array('on_track', $statuses, true)) {
+            return 'in_progress';
+        }
+
+        if (count(array_diff($statuses, ['cancelled'])) === 0) {
+            return 'cancelled';
+        }
+
+        if (in_array('on_hold', $statuses, true)) {
+            return 'on_hold';
+        }
+
+        return 'not_started';
     }
 }

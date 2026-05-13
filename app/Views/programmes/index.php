@@ -49,36 +49,34 @@
     </div>
     <?php endif; ?>
 
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-0">
-            <?php if (empty($programmes)): ?>
-                <p class="text-muted p-4 mb-0"><?= esc(lang('Domain.programmesNone')) ?></p>
-            <?php else: ?>
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th><?= esc(lang('Domain.programmeName')) ?></th>
-                                <th class="d-none d-md-table-cell"><?= esc(lang('Domain.programmeDescription')) ?></th>
-                                <th class="d-none d-sm-table-cell"><?= esc(lang('Domain.programmeCreatedAt')) ?></th>
-                                <th><?= esc(lang('Domain.programmeActions')) ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($programmes as $programme): ?>
-                                <tr>
-                                    <td><a href="<?= site_url('programmes/' . (int) $programme['id']) ?>"><?= esc((string) $programme['name']) ?></a></td>
-                                    <td class="d-none d-md-table-cell text-muted"><?= esc((string) ($programme['description'] ?? '')) ?></td>
-                                    <td class="d-none d-sm-table-cell text-muted"><?= esc((string) ($programme['created_at'] ?? '')) ?></td>
-                                    <td><a href="<?= site_url('programmes/' . (int) $programme['id'] . '/edit') ?>" class="btn btn-outline-primary btn-sm"><?= esc(lang('Domain.programmeEditTitle')) ?></a></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            <?php endif; ?>
+    <?php if (empty($programmes)): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4 text-muted"><?= esc(lang('Domain.programmesNone')) ?></div>
         </div>
-    </div>
+    <?php else: ?>
+        <div class="row g-3">
+            <?php foreach ($programmes as $programme): ?>
+                <?php $status = (string) ($programme['calculated_status'] ?? 'not_started'); ?>
+                <div class="col-12 col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <a href="<?= site_url('programmes/' . (int) ($programme['id'] ?? 0)) ?>" class="stretched-link" aria-label="<?= esc((string) ($programme['name'] ?? '')) ?>"></a>
+                        <div class="card-body position-relative">
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                <h2 class="h5 mb-0"><?= esc((string) ($programme['name'] ?? '')) ?></h2>
+                                <span class="badge text-bg-secondary"><?= esc(lang('Domain.projectStatus_' . $status)) ?></span>
+                            </div>
+                            <p class="text-muted mb-3"><?= esc((string) ($programme['description'] ?? '')) ?></p>
+                            <div class="small text-muted d-flex justify-content-between align-items-center">
+                                <span><?= esc(lang('Domain.programmeCreatedAt')) ?>: <?= esc((string) ($programme['created_at'] ?? '')) ?></span>
+                                <a href="<?= site_url('programmes/' . (int) ($programme['id'] ?? 0) . '/edit') ?>" class="btn btn-outline-primary btn-sm position-relative" style="z-index:2;"><?= esc(lang('Domain.programmeEditTitle')) ?></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 </main>
+<?= view('layouts/app_footer') ?>
 </body>
 </html>

@@ -27,6 +27,10 @@
                 <span class="text-muted"><?= esc(lang('Domain.programmeDescription')) ?>:</span>
                 <div><?= esc((string) ($programme['description'] ?? '')) ?></div>
             </div>
+            <div class="mb-2">
+                <span class="text-muted"><?= esc(lang('Domain.programmeStatusCalculated')) ?>:</span>
+                <span class="badge text-bg-secondary"><?= esc(lang('Domain.projectStatus_' . (string) ($programmeStatus ?? 'not_started'))) ?></span>
+            </div>
             <div class="text-muted small">
                 <?= esc(lang('Domain.programmeCreatedAt')) ?>: <?= esc((string) ($programme['created_at'] ?? '')) ?>
             </div>
@@ -54,37 +58,32 @@
     <?php endif; ?>
 
     <div class="card border-0 shadow-sm">
-        <div class="card-body p-0">
-            <div class="p-3 border-bottom">
-                <h3 class="h6 mb-0"><?= esc(lang('Domain.linkedProjectsTitle')) ?></h3>
-            </div>
+        <div class="card-body">
+            <h3 class="h6 mb-3"><?= esc(lang('Domain.linkedProjectsTitle')) ?></h3>
             <?php if (empty($linkedProjects)): ?>
-                <p class="text-muted p-4 mb-0"><?= esc(lang('Domain.noLinkedProjects')) ?></p>
+                <p class="text-muted mb-0"><?= esc(lang('Domain.noLinkedProjects')) ?></p>
             <?php else: ?>
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0 js-datatable">
-                        <thead class="table-light">
-                            <tr>
-                                <th><?= esc(lang('Domain.projectName')) ?></th>
-                                <th class="d-none d-md-table-cell"><?= esc(lang('Domain.projectDescription')) ?></th>
-                                <th class="d-none d-sm-table-cell"><?= esc(lang('Domain.projectCreatedAt')) ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($linkedProjects as $linkedProject): ?>
-                                <tr>
-                                    <td><a href="<?= site_url('projects/' . (int) ($linkedProject['id'] ?? 0)) ?>"><?= esc((string) ($linkedProject['name'] ?? '')) ?></a></td>
-                                    <td class="d-none d-md-table-cell text-muted"><?= esc((string) ($linkedProject['description'] ?? '')) ?></td>
-                                    <td class="d-none d-sm-table-cell text-muted"><?= esc((string) ($linkedProject['created_at'] ?? '')) ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                <div class="row g-3">
+                    <?php foreach ($linkedProjects as $linkedProject): ?>
+                        <?php $projectStatus = (string) ($linkedProject['status'] ?? 'not_started'); ?>
+                        <div class="col-12 col-lg-6">
+                            <div class="card h-100 border">
+                                <a href="<?= site_url('projects/' . (int) ($linkedProject['id'] ?? 0)) ?>" class="stretched-link" aria-label="<?= esc((string) ($linkedProject['name'] ?? '')) ?>"></a>
+                                <div class="card-body position-relative">
+                                    <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                        <h4 class="h6 mb-0"><?= esc((string) ($linkedProject['name'] ?? '')) ?></h4>
+                                        <span class="badge text-bg-secondary"><?= esc(lang('Domain.projectStatus_' . $projectStatus)) ?></span>
+                                    </div>
+                                    <p class="text-muted mb-0"><?= esc((string) ($linkedProject['description'] ?? '')) ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             <?php endif; ?>
         </div>
     </div>
 </main>
-<?= view('layouts/datatable_assets') ?>
+<?= view('layouts/app_footer') ?>
 </body>
 </html>

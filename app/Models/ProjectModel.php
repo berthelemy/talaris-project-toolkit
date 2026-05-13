@@ -17,6 +17,7 @@ class ProjectModel extends Model
     protected $allowedFields    = [
         'name',
         'description',
+        'status',
         'owner_user_id',
     ];
 }

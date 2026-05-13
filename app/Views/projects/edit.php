@@ -73,6 +73,17 @@
                             <label for="description" class="form-label"><?= esc(lang('Domain.projectDescription')) ?></label>
                             <textarea id="description" name="description" class="form-control" rows="5" maxlength="5000"><?= esc((string) old('description', (string) ($project['description'] ?? ''))) ?></textarea>
                         </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label"><?= esc(lang('Domain.projectStatus')) ?></label>
+                            <?php $statusValue = (string) old('status', (string) ($project['status'] ?? 'not_started')); ?>
+                            <select id="status" name="status" class="form-select">
+                                <?php foreach (['not_started', 'in_progress', 'on_track', 'at_risk', 'blocked', 'on_hold', 'completed', 'cancelled'] as $statusOption): ?>
+                                    <option value="<?= esc($statusOption) ?>" <?= $statusValue === $statusOption ? 'selected' : '' ?>>
+                                        <?= esc(lang('Domain.projectStatus_' . $statusOption)) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary"><?= esc(lang('Domain.projectSaveButton')) ?></button>
                             <a href="<?= site_url('projects') ?>" class="btn btn-outline-secondary"><?= esc(lang('Domain.cancelButton')) ?></a>
@@ -168,5 +179,6 @@
     </div>
     </div>
 </main>
+<?= view('layouts/app_footer') ?>
 </body>
 </html>

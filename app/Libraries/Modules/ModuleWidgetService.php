@@ -149,6 +149,14 @@ class ModuleWidgetService
     }
 
     /**
+     * @param array<string, mixed> $module
+     */
+    public function canAccessModuleForActor(int $actorId, array $module, int $scopeId): bool
+    {
+        return $this->canAccessWidget($actorId, $module, $scopeId);
+    }
+
+    /**
     * Resolve a widget provider implementation for a module slug.
      *
     * @param string $moduleSlug Module slug, for example 'hello_world_project'.

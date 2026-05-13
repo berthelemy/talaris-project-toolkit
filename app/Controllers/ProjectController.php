@@ -6,6 +6,7 @@ use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Modules\ModuleRegistryService;
 use App\Libraries\Modules\ModuleWidgetService;
+use App\Models\ModuleWidgetLayoutPreferenceModel;
 use App\Models\ProgrammeModel;
 use App\Models\ProgrammeProjectModel;
 use App\Models\ProjectModel;
@@ -30,11 +31,56 @@ class ProjectController extends BaseController
             return redirect()->to('/login')->with('error', lang('Auth.loginRequired'));
         }
 
-        $projects = (new ProjectModel())->orderBy('name', 'ASC')->findAll();
+        $programmeFilter = (string) $this->request->getGet('programme_id');
+        $programmes = (new ProgrammeModel())->orderBy('name', 'ASC')->findAll();
+
+        $builder = (new ProjectModel())
+            ->select('projects.id, projects.name, projects.description, projects.status, projects.created_at')
+            ->join('programme_projects', 'programme_projects.project_id = projects.id', 'left')
+            ->groupBy('projects.id');
+
+        if ($programmeFilter === 'none') {
+            $builder->having('COUNT(programme_projects.id) = 0');
+        } elseif (ctype_digit($programmeFilter) && (int) $programmeFilter > 0) {
+            $builder->where('programme_projects.programme_id', (int) $programmeFilter);
+        } else {
+            $programmeFilter = '';
+        }
+
+        $projects = $builder
+            ->orderBy('projects.name', 'ASC')
+            ->findAll();
+
+        $projectIds = array_values(array_filter(array_map(
+            static fn (array $project): int => (int) ($project['id'] ?? 0),
+            $projects,
+        )));
+
+        $linkedProgrammesByProject = [];
+        if ($projectIds !== []) {
+            $links = (new ProgrammeProjectModel())
+                ->select('programme_projects.project_id, programmes.id AS programme_id, programmes.name AS programme_name')
+                ->join('programmes', 'programmes.id = programme_projects.programme_id')
+                ->whereIn('programme_projects.project_id', $projectIds)
+                ->orderBy('programmes.name', 'ASC')
+                ->findAll();
+
+            foreach ($links as $link) {
+                $projectId = (int) ($link['project_id'] ?? 0);
+                $linkedProgrammesByProject[$projectId] ??= [];
+                $linkedProgrammesByProject[$projectId][] = [
+                    'id' => (int) ($link['programme_id'] ?? 0),
+                    'name' => (string) ($link['programme_name'] ?? ''),
+                ];
+            }
+        }
 
         return view('projects/index', [
             'projects'  => $projects,
             'canCreate' => $this->canCreateProject($actorId),
+            'programmes' => $programmes,
+            'selectedProgrammeId' => $programmeFilter,
+            'linkedProgrammesByProject' => $linkedProgrammesByProject,
         ]);
     }
 
@@ -54,6 +100,7 @@ class ProjectController extends BaseController
         $rules = [
             'name' => 'required|max_length[150]',
             'description' => 'permit_empty|max_length[5000]',
+            'status' => 'permit_empty|in_list[not_started,in_progress,on_track,at_risk,blocked,on_hold,completed,cancelled]',
             'owner_user_id' => 'permit_empty|is_natural_no_zero',
         ];
 
@@ -71,6 +118,7 @@ class ProjectController extends BaseController
         $projectId = $projects->insert([
             'name' => trim((string) $this->request->getPost('name')),
             'description' => $this->nullableString((string) $this->request->getPost('description')),
+            'status' => $this->normalizeProjectStatus((string) $this->request->getPost('status')),
             'owner_user_id' => $ownerId,
         ], true);
 
@@ -116,12 +164,15 @@ class ProjectController extends BaseController
             ->orderBy('programmes.name', 'ASC')
             ->findAll();
 
-        $widgets = (new ModuleWidgetService())->renderWidgets('project', $projectId);
+        $widgetService = new ModuleWidgetService();
+        $widgets = $widgetService->renderWidgets('project', $projectId);
+        $projectModules = $this->buildProjectModuleNavigation($projectId, $actorId, $widgetService);
 
         return view('projects/show', [
             'project' => $project,
             'linkedProgrammes' => $linkedProgrammes,
             'widgets' => $widgets,
+            'projectModules' => $projectModules,
             'canOpenHelloModule' => (new ModuleRegistryService())
                 ->isEnabled(ModuleRegistryService::HELLO_WORLD_PROJECT, 'project'),
             'canOpenRiskModule' => (new ModuleRegistryService())
@@ -155,6 +206,7 @@ class ProjectController extends BaseController
         $rules = [
             'name' => 'required|max_length[150]',
             'description' => 'permit_empty|max_length[5000]',
+            'status' => 'permit_empty|in_list[not_started,in_progress,on_track,at_risk,blocked,on_hold,completed,cancelled]',
         ];
 
         if (! $this->validateData($this->request->getPost(), $rules)) {
@@ -164,6 +216,7 @@ class ProjectController extends BaseController
         (new ProjectModel())->update($projectId, [
             'name' => trim((string) $this->request->getPost('name')),
             'description' => $this->nullableString((string) $this->request->getPost('description')),
+            'status' => $this->normalizeProjectStatus((string) $this->request->getPost('status')),
         ]);
 
         (new AuditLogger())->log('project_updated', 'success', $actorId, [
@@ -343,5 +396,130 @@ class ProjectController extends BaseController
         $trimmed = trim($value);
 
         return $trimmed === '' ? null : $trimmed;
+    }
+
+    private function normalizeProjectStatus(string $status): string
+    {
+        $value = trim($status);
+        if ($value === '') {
+            return 'not_started';
+        }
+
+        $allowed = [
+            'not_started',
+            'in_progress',
+            'on_track',
+            'at_risk',
+            'blocked',
+            'on_hold',
+            'completed',
+            'cancelled',
+        ];
+
+        return in_array($value, $allowed, true) ? $value : 'not_started';
+    }
+
+    /**
+     * @return list<array{slug: string, name: string, url: string}>
+     */
+    private function buildProjectModuleNavigation(int $projectId, int $actorId, ModuleWidgetService $widgetService): array
+    {
+        $modules = (new ModuleRegistryService())->getEnabledModulesByType('project');
+        $preferences = (new ModuleWidgetLayoutPreferenceModel())
+            ->where('scope_type', 'project')
+            ->whereIn('scope_id', [0, $projectId])
+            ->findAll();
+
+        $defaultPreferences = [];
+        $scopePreferences = [];
+
+        foreach ($preferences as $preference) {
+            $slug = (string) ($preference['module_slug'] ?? '');
+            if ($slug === '') {
+                continue;
+            }
+
+            if ((int) ($preference['scope_id'] ?? 0) === 0) {
+                $defaultPreferences[$slug] = $preference;
+                continue;
+            }
+
+            $scopePreferences[$slug] = $preference;
+        }
+
+        $navigation = [];
+        foreach ($modules as $module) {
+            $slug = (string) ($module['slug'] ?? '');
+            if ($slug === '') {
+                continue;
+            }
+
+            $routeSegment = $this->moduleSlugToRouteSegment($slug, 'project');
+            if ($routeSegment === '') {
+                continue;
+            }
+
+            $isVisible = true;
+            $displayOrder = (int) ($module['display_order'] ?? 0);
+
+            if (isset($defaultPreferences[$slug])) {
+                $isVisible = (bool) ($defaultPreferences[$slug]['is_visible'] ?? true);
+                if ($defaultPreferences[$slug]['display_order'] !== null) {
+                    $displayOrder = (int) $defaultPreferences[$slug]['display_order'];
+                }
+            }
+
+            if (isset($scopePreferences[$slug])) {
+                $isVisible = (bool) ($scopePreferences[$slug]['is_visible'] ?? $isVisible);
+                if ($scopePreferences[$slug]['display_order'] !== null) {
+                    $displayOrder = (int) $scopePreferences[$slug]['display_order'];
+                }
+            }
+
+            if (! $isVisible || ! $widgetService->canAccessModuleForActor($actorId, $module, $projectId)) {
+                continue;
+            }
+
+            $navigation[] = [
+                'slug' => $slug,
+                'name' => (string) ($module['name'] ?? $slug),
+                'url' => site_url('projects/' . $projectId . '/modules/' . $routeSegment),
+                'display_order' => $displayOrder,
+            ];
+        }
+
+        usort($navigation, static function (array $a, array $b): int {
+            $orderCompare = ((int) $a['display_order']) <=> ((int) $b['display_order']);
+
+            if ($orderCompare !== 0) {
+                return $orderCompare;
+            }
+
+            return strcasecmp((string) $a['name'], (string) $b['name']);
+        });
+
+        return array_values(array_map(static function (array $item): array {
+            return [
+                'slug' => (string) $item['slug'],
+                'name' => (string) $item['name'],
+                'url' => (string) $item['url'],
+            ];
+        }, $navigation));
+    }
+
+    private function moduleSlugToRouteSegment(string $moduleSlug, string $scopeType): string
+    {
+        $suffix = '_' . $scopeType;
+
+        if (! str_ends_with($moduleSlug, $suffix)) {
+            return '';
+        }
+
+        $base = substr($moduleSlug, 0, -strlen($suffix));
+        if ($base === false || $base === '') {
+            return '';
+        }
+
+        return str_replace('_', '-', $base);
     }
 }

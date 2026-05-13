@@ -24,42 +24,66 @@ if (is_int($userId) || ctype_digit((string) $userId)) {
 }
 ?>
 <header class="border-bottom bg-white">
-    <div class="container py-3 d-flex flex-wrap justify-content-between align-items-center gap-3">
-        <div class="d-flex align-items-center gap-2">
+    <nav class="container navbar navbar-expand-lg py-2" aria-label="Main">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="<?= site_url('dashboard') ?>">
             <?php if ($logoPath !== ''): ?>
-                <img src="<?= esc(base_url($logoPath)) ?>" alt="<?= esc(lang('Theme.logoAlt')) ?>" style="height:40px; width:auto;">
+                <img src="<?= esc(base_url($logoPath)) ?>" alt="<?= esc(lang('Theme.logoAlt')) ?>" style="height:34px; width:auto;">
             <?php endif; ?>
-            <h1 class="h5 mb-0"><?= esc($pageTitle) ?></h1>
+            <span class="fw-semibold">Talaris Project Toolkit</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a href="<?= site_url('programmes') ?>" class="nav-link <?= $active === 'programmes' ? 'active fw-semibold' : '' ?>"><?= esc(lang('Domain.programmesTitle')) ?></a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('projects') ?>" class="nav-link <?= $active === 'projects' ? 'active fw-semibold' : '' ?>"><?= esc(lang('Domain.projectsTitle')) ?></a>
+                </li>
+                <?php if ($canManageUsers || $canManageModules || $canManageTheme): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle <?= in_array($active, ['users', 'modules', 'theme'], true) ? 'active fw-semibold' : '' ?>" href="#" id="adminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <?= esc(lang('Domain.adminMenuLabel')) ?>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="adminMenu">
+                            <?php if ($canManageUsers): ?>
+                                <li><a class="dropdown-item" href="<?= site_url('users') ?>"><?= esc(lang('UserAdmin.navLabel')) ?></a></li>
+                            <?php endif; ?>
+                            <?php if ($canManageModules): ?>
+                                <li><a class="dropdown-item" href="<?= site_url('modules') ?>"><?= esc(lang('Module.navLabel')) ?></a></li>
+                            <?php endif; ?>
+                            <?php if ($canManageTheme): ?>
+                                <li><a class="dropdown-item" href="<?= site_url('theme') ?>"><?= esc(lang('Theme.navLabel')) ?></a></li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+                <li class="nav-item">
+                    <a href="<?= site_url('profile') ?>" class="nav-link <?= $active === 'profile' ? 'active fw-semibold' : '' ?>"><?= esc(lang('Auth.profileButton')) ?></a>
+                </li>
+            </ul>
+
+            <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
+                <form method="post" action="<?= site_url('language') ?>" class="m-0 d-flex align-items-center gap-1">
+                    <?= csrf_field() ?>
+                    <label class="visually-hidden" for="header-locale"><?= esc(lang('Auth.languageSelectorLabel')) ?></label>
+                    <select id="header-locale" name="locale" class="form-select form-select-sm" onchange="this.form.submit()" aria-label="<?= esc(lang('Auth.languageSelectorLabel')) ?>">
+                        <option value="en" <?= $activeLocale === 'en' ? 'selected' : '' ?>><?= esc(lang('Auth.languageEnglish')) ?></option>
+                        <option value="fr" <?= $activeLocale === 'fr' ? 'selected' : '' ?>><?= esc(lang('Auth.languageFrench')) ?></option>
+                    </select>
+                    <noscript>
+                        <button class="btn btn-outline-secondary btn-sm" type="submit"><?= esc(lang('Auth.languageSelectorApply')) ?></button>
+                    </noscript>
+                </form>
+
+                <form method="post" action="<?= site_url('logout') ?>" class="m-0">
+                    <?= csrf_field() ?>
+                    <button class="btn btn-outline-secondary btn-sm" type="submit"><?= esc(lang('Auth.logoutButton')) ?></button>
+                </form>
+            </div>
         </div>
-        <div class="d-flex flex-wrap gap-2 align-items-center">
-            <a href="<?= site_url('dashboard') ?>" class="btn btn-sm <?= $active === 'dashboard' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Auth.dashboardTitle')) ?></a>
-            <a href="<?= site_url('programmes') ?>" class="btn btn-sm <?= $active === 'programmes' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Domain.programmesTitle')) ?></a>
-            <a href="<?= site_url('projects') ?>" class="btn btn-sm <?= $active === 'projects' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Domain.projectsTitle')) ?></a>
-            <?php if ($canManageUsers): ?>
-                <a href="<?= site_url('users') ?>" class="btn btn-sm <?= $active === 'users' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('UserAdmin.navLabel')) ?></a>
-            <?php endif; ?>
-            <?php if ($canManageModules): ?>
-                <a href="<?= site_url('modules') ?>" class="btn btn-sm <?= $active === 'modules' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Module.navLabel')) ?></a>
-            <?php endif; ?>
-            <a href="<?= site_url('profile') ?>" class="btn btn-sm <?= $active === 'profile' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Auth.profileButton')) ?></a>
-            <?php if ($canManageTheme): ?>
-                <a href="<?= site_url('theme') ?>" class="btn btn-sm <?= $active === 'theme' ? 'btn-primary' : 'btn-outline-secondary' ?>"><?= esc(lang('Theme.navLabel')) ?></a>
-            <?php endif; ?>
-            <form method="post" action="<?= site_url('language') ?>" class="m-0 d-flex align-items-center gap-1">
-                <?= csrf_field() ?>
-                <label class="visually-hidden" for="header-locale"><?= esc(lang('Auth.languageSelectorLabel')) ?></label>
-                <select id="header-locale" name="locale" class="form-select form-select-sm" onchange="this.form.submit()" aria-label="<?= esc(lang('Auth.languageSelectorLabel')) ?>">
-                    <option value="en" <?= $activeLocale === 'en' ? 'selected' : '' ?>><?= esc(lang('Auth.languageEnglish')) ?></option>
-                    <option value="fr" <?= $activeLocale === 'fr' ? 'selected' : '' ?>><?= esc(lang('Auth.languageFrench')) ?></option>
-                </select>
-                <noscript>
-                    <button class="btn btn-outline-secondary btn-sm" type="submit"><?= esc(lang('Auth.languageSelectorApply')) ?></button>
-                </noscript>
-            </form>
-            <form method="post" action="<?= site_url('logout') ?>" class="m-0">
-                <?= csrf_field() ?>
-                <button class="btn btn-outline-secondary btn-sm" type="submit"><?= esc(lang('Auth.logoutButton')) ?></button>
-            </form>
-        </div>
-    </div>
+    </nav>
 </header>
