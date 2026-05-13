@@ -5,8 +5,8 @@ namespace App\Controllers;
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Modules\ModuleRegistryService;
+use App\Libraries\Modules\ModuleWidgetLayoutService;
 use App\Libraries\Modules\ModuleWidgetService;
-use App\Models\ModuleWidgetLayoutPreferenceModel;
 use App\Models\ProgrammeModel;
 use App\Models\ProgrammeProjectModel;
 use App\Models\ProjectModel;
@@ -167,12 +167,16 @@ class ProjectController extends BaseController
         $widgetService = new ModuleWidgetService();
         $widgets = $widgetService->renderWidgets('project', $projectId);
         $projectModules = $this->buildProjectModuleNavigation($projectId, $actorId, $widgetService);
+        $canManageWidgetLayout = $this->canManageProjectWidgetLayout($actorId, $project);
+        $widgetLayoutOptions = $this->buildProjectWidgetLayoutOptions($projectId, $actorId, $widgetService);
 
         return view('projects/show', [
             'project' => $project,
             'linkedProgrammes' => $linkedProgrammes,
             'widgets' => $widgets,
             'projectModules' => $projectModules,
+            'canManageWidgetLayout' => $canManageWidgetLayout,
+            'widgetLayoutOptions' => $widgetLayoutOptions,
             'canOpenHelloModule' => (new ModuleRegistryService())
                 ->isEnabled(ModuleRegistryService::HELLO_WORLD_PROJECT, 'project'),
             'canOpenRiskModule' => (new ModuleRegistryService())
@@ -312,6 +316,91 @@ class ProjectController extends BaseController
         return redirect()->to('/dashboard')->with('success', lang('Domain.projectManagerAssignedSuccess'));
     }
 
+    /**
+     * Display widget layout management page for a project.
+     *
+     * @param int $projectId Project identifier.
+     * @return string|RedirectResponse
+     */
+    public function editWidgetLayout(int $projectId): string|RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+        $project = (new ProjectModel())->find($projectId);
+
+        if ($actorId === null) {
+            return redirect()->to('/login')->with('error', lang('Auth.loginRequired'));
+        }
+
+        if ($project === null) {
+            return redirect()->to('/projects')->with('error', lang('Domain.projectNotFound'));
+        }
+
+        if (! $this->canViewProject($actorId, $project)) {
+            return redirect()->to('/projects')->with('error', lang('Domain.notAuthorized'));
+        }
+
+        if (! $this->canManageProjectWidgetLayout($actorId, $project)) {
+            return redirect()->to('/projects')->with('error', lang('Domain.notAuthorized'));
+        }
+
+        $widgetService = new ModuleWidgetService();
+        $projectModules = $this->buildProjectModuleNavigation($projectId, $actorId, $widgetService);
+        $widgetLayoutOptions = $this->buildProjectWidgetLayoutOptions($projectId, $actorId, $widgetService);
+
+        return view('projects/widget_layout_edit', [
+            'project' => $project,
+            'projectModules' => $projectModules,
+            'widgetLayoutOptions' => $widgetLayoutOptions,
+        ]);
+    }
+
+    public function updateWidgetLayout(int $projectId): RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+        $project = (new ProjectModel())->find($projectId);
+
+        if ($actorId === null || $project === null || ! $this->canManageProjectWidgetLayout($actorId, $project)) {
+            return redirect()->to('/dashboard')->with('error', lang('Domain.notAuthorized'));
+        }
+
+        $widgetService = new ModuleWidgetService();
+        $registry = new ModuleRegistryService();
+        $layoutService = new ModuleWidgetLayoutService();
+        $modules = $registry->getEnabledModulesByType('project');
+
+        $visibilityInput = (array) $this->request->getPost('widget_visible');
+        $orderInput = (array) $this->request->getPost('widget_order');
+        $changes = [];
+
+        foreach ($modules as $module) {
+            $slug = (string) ($module['slug'] ?? '');
+            if ($slug === '') {
+                continue;
+            }
+
+            if (! $widgetService->canAccessModuleForActor($actorId, $module, $projectId)) {
+                continue;
+            }
+
+            $isVisible = isset($visibilityInput[$slug]);
+            $displayOrder = max(0, (int) ($orderInput[$slug] ?? (int) ($module['display_order'] ?? 0)));
+
+            $layoutService->upsert('project', $projectId, $slug, $isVisible, $displayOrder, $actorId);
+            $changes[] = [
+                'module_slug' => $slug,
+                'is_visible' => $isVisible,
+                'display_order' => $displayOrder,
+            ];
+        }
+
+        (new AuditLogger())->log('project_widget_layout_updated', 'success', $actorId, [
+            'project_id' => $projectId,
+            'changes' => $changes,
+        ]);
+
+        return redirect()->to('/projects/' . $projectId)->with('success', lang('Module.projectLayoutUpdatedSuccess'));
+    }
+
     private function canCreateProject(int $actorId): bool
     {
         $rbac = new RbacService();
@@ -350,6 +439,21 @@ class ProjectController extends BaseController
         return $rbac->hasPermission($actorId, 'project.read_own', 'project', (int) $project['id'])
             || $rbac->hasPermission($actorId, 'project.update_own', 'project', (int) $project['id'])
             || $rbac->hasPermission($actorId, 'project.delete_own', 'project', (int) $project['id'])
+            || $this->isSystemAdministrator($actorId);
+    }
+
+    /**
+     * @param array<string, mixed> $project
+     */
+    private function canManageProjectWidgetLayout(int $actorId, array $project): bool
+    {
+        if ($this->canManageProject($actorId, $project)) {
+            return true;
+        }
+
+        $rbac = new RbacService();
+
+        return $rbac->hasPermission($actorId, 'project.content.update', 'project', (int) ($project['id'] ?? 0))
             || $this->isSystemAdministrator($actorId);
     }
 
@@ -425,27 +529,6 @@ class ProjectController extends BaseController
     private function buildProjectModuleNavigation(int $projectId, int $actorId, ModuleWidgetService $widgetService): array
     {
         $modules = (new ModuleRegistryService())->getEnabledModulesByType('project');
-        $preferences = (new ModuleWidgetLayoutPreferenceModel())
-            ->where('scope_type', 'project')
-            ->whereIn('scope_id', [0, $projectId])
-            ->findAll();
-
-        $defaultPreferences = [];
-        $scopePreferences = [];
-
-        foreach ($preferences as $preference) {
-            $slug = (string) ($preference['module_slug'] ?? '');
-            if ($slug === '') {
-                continue;
-            }
-
-            if ((int) ($preference['scope_id'] ?? 0) === 0) {
-                $defaultPreferences[$slug] = $preference;
-                continue;
-            }
-
-            $scopePreferences[$slug] = $preference;
-        }
 
         $navigation = [];
         foreach ($modules as $module) {
@@ -459,24 +542,9 @@ class ProjectController extends BaseController
                 continue;
             }
 
-            $isVisible = true;
             $displayOrder = (int) ($module['display_order'] ?? 0);
 
-            if (isset($defaultPreferences[$slug])) {
-                $isVisible = (bool) ($defaultPreferences[$slug]['is_visible'] ?? true);
-                if ($defaultPreferences[$slug]['display_order'] !== null) {
-                    $displayOrder = (int) $defaultPreferences[$slug]['display_order'];
-                }
-            }
-
-            if (isset($scopePreferences[$slug])) {
-                $isVisible = (bool) ($scopePreferences[$slug]['is_visible'] ?? $isVisible);
-                if ($scopePreferences[$slug]['display_order'] !== null) {
-                    $displayOrder = (int) $scopePreferences[$slug]['display_order'];
-                }
-            }
-
-            if (! $isVisible || ! $widgetService->canAccessModuleForActor($actorId, $module, $projectId)) {
+            if (! $widgetService->canAccessModuleForActor($actorId, $module, $projectId)) {
                 continue;
             }
 
@@ -505,6 +573,44 @@ class ProjectController extends BaseController
                 'url' => (string) $item['url'],
             ];
         }, $navigation));
+    }
+
+    /**
+     * @return list<array{slug: string, name: string, is_visible: bool, display_order: int}>
+     */
+    private function buildProjectWidgetLayoutOptions(int $projectId, int $actorId, ModuleWidgetService $widgetService): array
+    {
+        $modules = (new ModuleRegistryService())->getEnabledModulesByType('project');
+        $layoutService = new ModuleWidgetLayoutService();
+        $defaults = $layoutService->getDefaultByScope('project');
+        $scoped = $layoutService->getScoped('project', $projectId);
+
+        $options = [];
+        foreach ($modules as $module) {
+            $slug = (string) ($module['slug'] ?? '');
+            if ($slug === '' || ! $widgetService->canAccessModuleForActor($actorId, $module, $projectId)) {
+                continue;
+            }
+
+            $layout = $layoutService->resolveForModule($module, $defaults, $scoped);
+            $options[] = [
+                'slug' => $slug,
+                'name' => (string) ($module['name'] ?? $slug),
+                'is_visible' => $layout['is_visible'],
+                'display_order' => $layout['display_order'],
+            ];
+        }
+
+        usort($options, static function (array $a, array $b): int {
+            $orderCompare = ((int) $a['display_order']) <=> ((int) $b['display_order']);
+            if ($orderCompare !== 0) {
+                return $orderCompare;
+            }
+
+            return strcasecmp((string) $a['name'], (string) $b['name']);
+        });
+
+        return $options;
     }
 
     private function moduleSlugToRouteSegment(string $moduleSlug, string $scopeType): string

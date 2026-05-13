@@ -162,5 +162,6 @@
         </div>
     </div>
 </main>
+<?= view('layouts/app_footer') ?>
 </body>
 </html>

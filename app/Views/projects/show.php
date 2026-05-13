@@ -34,6 +34,9 @@
                     <nav aria-label="<?= esc(lang('Domain.projectModulesLabel')) ?>">
                         <ul class="nav nav-pills flex-column gap-1">
                             <li class="nav-item"><a class="nav-link active" href="<?= site_url('projects/' . (int) ($project['id'] ?? 0)) ?>"><?= esc(lang('Domain.overviewLabel')) ?></a></li>
+                            <?php if ((bool) ($canManageWidgetLayout ?? false)): ?>
+                                <li class="nav-item"><a class="nav-link" href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/widgets/layout') ?>"><?= esc(lang('Module.projectLayoutManageWidgets')) ?></a></li>
+                            <?php endif; ?>
                             <?php foreach ((array) ($projectModules ?? []) as $module): ?>
                                 <li class="nav-item"><a class="nav-link" href="<?= esc((string) ($module['url'] ?? '#')) ?>"><?= esc((string) ($module['name'] ?? '')) ?></a></li>
                             <?php endforeach; ?>
@@ -62,7 +65,9 @@
 
             <?php if ($widgets !== ''): ?>
                 <div class="mb-4">
-                    <?= $widgets ?>
+                    <div class="row g-3">
+                        <?= $widgets ?>
+                    </div>
                 </div>
             <?php endif; ?>
 

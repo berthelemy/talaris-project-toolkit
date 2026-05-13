@@ -2,9 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Modules\ModuleLockService;
 use App\Libraries\Modules\ModuleRegistryService;
+use App\Libraries\Modules\ModuleWidgetLayoutService;
 use App\Models\ModuleRegistryModel;
 use App\Models\ModuleWidgetFailureModel;
 use App\Models\UserModel;
@@ -36,6 +38,8 @@ class ModuleManagementController extends BaseController
             'modules' => (new ModuleRegistryService())->allModules(),
             'recentFailures' => $this->recentFailuresByModule(),
             'activeLocks' => (new ModuleLockService())->activeLocks(),
+            'defaultLayoutPreferences' => (new ModuleWidgetLayoutService())->getDefaultByScope('project')
+                + (new ModuleWidgetLayoutService())->getDefaultByScope('programme'),
         ]);
     }
 
@@ -120,6 +124,44 @@ class ModuleManagementController extends BaseController
             ->update();
 
         return redirect()->to('/modules')->with('success', lang('Module.configUpdatedSuccess'));
+    }
+
+    public function updateDefaultWidgetLayout(string $slug): RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+
+        if ($actorId === null) {
+            return redirect()->to('/login')->with('error', lang('Auth.loginRequired'));
+        }
+
+        if (! $this->canManageModules($actorId)) {
+            return redirect()->to('/dashboard')->with('error', lang('Domain.notAuthorized'));
+        }
+
+        $module = (new ModuleRegistryModel())->where('slug', $slug)->first();
+        if (! is_array($module)) {
+            return redirect()->to('/modules')->with('error', lang('Module.notFound'));
+        }
+
+        $scopeType = (string) ($module['scope_type'] ?? '');
+        if (! in_array($scopeType, ['programme', 'project'], true)) {
+            return redirect()->to('/modules')->with('error', lang('Module.notFound'));
+        }
+
+        $isVisible = (string) $this->request->getPost('is_visible') === '1';
+        $displayOrder = max(0, (int) $this->request->getPost('display_order'));
+
+        (new ModuleWidgetLayoutService())->upsert($scopeType, 0, $slug, $isVisible, $displayOrder, $actorId);
+
+        (new AuditLogger())->log('module_widget_default_layout_updated', 'success', $actorId, [
+            'module_slug' => $slug,
+            'scope_type' => $scopeType,
+            'scope_id' => 0,
+            'is_visible' => $isVisible,
+            'display_order' => $displayOrder,
+        ]);
+
+        return redirect()->to('/modules')->with('success', lang('Module.defaultLayoutUpdatedSuccess'));
     }
 
     public function releaseLock(int $lockId): RedirectResponse

@@ -43,6 +43,9 @@
                             <?php foreach ($modules as $module): ?>
                                 <?php $enabled = (bool) ($module['is_enabled'] ?? false); ?>
                                 <?php $moduleSlug = (string) ($module['slug'] ?? ''); ?>
+                                <?php $defaultPref = (array) (($defaultLayoutPreferences[$moduleSlug] ?? []) ?: []); ?>
+                                <?php $defaultVisible = array_key_exists('is_visible', $defaultPref) ? (bool) $defaultPref['is_visible'] : true; ?>
+                                <?php $defaultOrder = $defaultPref['display_order'] ?? $module['display_order'] ?? 0; ?>
                                 <?php $widgetConfig = json_decode((string) ($module['widget_config_json'] ?? ''), true); ?>
                                 <?php if (! is_array($widgetConfig)) {
                                     $widgetConfig = [];
@@ -90,6 +93,13 @@
                                             <?= csrf_field() ?>
                                             <input class="form-control form-control-sm" style="width: 72px;" name="max_entries" type="number" min="1" max="25" value="<?= esc((string) $maxEntries) ?>">
                                             <button class="btn btn-sm btn-outline-secondary" type="submit"><?= esc(lang('Module.updateConfigButton')) ?></button>
+                                        </form>
+                                        <form method="post" action="<?= site_url('modules/' . rawurlencode($moduleSlug) . '/widget-layout-default') ?>" class="d-inline-flex align-items-center gap-1 ms-1">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden" name="is_visible" value="0">
+                                            <input class="form-check-input" name="is_visible" value="1" type="checkbox" aria-label="<?= esc(lang('Module.defaultVisibleLabel')) ?>" <?= $defaultVisible ? 'checked' : '' ?>>
+                                            <input class="form-control form-control-sm" style="width: 72px;" name="display_order" type="number" min="0" value="<?= esc((string) ((int) $defaultOrder)) ?>" aria-label="<?= esc(lang('Module.defaultOrderLabel')) ?>">
+                                            <button class="btn btn-sm btn-outline-dark" type="submit"><?= esc(lang('Module.updateDefaultLayoutButton')) ?></button>
                                         </form>
                                     </td>
                                 </tr>

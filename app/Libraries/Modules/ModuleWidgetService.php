@@ -17,6 +17,7 @@ class ModuleWidgetService
     private const WIDGET_HTML_CACHE_TTL = 180;
 
     private ModuleRegistryService $registryService;
+    private ModuleWidgetLayoutService $layoutService;
 
     /**
     * Build widget service with module registry dependency.
@@ -24,6 +25,7 @@ class ModuleWidgetService
     public function __construct()
     {
         $this->registryService = new ModuleRegistryService();
+        $this->layoutService = new ModuleWidgetLayoutService();
     }
 
     /**
@@ -45,9 +47,19 @@ class ModuleWidgetService
         // Get all enabled modules for this scope type
         $modules = $this->registryService->getEnabledModulesByType($scopeType);
 
+        $defaultPreferences = $this->layoutService->getDefaultByScope($scopeType);
+        $scopedPreferences = $this->layoutService->getScoped($scopeType, $scopeId);
+
+        $orderedWidgets = [];
+
         foreach ($modules as $module) {
             $moduleSlug = (string) ($module['slug'] ?? '');
             if ($moduleSlug === '') {
+                continue;
+            }
+
+            $layout = $this->layoutService->resolveForModule($module, $defaultPreferences, $scopedPreferences);
+            if (! $layout['is_visible']) {
                 continue;
             }
 
@@ -82,7 +94,9 @@ class ModuleWidgetService
                         cache()->save($cacheKey, $cached, self::WIDGET_DATA_CACHE_TTL);
                     }
 
-                    $widgets[$moduleSlug] = [
+                    $orderedWidgets[] = [
+                        'slug' => $moduleSlug,
+                        'display_order' => $layout['display_order'],
                         'widget' => $widget,
                         'data' => $cached,
                         'view' => $widgetView,
@@ -94,6 +108,23 @@ class ModuleWidgetService
                 $this->incrementMetric($moduleSlug, $scopeType, $scopeId, 'error_count');
                 $this->recordFailure($moduleSlug, $scopeType, $scopeId, $actorId, 'load', $e);
             }
+        }
+
+        usort($orderedWidgets, static function (array $a, array $b): int {
+            $orderCompare = ((int) $a['display_order']) <=> ((int) $b['display_order']);
+            if ($orderCompare !== 0) {
+                return $orderCompare;
+            }
+
+            return strcasecmp((string) $a['slug'], (string) $b['slug']);
+        });
+
+        foreach ($orderedWidgets as $entry) {
+            $widgets[(string) $entry['slug']] = [
+                'widget' => $entry['widget'],
+                'data' => $entry['data'],
+                'view' => $entry['view'],
+            ];
         }
 
         return $widgets;
@@ -122,11 +153,13 @@ class ModuleWidgetService
         foreach ($widgets as $moduleSlug => $widget) {
             try {
                 $start = microtime(true);
-                $html .= view($widget['view'], array_merge($widget['data'], [
+                $widgetHtml = view($widget['view'], array_merge($widget['data'], [
                     'scope_id' => $scopeId,
                     'scope_type' => $scopeType,
                     'module_slug' => $moduleSlug,
                 ]));
+                // Wrap each widget in a responsive grid column: 1 col on mobile, 2 cols on medium, 3 cols on large
+                $html .= '<div class="col-12 col-md-6 col-lg-4">' . $widgetHtml . '</div>';
                 $this->incrementMetric($moduleSlug, $scopeType, $scopeId, 'rendered_count');
                 $this->touchMetricLastRenderedAt($moduleSlug, $scopeType, $scopeId, $start);
             } catch (\Throwable $e) {

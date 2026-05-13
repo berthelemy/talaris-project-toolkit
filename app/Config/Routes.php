@@ -34,6 +34,7 @@ $routes->get('modules', 'ModuleManagementController::index', ['filter' => ['auth
 $routes->post('modules/(:segment)/toggle', 'ModuleManagementController::toggle/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('modules/(:segment)/ordering', 'ModuleManagementController::updateOrdering/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('modules/(:segment)/widget-config', 'ModuleManagementController::updateWidgetConfig/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('modules/(:segment)/widget-layout-default', 'ModuleManagementController::updateDefaultWidgetLayout/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('modules/locks/(:num)/release', 'ModuleManagementController::releaseLock/$1', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('api/modules/(:segment)/(:segment)', 'ModuleApiController::read/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
@@ -66,6 +67,8 @@ $routes->get('projects/(:num)/edit', 'ProjectController::edit/$1', ['filter' => 
 $routes->post('projects/(:num)', 'ProjectController::update/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('projects/(:num)/delete', 'ProjectController::delete/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('projects/(:num)/managers', 'ProjectController::assignManager/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->get('projects/(:num)/widgets/layout', 'ProjectController::editWidgetLayout/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('projects/(:num)/widgets/layout', 'ProjectController::updateWidgetLayout/$1', ['filter' => ['auth', 'sessiontimeout']]);
 
 // Load module routes from each module's Config/routes.php
 $moduleDir = APPPATH . 'Modules';
