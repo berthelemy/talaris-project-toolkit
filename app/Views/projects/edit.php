@@ -1,13 +1,12 @@
-<!doctype html>
-<?php $locale = (string) service('request')->getLocale(); ?>
-<?php /** @var array<string, mixed> $project */ ?>
-<html lang="<?= esc($locale) ?>">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= esc(lang('Domain.projectEditTitle')) ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <?= view('layouts/theme_assets') ?>
+<?php
+/** @var array<string, mixed> $project */
+$pageTitle = (string) lang('Domain.projectEditTitle');
+$active = 'projects';
+$mainClass = 'modal-edit-page';
+?>
+<?= $this->extend('layouts/base') ?>
+
+<?= $this->section('extraHead') ?>
     <style>
         .modal-edit-page {
             min-height: calc(100vh - 82px);
@@ -34,10 +33,9 @@
             box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.2);
         }
     </style>
-</head>
-<body class="bg-light">
-<?= view('layouts/app_header', ['pageTitle' => lang('Domain.projectEditTitle'), 'active' => 'projects']) ?>
-<main class="modal-edit-page">
+<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
     <div class="modal-edit-backdrop" aria-hidden="true"></div>
     <div class="container modal-edit-shell">
     <?php if (session('error') !== null): ?>
@@ -178,7 +176,4 @@
         </div>
     </div>
     </div>
-</main>
-<?= view('layouts/app_footer') ?>
-</body>
-</html>
+<?= $this->endSection() ?>

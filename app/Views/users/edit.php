@@ -1,22 +1,16 @@
-<!doctype html>
-<?php $locale = (string) service('request')->getLocale(); ?>
+<?php
+$pageTitle = (string) lang('UserAdmin.pageTitle');
+$active = 'users';
+?>
 <?php $user = (array) ($user ?? []); ?>
 <?php $availableRoles = (array) ($availableRoles ?? []); ?>
 <?php $assignments = (array) ($assignments ?? []); ?>
 <?php $programmes = (array) ($programmes ?? []); ?>
 <?php $projects = (array) ($projects ?? []); ?>
 <?php $canManageRoles = (bool) ($canManageRoles ?? false); ?>
-<html lang="<?= esc($locale) ?>">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= esc(lang('UserAdmin.editPageTitle', ['username' => (string) ($user['username'] ?? '')])) ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <?= view('layouts/theme_assets') ?>
-</head>
-<body class="bg-light">
-<?= view('layouts/app_header', ['pageTitle' => lang('UserAdmin.pageTitle'), 'active' => 'users']) ?>
-<main class="container py-4">
+<?= $this->extend('layouts/base') ?>
+
+<?= $this->section('content') ?>
     <div class="mb-3">
         <a href="<?= site_url('users') ?>" class="btn btn-outline-secondary btn-sm"><?= esc(lang('UserAdmin.backToList')) ?></a>
     </div>
@@ -177,7 +171,9 @@
             <?php endif; ?>
         </div>
     </div>
-</main>
+<?= $this->endSection() ?>
+
+<?= $this->section('extraScripts') ?>
 <script>
     (function () {
         var scopeSelect = document.getElementById('scope_type');
@@ -202,5 +198,4 @@
         toggleFields();
     })();
 </script>
-</body>
-</html>
+<?= $this->endSection() ?>

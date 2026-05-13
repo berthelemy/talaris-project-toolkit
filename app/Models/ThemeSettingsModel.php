@@ -15,6 +15,7 @@ class ThemeSettingsModel extends Model
     protected $useAutoIncrement = true;
     protected $useTimestamps    = true;
     protected $allowedFields    = [
+        'site_title',
         'logo_path',
         'heading_font',
         'body_font',

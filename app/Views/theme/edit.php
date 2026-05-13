@@ -1,18 +1,12 @@
-<!doctype html>
-<?php $locale = (string) service('request')->getLocale(); ?>
+<?php
+$pageTitle = (string) lang('Theme.pageTitle');
+$active = 'theme';
+?>
 <?php $settings = (array) ($settings ?? []); ?>
 <?php $fontOptions = (array) ($fontOptions ?? []); ?>
-<html lang="<?= esc($locale) ?>">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= esc(lang('Theme.pageTitle')) ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <?= view('layouts/theme_assets') ?>
-</head>
-<body>
-<?= view('layouts/app_header', ['pageTitle' => lang('Theme.pageTitle'), 'active' => 'theme']) ?>
-<main class="container py-4">
+<?= $this->extend('layouts/base') ?>
+
+<?= $this->section('content') ?>
     <?php if (session('error') !== null): ?>
         <div class="alert alert-danger" role="alert"><?= esc((string) session('error')) ?></div>
     <?php endif; ?>
@@ -92,7 +86,4 @@
             </form>
         </div>
     </div>
-</main>
-<?= view('layouts/app_footer') ?>
-</body>
-</html>
+<?= $this->endSection() ?>

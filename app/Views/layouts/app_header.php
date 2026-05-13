@@ -8,6 +8,8 @@ $pageTitle = (string) ($pageTitle ?? '');
 $active = (string) ($active ?? '');
 $activeLocale = service('request')->getLocale();
 $theme = (new ThemeSettingsService())->get();
+$siteTitle = trim((string) ($theme['site_title'] ?? ''));
+$siteTitle = $siteTitle !== '' ? $siteTitle : 'Talaris Project Toolkit';
 $logoPath = trim((string) ($theme['logo_path'] ?? ''));
 $userId = session('user_id');
 $canManageTheme = false;
@@ -29,7 +31,7 @@ if (is_int($userId) || ctype_digit((string) $userId)) {
             <?php if ($logoPath !== ''): ?>
                 <img src="<?= esc(base_url($logoPath)) ?>" alt="<?= esc(lang('Theme.logoAlt')) ?>" style="height:34px; width:auto;">
             <?php endif; ?>
-            <span class="fw-semibold">Talaris Project Toolkit</span>
+            <span class="fw-semibold"><?= esc($siteTitle) ?></span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -45,7 +47,7 @@ if (is_int($userId) || ctype_digit((string) $userId)) {
                 </li>
                 <?php if ($canManageUsers || $canManageModules || $canManageTheme): ?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle <?= in_array($active, ['users', 'modules', 'theme'], true) ? 'active fw-semibold' : '' ?>" href="#" id="adminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle <?= in_array($active, ['users', 'modules', 'theme', 'site_settings'], true) ? 'active fw-semibold' : '' ?>" href="#" id="adminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <?= esc(lang('Domain.adminMenuLabel')) ?>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="adminMenu">
@@ -56,6 +58,7 @@ if (is_int($userId) || ctype_digit((string) $userId)) {
                                 <li><a class="dropdown-item" href="<?= site_url('modules') ?>"><?= esc(lang('Module.navLabel')) ?></a></li>
                             <?php endif; ?>
                             <?php if ($canManageTheme): ?>
+                                <li><a class="dropdown-item" href="<?= site_url('site-settings') ?>"><?= esc(lang('SiteSettings.navLabel')) ?></a></li>
                                 <li><a class="dropdown-item" href="<?= site_url('theme') ?>"><?= esc(lang('Theme.navLabel')) ?></a></li>
                             <?php endif; ?>
                         </ul>

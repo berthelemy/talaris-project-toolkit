@@ -34,6 +34,7 @@ class ThemeSettingsService
     public function get(): array
     {
         $fallback = [
+            'site_title' => 'Talaris Project Toolkit',
             'logo_path' => null,
             'heading_font' => 'poppins',
             'body_font' => 'source_sans',
@@ -55,6 +56,7 @@ class ThemeSettingsService
         }
 
         $settings = [
+            'site_title' => (string) ($row['site_title'] ?? $fallback['site_title']),
             'logo_path' => $row['logo_path'] ?? $fallback['logo_path'],
             'heading_font' => (string) ($row['heading_font'] ?? $fallback['heading_font']),
             'body_font' => (string) ($row['body_font'] ?? $fallback['body_font']),
