@@ -366,30 +366,27 @@ class ProjectController extends BaseController
         }
 
         $widgetService = new ModuleWidgetService();
-        $registry = new ModuleRegistryService();
         $layoutService = new ModuleWidgetLayoutService();
-        $modules = $registry->getEnabledModulesByType('project');
+        $layoutOptions = $widgetService->getWidgetLayoutOptions('project', $projectId, $actorId);
 
         $visibilityInput = (array) $this->request->getPost('widget_visible');
         $orderInput = (array) $this->request->getPost('widget_order');
         $changes = [];
 
-        foreach ($modules as $module) {
-            $slug = (string) ($module['slug'] ?? '');
-            if ($slug === '') {
+        foreach ($layoutOptions as $option) {
+            $widgetKey = (string) ($option['widget_key'] ?? '');
+            $moduleSlug = (string) ($option['module_slug'] ?? '');
+            if ($widgetKey === '' || $moduleSlug === '') {
                 continue;
             }
 
-            if (! $widgetService->canAccessModuleForActor($actorId, $module, $projectId)) {
-                continue;
-            }
+            $isVisible = isset($visibilityInput[$widgetKey]);
+            $displayOrder = max(0, (int) ($orderInput[$widgetKey] ?? (int) ($option['display_order'] ?? 0)));
 
-            $isVisible = isset($visibilityInput[$slug]);
-            $displayOrder = max(0, (int) ($orderInput[$slug] ?? (int) ($module['display_order'] ?? 0)));
-
-            $layoutService->upsert('project', $projectId, $slug, $isVisible, $displayOrder, $actorId);
+            $layoutService->upsert('project', $projectId, $widgetKey, $isVisible, $displayOrder, $actorId);
             $changes[] = [
-                'module_slug' => $slug,
+                'module_slug' => $moduleSlug,
+                'widget_key' => $widgetKey,
                 'is_visible' => $isVisible,
                 'display_order' => $displayOrder,
             ];
@@ -582,26 +579,17 @@ class ProjectController extends BaseController
      */
     private function buildProjectWidgetLayoutOptions(int $projectId, int $actorId, ModuleWidgetService $widgetService): array
     {
-        $modules = (new ModuleRegistryService())->getEnabledModulesByType('project');
-        $layoutService = new ModuleWidgetLayoutService();
-        $defaults = $layoutService->getDefaultByScope('project');
-        $scoped = $layoutService->getScoped('project', $projectId);
+        $layoutOptions = $widgetService->getWidgetLayoutOptions('project', $projectId, $actorId);
+        $options = array_map(static function (array $option): array {
+            $widgetKey = (string) ($option['widget_key'] ?? '');
 
-        $options = [];
-        foreach ($modules as $module) {
-            $slug = (string) ($module['slug'] ?? '');
-            if ($slug === '' || ! $widgetService->canAccessModuleForActor($actorId, $module, $projectId)) {
-                continue;
-            }
-
-            $layout = $layoutService->resolveForModule($module, $defaults, $scoped);
-            $options[] = [
-                'slug' => $slug,
-                'name' => (string) ($module['name'] ?? $slug),
-                'is_visible' => $layout['is_visible'],
-                'display_order' => $layout['display_order'],
+            return [
+                'slug' => $widgetKey,
+                'name' => (string) ($option['name'] ?? $widgetKey),
+                'is_visible' => (bool) ($option['is_visible'] ?? true),
+                'display_order' => (int) ($option['display_order'] ?? 0),
             ];
-        }
+        }, $layoutOptions);
 
         usort($options, static function (array $a, array $b): int {
             $orderCompare = ((int) $a['display_order']) <=> ((int) $b['display_order']);

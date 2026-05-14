@@ -135,6 +135,8 @@ abstract class BaseProjectRaidController extends BaseController
             $title = substr((string) $description, 0, 200);
         }
 
+        $validationActions = $this->nullableString((string) ($this->request->getPost('validation_actions') ?: $this->request->getPost('mitigation_actions')));
+
         $entryModel = new ModuleRaidEntryModel();
         $entryId = $entryModel->insert([
             'module_slug' => $this->moduleSlug(),
@@ -144,7 +146,7 @@ abstract class BaseProjectRaidController extends BaseController
             'description' => $description,
             'date_reported' => $this->isIssueModule() ? $this->nullableDate((string) $this->request->getPost('date_reported')) : null,
             'reporter_user_id' => $this->isIssueModule() ? $this->nullableUserId((string) ($this->request->getPost('reporter_user_id') ?: (string) $actorId)) : null,
-            'mitigation_actions' => $this->nullableString((string) $this->request->getPost('mitigation_actions')),
+            'mitigation_actions' => $validationActions,
             'owner_user_id' => $ownerId,
             'status' => $status,
             'priority' => $priority,
@@ -152,6 +154,7 @@ abstract class BaseProjectRaidController extends BaseController
             'likelihood' => $this->nullableString($likelihood),
             'impact_if_not_valid' => $this->nullableString((string) $this->request->getPost('impact_if_not_valid')),
             'impact_level' => $this->isAssumptionModule() || $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('impact_level')) : null,
+            'lessons_learned' => $this->isAssumptionModule() ? $this->nullableString((string) $this->request->getPost('lessons_learned')) : null,
             'target_date' => $this->nullableDate((string) $this->request->getPost('target_date')),
             'review_date' => $this->nullableDate((string) $this->request->getPost('review_date')),
             'decision_date' => $decisionDate,
@@ -193,18 +196,18 @@ abstract class BaseProjectRaidController extends BaseController
             return $this->redirectModule($projectId)->with('error', lang('Module.raidEntryNotFound'));
         }
 
-        $ownerId = (int) ($this->request->getPost('owner_user_id') ?: $actorId);
+        $ownerId = (int) ($this->request->getPost('owner_user_id') ?: ($entry['owner_user_id'] ?? $actorId));
         if (! $this->isActiveUser($ownerId)) {
             return redirect()->back()->withInput()->with('error', lang('Domain.ownerInvalid'));
         }
 
-        $status = trim((string) ($this->request->getPost('status') ?: 'open'));
+        $status = trim((string) ($this->request->getPost('status') ?: ($entry['status'] ?? 'open')));
         $priority = $this->isRiskModule()
             ? $this->calculateRiskPriority(
                 trim((string) $this->request->getPost('impact')),
                 trim((string) $this->request->getPost('likelihood')),
             )
-            : trim((string) ($this->request->getPost('priority') ?: 'medium'));
+            : trim((string) ($this->request->getPost('priority') ?: ($entry['priority'] ?? 'medium')));
 
         $description = $this->nullableString((string) $this->request->getPost('description'));
         if ($this->isDecisionModule() && $description === null) {
@@ -216,12 +219,14 @@ abstract class BaseProjectRaidController extends BaseController
             $title = substr((string) $description, 0, 200);
         }
 
+        $validationActions = $this->nullableString((string) ($this->request->getPost('validation_actions') ?: $this->request->getPost('mitigation_actions')));
+
         $entryModel->update($entryId, [
             'title' => (string) $title,
             'description' => $description,
             'date_reported' => $this->isIssueModule() ? $this->nullableDate((string) $this->request->getPost('date_reported')) : ($entry['date_reported'] ?? null),
             'reporter_user_id' => $this->isIssueModule() ? $this->nullableUserId((string) ($this->request->getPost('reporter_user_id') ?: (string) ($entry['reporter_user_id'] ?? 0))) : ($entry['reporter_user_id'] ?? null),
-            'mitigation_actions' => $this->nullableString((string) $this->request->getPost('mitigation_actions')),
+            'mitigation_actions' => $validationActions,
             'owner_user_id' => $ownerId,
             'status' => $status,
             'priority' => $priority,
@@ -229,6 +234,7 @@ abstract class BaseProjectRaidController extends BaseController
             'likelihood' => $this->nullableString(trim((string) $this->request->getPost('likelihood'))),
             'impact_if_not_valid' => $this->nullableString((string) $this->request->getPost('impact_if_not_valid')),
             'impact_level' => $this->isAssumptionModule() || $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('impact_level')) : ($entry['impact_level'] ?? null),
+            'lessons_learned' => $this->isAssumptionModule() ? $this->nullableString((string) $this->request->getPost('lessons_learned')) : ($entry['lessons_learned'] ?? null),
             'target_date' => $this->nullableDate((string) $this->request->getPost('target_date')),
             'review_date' => $this->nullableDate((string) $this->request->getPost('review_date')),
             'decision_date' => $this->nullableDate((string) $this->request->getPost('decision_date')),
@@ -288,9 +294,10 @@ abstract class BaseProjectRaidController extends BaseController
     private function queryEntries(ModuleRaidEntryModel $entryModel, int $projectId): array
     {
         $builder = $entryModel
-            ->select('module_raid_entries.*, users.username as owner_username, made_by.username as made_by_username')
+            ->select('module_raid_entries.*, users.username as owner_username, made_by.username as made_by_username, creators.username as created_by_username')
             ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
             ->join('users as made_by', 'made_by.id = module_raid_entries.made_by_user_id', 'left')
+            ->join('users as creators', 'creators.id = module_raid_entries.created_by_user_id', 'left')
             ->where('module_raid_entries.module_slug', $this->moduleSlug())
             ->where('module_raid_entries.scope_type', 'project')
             ->where('module_raid_entries.scope_id', $projectId);
@@ -378,12 +385,14 @@ abstract class BaseProjectRaidController extends BaseController
             'date_reported' => 'permit_empty|valid_date[Y-m-d]',
             'reporter_user_id' => 'permit_empty|is_natural_no_zero',
             'mitigation_actions' => 'permit_empty|max_length[5000]',
+            'validation_actions' => 'permit_empty|max_length[5000]',
             'owner_user_id' => 'permit_empty|is_natural_no_zero',
             'status' => 'permit_empty|in_list[open,in_review,closed]',
             'priority' => 'permit_empty|in_list[low,medium,high,critical]',
             'impact' => 'permit_empty|in_list[low,medium,high]',
             'likelihood' => 'permit_empty|in_list[low,medium,high]',
             'impact_if_not_valid' => 'permit_empty|max_length[5000]',
+            'lessons_learned' => 'permit_empty|max_length[5000]',
             'impact_level' => 'permit_empty|in_list[low,medium,high]',
             'target_date' => 'permit_empty|valid_date[Y-m-d]',
             'review_date' => 'permit_empty|valid_date[Y-m-d]',

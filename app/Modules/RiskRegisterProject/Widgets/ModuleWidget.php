@@ -8,18 +8,59 @@ use App\Models\UserModel;
 
 class ModuleWidget implements ModuleWidgetInterface
 {
-    public function getWidgetView(int $scopeId): ?string
-    {
-        return 'App\Modules\RiskRegisterProject\Views\widget';
-    }
-
-    public function getWidgetData(int $scopeId, array $config = []): array
+    /**
+     * @return list<array{key:string,name:string,view:string,data:array<string,mixed>}>
+     */
+    public function getWidgetDefinitions(int $scopeId, array $config = []): array
     {
         $maxEntries = (int) ($config['max_entries'] ?? 5);
         if ($maxEntries <= 0) {
             $maxEntries = 5;
         }
 
+        return [
+            [
+                'key' => 'overview',
+                'name' => (string) lang('Module.riskWidgetOverviewTitle'),
+                'view' => 'App\Modules\RiskRegisterProject\Views\widget_overview',
+                'data' => [
+                    'overview_counts' => $this->overviewCounts($scopeId),
+                ],
+            ],
+            [
+                'key' => 'high_priority',
+                'name' => (string) lang('Module.riskWidgetHighPriorityTitle'),
+                'view' => 'App\Modules\RiskRegisterProject\Views\widget_high_priority',
+                'data' => $this->highPriorityData($scopeId, $maxEntries),
+            ],
+        ];
+    }
+
+    public function getWidgetView(int $scopeId): ?string
+    {
+        return null;
+    }
+
+    public function getWidgetData(int $scopeId, array $config = []): array
+    {
+        $maxEntries = max(1, (int) ($config['max_entries'] ?? 5));
+
+        return array_merge(
+            ['overview_counts' => $this->overviewCounts($scopeId)],
+            $this->highPriorityData($scopeId, $maxEntries),
+        );
+    }
+
+    public function getDefaultConfig(): array
+    {
+        return ['max_entries' => 5];
+    }
+
+    /**
+     * @return array{low:int,medium:int,high:int,critical:int}
+     */
+    private function overviewCounts(int $scopeId): array
+    {
         $overviewCounts = [
             'low' => 0,
             'medium' => 0,
@@ -45,6 +86,14 @@ class ModuleWidget implements ModuleWidgetInterface
             $overviewCounts[$priority] = (int) ($row['total'] ?? 0);
         }
 
+        return $overviewCounts;
+    }
+
+    /**
+     * @return array{entries:list<array<string,mixed>>,entry_count:int,owners:list<array{id:int,username:string}>,status_options:list<string>,risk_scale_options:list<string>}
+     */
+    private function highPriorityData(int $scopeId, int $maxEntries): array
+    {
         $entries = (new ModuleRaidEntryModel())
             ->select('module_raid_entries.*, users.username as owner_username')
             ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
@@ -59,18 +108,12 @@ class ModuleWidget implements ModuleWidgetInterface
             ->findAll();
 
         return [
-            'overview_counts' => $overviewCounts,
             'entries' => $entries,
             'entry_count' => count($entries),
             'owners' => $this->ownerOptions(),
             'status_options' => ['open', 'in_review', 'closed'],
             'risk_scale_options' => ['low', 'medium', 'high'],
         ];
-    }
-
-    public function getDefaultConfig(): array
-    {
-        return ['max_entries' => 5];
     }
 
     /**

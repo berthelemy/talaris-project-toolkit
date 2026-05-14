@@ -51,6 +51,23 @@ class ModuleWidgetLayoutService
     public function resolveForModule(array $module, array $default, array $scoped): array
     {
         $slug = (string) ($module['slug'] ?? '');
+
+        return $this->resolveForWidget($slug, $module, $default, $scoped);
+    }
+
+    /**
+     * Resolve widget layout for a concrete widget key.
+     *
+     * Widget-specific preferences override module-level defaults/scoped values.
+     *
+     * @param array<string, mixed> $module
+     * @param array<string, array<string, mixed>> $default
+     * @param array<string, array<string, mixed>> $scoped
+     * @return array{is_visible: bool, display_order: int}
+     */
+    public function resolveForWidget(string $widgetKey, array $module, array $default, array $scoped): array
+    {
+        $slug = (string) ($module['slug'] ?? '');
         $isVisible = true;
         $displayOrder = (int) ($module['display_order'] ?? 0);
 
@@ -65,6 +82,20 @@ class ModuleWidgetLayoutService
             $isVisible = (bool) ($scoped[$slug]['is_visible'] ?? $isVisible);
             if ($scoped[$slug]['display_order'] !== null) {
                 $displayOrder = (int) $scoped[$slug]['display_order'];
+            }
+        }
+
+        if ($widgetKey !== '' && $widgetKey !== $slug && isset($default[$widgetKey])) {
+            $isVisible = (bool) ($default[$widgetKey]['is_visible'] ?? $isVisible);
+            if ($default[$widgetKey]['display_order'] !== null) {
+                $displayOrder = (int) $default[$widgetKey]['display_order'];
+            }
+        }
+
+        if ($widgetKey !== '' && $widgetKey !== $slug && isset($scoped[$widgetKey])) {
+            $isVisible = (bool) ($scoped[$widgetKey]['is_visible'] ?? $isVisible);
+            if ($scoped[$widgetKey]['display_order'] !== null) {
+                $displayOrder = (int) $scoped[$widgetKey]['display_order'];
             }
         }
 
