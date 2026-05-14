@@ -74,6 +74,8 @@ return [
     'viewAll' => 'View all',
     'riskRegisterTitle' => 'Risk Register',
     'riskRegisterDescription' => 'Production module for project risk capture, ownership, and treatment tracking.',
+    'riskWidgetOverviewTitle' => 'Open risks by priority',
+    'riskWidgetHighPriorityTitle' => 'High priority risks',
     'issueTrackerTitle' => 'Issue Tracker',
     'issueTrackerDescription' => 'Production module for project issue tracking, ownership, and resolution governance.',
     'assumptionsRegisterTitle' => 'Assumptions Register',

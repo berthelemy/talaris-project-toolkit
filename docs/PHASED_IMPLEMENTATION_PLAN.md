@@ -548,8 +548,8 @@ User has explicitly requested **detailed specification document** for project da
 	- [ ] Risk summary/status view implemented with high-priority highlighting.
 	- [ ] Risk detail page uses responsive two-column layout.
 	- [ ] Risk data model/UI includes: date entered, entered by, description, impact, likelihood, calculated priority, mitigation actions, owner, closed flag, closing date, lessons learned.
-	- [ ] Risks overview widget shows open risk counts by priority.
-	- [ ] High priority risks widget lists high-priority risks with links to risk detail pages.
+	- [x] Risks overview widget shows open risk counts by priority.
+	- [x] High priority risks widget lists high-priority risks with links to risk detail pages.
 
 ### Implementation Progress (2026-05-14)
 - Added drag-and-drop ordering interactions on project widget layout page (`/projects/{id}/widgets/layout`) with persisted order values posted through existing `widget_order` inputs.
@@ -562,6 +562,7 @@ User has explicitly requested **detailed specification document** for project da
 	- `/programmes/{id}/dashboard/details`
 - Added source-link traceability from detail rows back to originating module records (project RAID anchors and programme Hello World anchors).
 - Added dashboard detail-page pagination (25 records/page) with filtered next/previous navigation and result summaries to keep query and render costs bounded.
+- Updated Risk widget to include open-risk priority summary counts (critical/high/medium/low) and a dedicated high-priority risk listing with source links.
 - Added system coverage:
 	- `WidgetLayoutPreferencesSystemTest::testProjectWidgetLayoutPageShowsDragAndKeyboardOrderingControls`
 	- `WidgetLayoutPreferencesSystemTest::testProgrammeManagerCanUpdateProgrammeWidgetLayoutWithAudit`
@@ -569,6 +570,7 @@ User has explicitly requested **detailed specification document** for project da
 	- `ProgrammeProjectDomainSystemTest::testProgrammeDashboardDetailsShowsSourceLinks`
 	- `ProgrammeProjectDomainSystemTest::testProjectDashboardDetailsPaginatesResults`
 	- `RaidModulesSystemTest::testRiskWidgetDrillDownLinkTargetsExistingEntryAnchor`
+	- `RaidModulesSystemTest::testRiskWidgetShowsOpenCountsAndHighPriorityList`
 - Stabilized locale-sensitive read-only assertion in RAID system tests by asserting localized language-string output instead of hard-coded French text.
 - Remaining scope:
 	- Expand dedicated detail-page coverage and source-link validation for additional module families beyond current RAID/Hello World scope.

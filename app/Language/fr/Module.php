@@ -74,6 +74,8 @@ return [
     'viewAll' => 'Voir tout',
     'riskRegisterTitle' => 'Registre des risques',
     'riskRegisterDescription' => 'Module de production pour la gestion des risques projet, avec suivi du responsable et du traitement.',
+    'riskWidgetOverviewTitle' => 'Risques ouverts par priorite',
+    'riskWidgetHighPriorityTitle' => 'Risques a priorite elevee',
     'issueTrackerTitle' => 'Suivi des incidents',
     'issueTrackerDescription' => 'Module de production pour le suivi des incidents projet, du responsable et de la resolution.',
     'assumptionsRegisterTitle' => 'Registre des hypotheses',

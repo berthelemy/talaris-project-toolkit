@@ -158,8 +158,12 @@ class ModuleWidgetService
                     'scope_type' => $scopeType,
                     'module_slug' => $moduleSlug,
                 ]));
-                // Wrap each widget in a responsive grid column: 1 col on mobile, 2 cols on medium, 3 cols on large
-                $html .= '<div class="col-12 col-md-6 col-lg-4">' . $widgetHtml . '</div>';
+                // Most widgets render as one card and are wrapped here. Split widgets may return their own grid columns.
+                if (str_contains($widgetHtml, 'data-widget-split="true"')) {
+                    $html .= $widgetHtml;
+                } else {
+                    $html .= '<div class="col-12 col-md-6 col-lg-4">' . $widgetHtml . '</div>';
+                }
                 $this->incrementMetric($moduleSlug, $scopeType, $scopeId, 'rendered_count');
                 $this->touchMetricLastRenderedAt($moduleSlug, $scopeType, $scopeId, $start);
             } catch (\Throwable $e) {

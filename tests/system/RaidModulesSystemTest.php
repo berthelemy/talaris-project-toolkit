@@ -317,6 +317,177 @@ final class RaidModulesSystemTest extends CIUnitTestCase
         $this->assertStringContainsString('Fresh modal risk', $overview->getBody());
     }
 
+    public function testRiskWidgetShowsOpenCountsAndHighPriorityList(): void
+    {
+        $manager = $this->createUser('raidmanager7', 'raidmanager7@example.com');
+        $projectId = $this->createProject((int) $manager['id'], 'RAID Project 8');
+
+        (new RbacService())->assignRoleToUser((int) $manager['id'], 'project_manager', 'project', $projectId, (int) $manager['id']);
+
+        (new ModuleRaidEntryModel())->insert([
+            'module_slug' => 'risk_register_project',
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'title' => 'Critical outage risk',
+            'description' => 'Critical risk entry',
+            'owner_user_id' => (int) $manager['id'],
+            'status' => 'open',
+            'impact' => 'high',
+            'likelihood' => 'high',
+            'priority' => 'critical',
+            'created_by_user_id' => (int) $manager['id'],
+            'updated_by_user_id' => (int) $manager['id'],
+        ]);
+
+        (new ModuleRaidEntryModel())->insert([
+            'module_slug' => 'risk_register_project',
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'title' => 'High vendor risk',
+            'description' => 'High risk entry',
+            'owner_user_id' => (int) $manager['id'],
+            'status' => 'open',
+            'impact' => 'high',
+            'likelihood' => 'medium',
+            'priority' => 'high',
+            'created_by_user_id' => (int) $manager['id'],
+            'updated_by_user_id' => (int) $manager['id'],
+        ]);
+
+        (new ModuleRaidEntryModel())->insert([
+            'module_slug' => 'risk_register_project',
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'title' => 'Medium planning risk',
+            'description' => 'Medium risk entry',
+            'owner_user_id' => (int) $manager['id'],
+            'status' => 'open',
+            'impact' => 'medium',
+            'likelihood' => 'medium',
+            'priority' => 'medium',
+            'created_by_user_id' => (int) $manager['id'],
+            'updated_by_user_id' => (int) $manager['id'],
+        ]);
+
+        (new ModuleRaidEntryModel())->insert([
+            'module_slug' => 'risk_register_project',
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'title' => 'Closed low risk',
+            'description' => 'Closed risk should not count',
+            'owner_user_id' => (int) $manager['id'],
+            'status' => 'closed',
+            'impact' => 'low',
+            'likelihood' => 'low',
+            'priority' => 'low',
+            'created_by_user_id' => (int) $manager['id'],
+            'updated_by_user_id' => (int) $manager['id'],
+            'closed_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $overview = $this->withSession($this->authSession($manager))
+            ->get('/projects/' . $projectId);
+
+        $overview->assertOK();
+        $body = $overview->getBody();
+
+        $this->assertStringContainsString((string) lang('Module.riskWidgetOverviewTitle'), $body);
+        $this->assertStringContainsString((string) lang('Module.riskWidgetHighPriorityTitle'), $body);
+        $this->assertStringContainsString('Critical outage risk', $body);
+        $this->assertStringContainsString('High vendor risk', $body);
+        $this->assertStringContainsString('>1</div>', $body);
+        $this->assertStringNotContainsString('Closed low risk', $body);
+    }
+
+    public function testRiskModulePageUsesModalCreateWithFullRiskFields(): void
+    {
+        $manager = $this->createUser('raidmanager8', 'raidmanager8@example.com');
+        $projectId = $this->createProject((int) $manager['id'], 'RAID Project 9');
+
+        (new RbacService())->assignRoleToUser((int) $manager['id'], 'project_manager', 'project', $projectId, (int) $manager['id']);
+
+        $page = $this->withSession($this->authSession($manager))
+            ->get('/projects/' . $projectId . '/modules/risk-register');
+
+        $page->assertOK();
+        $body = $page->getBody();
+
+        $this->assertStringContainsString('id="risk-add-entry-button"', $body);
+        $this->assertStringContainsString('id="riskEntryCreateModal"', $body);
+        $this->assertStringContainsString('name="title"', $body);
+        $this->assertStringContainsString('name="description"', $body);
+        $this->assertStringContainsString('name="mitigation_actions"', $body);
+        $this->assertStringContainsString('name="owner_user_id"', $body);
+        $this->assertStringContainsString('name="status"', $body);
+        $this->assertStringContainsString('name="impact"', $body);
+        $this->assertStringContainsString('name="likelihood"', $body);
+        $this->assertStringContainsString('name="target_date"', $body);
+        $this->assertStringContainsString('name="review_date"', $body);
+    }
+
+    public function testRiskEditFormIncludesAllRiskFields(): void
+    {
+        $manager = $this->createUser('raidmanager9', 'raidmanager9@example.com');
+        $projectId = $this->createProject((int) $manager['id'], 'RAID Project 10');
+
+        (new RbacService())->assignRoleToUser((int) $manager['id'], 'project_manager', 'project', $projectId, (int) $manager['id']);
+
+        (new ModuleRaidEntryModel())->insert([
+            'module_slug' => 'risk_register_project',
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'title' => 'Editable risk',
+            'description' => 'Editable description',
+            'owner_user_id' => (int) $manager['id'],
+            'status' => 'open',
+            'priority' => 'high',
+            'impact' => 'high',
+            'likelihood' => 'medium',
+            'mitigation_actions' => 'Initial mitigation',
+            'target_date' => '2026-06-15',
+            'review_date' => '2026-05-30',
+            'created_by_user_id' => (int) $manager['id'],
+            'updated_by_user_id' => (int) $manager['id'],
+        ]);
+
+        $page = $this->withSession($this->authSession($manager))
+            ->get('/projects/' . $projectId . '/modules/risk-register');
+
+        $page->assertOK();
+        $body = $page->getBody();
+
+        $this->assertStringContainsString('data-risk-edit-form="true"', $body);
+        $this->assertStringContainsString('data-risk-row-editable', $body);
+        $this->assertStringContainsString('data-risk-edit-toggle', $body);
+        $this->assertStringContainsString('data-risk-edit-save', $body);
+        $this->assertStringContainsString('data-risk-edit-cancel', $body);
+    }
+
+    public function testRiskWidgetModalMatchesMainRiskModalFields(): void
+    {
+        $manager = $this->createUser('raidmanager10', 'raidmanager10@example.com');
+        $projectId = $this->createProject((int) $manager['id'], 'RAID Project 11');
+
+        (new RbacService())->assignRoleToUser((int) $manager['id'], 'project_manager', 'project', $projectId, (int) $manager['id']);
+
+        $overview = $this->withSession($this->authSession($manager))
+            ->get('/projects/' . $projectId);
+
+        $overview->assertOK();
+        $body = $overview->getBody();
+
+        $this->assertStringContainsString('id="riskModalAdd"', $body);
+        $this->assertStringContainsString('name="title"', $body);
+        $this->assertStringContainsString('name="description"', $body);
+        $this->assertStringContainsString('name="mitigation_actions"', $body);
+        $this->assertStringContainsString('name="owner_user_id"', $body);
+        $this->assertStringContainsString('name="status"', $body);
+        $this->assertStringContainsString('name="impact"', $body);
+        $this->assertStringContainsString('name="likelihood"', $body);
+        $this->assertStringContainsString('name="target_date"', $body);
+        $this->assertStringContainsString('name="review_date"', $body);
+    }
+
     /**
      * @return array<string, mixed>
      */
