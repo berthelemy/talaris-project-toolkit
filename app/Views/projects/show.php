@@ -7,6 +7,7 @@ $active = 'projects';
 <?= $this->section('content') ?>
     <?php $canOpenHelloModule = (bool) ($canOpenHelloModule ?? false); ?>
     <?php $widgets = (string) ($widgets ?? ''); ?>
+    <?php $canEditProject = (bool) ($canEditProject ?? false); ?>
     <?php if (session('error') !== null): ?>
         <div class="alert alert-danger" role="alert"><?= esc((string) session('error')) ?></div>
     <?php endif; ?>
@@ -45,7 +46,12 @@ $active = 'projects';
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
                         <h2 class="h5 mb-0"><?= esc((string) ($project['name'] ?? '')) ?></h2>
-                        <span class="badge text-bg-secondary"><?= esc(lang('Domain.projectStatus_' . (string) ($project['status'] ?? 'not_started'))) ?></span>
+                        <div class="d-flex flex-column align-items-end gap-2">
+                            <span class="badge text-bg-secondary"><?= esc(lang('Domain.projectStatus_' . (string) ($project['status'] ?? 'not_started'))) ?></span>
+                            <?php if ($canEditProject): ?>
+                                <a class="btn btn-outline-primary btn-sm" href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/edit') ?>"><?= esc(lang('Domain.projectEditTitle')) ?></a>
+                            <?php endif; ?>
+                        </div>
                     </div>
                     <div class="mb-2">
                         <span class="text-muted"><?= esc(lang('Domain.projectDescription')) ?>:</span>
@@ -55,10 +61,6 @@ $active = 'projects';
                         <?= esc(lang('Domain.projectCreatedAt')) ?>: <?= esc((string) ($project['created_at'] ?? '')) ?>
                     </div>
                 </div>
-            </div>
-
-            <div class="d-flex justify-content-end mb-2">
-                <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/dashboard/details') ?>"><?= esc(lang('Module.dashboardDetailsButton')) ?></a>
             </div>
 
             <?php if ($widgets !== ''): ?>

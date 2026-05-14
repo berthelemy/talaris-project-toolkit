@@ -21,8 +21,6 @@ $routes->get('reset-password/(:segment)', 'AuthController::resetPasswordForm/$1'
 $routes->post('reset-password/(:segment)', 'AuthController::resetPassword/$1');
 
 $routes->get('dashboard', 'DashboardController::index', ['filter' => ['auth', 'sessiontimeout']]);
-$routes->get('programmes/(:num)/dashboard/details', 'DashboardController::programmeDetails/$1', ['filter' => ['auth', 'sessiontimeout']]);
-$routes->get('projects/(:num)/dashboard/details', 'DashboardController::projectDetails/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('impersonate/(:num)', 'ImpersonationController::start/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('impersonate/stop', 'ImpersonationController::stop', ['filter' => ['auth', 'sessiontimeout']]);
 

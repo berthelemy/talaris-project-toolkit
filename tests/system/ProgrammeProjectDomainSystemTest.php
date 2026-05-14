@@ -1,10 +1,7 @@
 <?php
 
 use App\Libraries\Auth\RbacService;
-use App\Libraries\Modules\ModuleRegistryService;
 use App\Models\AuthAuditLogModel;
-use App\Models\ModuleHelloWorldEntryModel;
-use App\Models\ModuleRaidEntryModel;
 use App\Models\ProgrammeModel;
 use App\Models\ProgrammeProjectModel;
 use App\Models\ProjectModel;
@@ -179,102 +176,22 @@ final class ProgrammeProjectDomainSystemTest extends CIUnitTestCase
         $this->assertSame('Protected Programme', (string) $fresh['name']);
     }
 
-    public function testProjectDashboardDetailsShowsCrossWidgetSourceLinks(): void
+    public function testProjectOverviewShowsEditButtonForManager(): void
     {
         $actor = $this->createUser('phase4dash', 'phase4dash@example.com');
         $projectId = (new ProjectModel())->insert([
-            'name' => 'Dashboard Project',
+            'name' => 'Editable Project',
             'description' => null,
             'owner_user_id' => (int) $actor['id'],
         ], true);
 
         $this->assertIsInt($projectId);
 
-        $entryId = (new ModuleRaidEntryModel())->insert([
-            'module_slug' => 'risk_register_project',
-            'scope_type' => 'project',
-            'scope_id' => $projectId,
-            'title' => 'Source link risk',
-            'description' => 'Source link drill-down test',
-            'owner_user_id' => (int) $actor['id'],
-            'status' => 'open',
-            'priority' => 'high',
-            'impact' => 'high',
-            'likelihood' => 'medium',
-            'created_by_user_id' => (int) $actor['id'],
-            'updated_by_user_id' => (int) $actor['id'],
-        ], true);
-
-        $this->assertIsInt($entryId);
-
         $response = $this->withSession($this->sessionForUser($actor))
-            ->get('/projects/' . $projectId . '/dashboard/details');
+            ->get('/projects/' . $projectId);
 
         $response->assertOK();
-        $this->assertStringContainsString('/projects/' . $projectId . '/modules/risk-register#entry-' . $entryId, $response->getBody());
-    }
-
-    public function testProgrammeDashboardDetailsShowsSourceLinks(): void
-    {
-        $actor = $this->createUser('phase4dashprog', 'phase4dashprog@example.com');
-        $programmeId = (new ProgrammeModel())->insert([
-            'name' => 'Dashboard Programme',
-            'description' => null,
-            'owner_user_id' => (int) $actor['id'],
-        ], true);
-
-        $this->assertIsInt($programmeId);
-
-        $entryId = (new ModuleHelloWorldEntryModel())->insert([
-            'module_slug' => ModuleRegistryService::HELLO_WORLD_PROGRAMME,
-            'scope_type' => 'programme',
-            'scope_id' => $programmeId,
-            'message' => 'Programme source link record',
-            'created_by_user_id' => (int) $actor['id'],
-        ], true);
-
-        $this->assertIsInt($entryId);
-
-        $response = $this->withSession($this->sessionForUser($actor))
-            ->get('/programmes/' . $programmeId . '/dashboard/details');
-
-        $response->assertOK();
-        $this->assertStringContainsString('/programmes/' . $programmeId . '/modules/hello-world#entry-' . $entryId, $response->getBody());
-    }
-
-    public function testProjectDashboardDetailsPaginatesResults(): void
-    {
-        $actor = $this->createUser('phase4dashpage', 'phase4dashpage@example.com');
-        $projectId = (new ProjectModel())->insert([
-            'name' => 'Paged Dashboard Project',
-            'description' => null,
-            'owner_user_id' => (int) $actor['id'],
-        ], true);
-
-        $this->assertIsInt($projectId);
-
-        for ($i = 1; $i <= 30; $i++) {
-            (new ModuleRaidEntryModel())->insert([
-                'module_slug' => 'risk_register_project',
-                'scope_type' => 'project',
-                'scope_id' => $projectId,
-                'title' => 'Paged risk ' . $i,
-                'description' => 'Pagination test row ' . $i,
-                'owner_user_id' => (int) $actor['id'],
-                'status' => 'open',
-                'priority' => 'medium',
-                'impact' => 'medium',
-                'likelihood' => 'medium',
-                'created_by_user_id' => (int) $actor['id'],
-                'updated_by_user_id' => (int) $actor['id'],
-            ]);
-        }
-
-        $response = $this->withSession($this->sessionForUser($actor))
-            ->get('/projects/' . $projectId . '/dashboard/details');
-
-        $response->assertOK();
-        $this->assertStringContainsString('/projects/' . $projectId . '/dashboard/details?page=2', $response->getBody());
+        $this->assertStringContainsString('/projects/' . $projectId . '/edit', $response->getBody());
     }
 
     private function grantCreationPermissions(int $userId): void

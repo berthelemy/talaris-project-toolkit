@@ -47,7 +47,6 @@ $active = 'programmes';
     </div>
 
     <div class="d-flex flex-column flex-sm-row gap-2 justify-content-sm-end mb-2">
-        <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('programmes/' . (int) ($programme['id'] ?? 0) . '/dashboard/details') ?>"><?= esc(lang('Module.dashboardDetailsButton')) ?></a>
         <?php if ($canManageWidgetLayout): ?>
             <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('programmes/' . (int) ($programme['id'] ?? 0) . '/widgets/layout') ?>"><?= esc(lang('Module.programmeLayoutManageWidgets')) ?></a>
         <?php endif; ?>

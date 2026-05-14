@@ -167,6 +167,7 @@ class ProjectController extends BaseController
         $widgetService = new ModuleWidgetService();
         $widgets = $widgetService->renderWidgets('project', $projectId);
         $projectModules = $this->buildProjectModuleNavigation($projectId, $actorId, $widgetService);
+        $canEditProject = $this->canManageProject($actorId, $project);
         $canManageWidgetLayout = $this->canManageProjectWidgetLayout($actorId, $project);
         $widgetLayoutOptions = $this->buildProjectWidgetLayoutOptions($projectId, $actorId, $widgetService);
 
@@ -175,6 +176,7 @@ class ProjectController extends BaseController
             'linkedProgrammes' => $linkedProgrammes,
             'widgets' => $widgets,
             'projectModules' => $projectModules,
+            'canEditProject' => $canEditProject,
             'canManageWidgetLayout' => $canManageWidgetLayout,
             'widgetLayoutOptions' => $widgetLayoutOptions,
             'canOpenHelloModule' => (new ModuleRegistryService())
