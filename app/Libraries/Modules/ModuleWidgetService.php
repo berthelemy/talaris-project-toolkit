@@ -189,6 +189,20 @@ class ModuleWidgetService
         return $this->canAccessWidget($actorId, $module, $scopeId);
     }
 
+    public function invalidateScopeCaches(string $scopeType, int $scopeId): void
+    {
+        $cache = cache();
+
+        if (method_exists($cache, 'deleteMatching')) {
+            $cache->deleteMatching('widgets_' . $scopeType . '_' . $scopeId . '_*');
+            $cache->deleteMatching('widgets_html_' . $scopeType . '_' . $scopeId . '*');
+
+            return;
+        }
+
+        $cache->clean();
+    }
+
     /**
     * Resolve a widget provider implementation for a module slug.
      *

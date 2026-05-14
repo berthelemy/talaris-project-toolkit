@@ -285,6 +285,38 @@ final class RaidModulesSystemTest extends CIUnitTestCase
         $this->assertStringContainsString('id="entry-' . $entryId . '"', $modulePage->getBody());
     }
 
+    public function testRiskWidgetUpdatesImmediatelyAfterCreateFromModalPath(): void
+    {
+        $manager = $this->createUser('raidmanager6', 'raidmanager6@example.com');
+        $projectId = $this->createProject((int) $manager['id'], 'RAID Project 7');
+
+        (new RbacService())->assignRoleToUser((int) $manager['id'], 'project_manager', 'project', $projectId, (int) $manager['id']);
+
+        // Prime widget HTML/data cache with current overview state.
+        $this->withSession($this->authSession($manager))
+            ->get('/projects/' . $projectId)
+            ->assertOK();
+
+        // Create via the same route used by the widget modal popup.
+        $create = $this->withSession($this->authSession($manager))
+            ->withBodyFormat('form')
+            ->post('/projects/' . $projectId . '/modules/risk-register', [
+                'title' => 'Fresh modal risk',
+                'impact' => 'high',
+                'likelihood' => 'high',
+                'mitigation_actions' => 'Immediate mitigation',
+            ]);
+
+        $create->assertRedirectTo('/projects/' . $projectId . '/modules/risk-register');
+
+        // Verify overview widget reflects the new entry without waiting for cache TTL.
+        $overview = $this->withSession($this->authSession($manager))
+            ->get('/projects/' . $projectId);
+
+        $overview->assertOK();
+        $this->assertStringContainsString('Fresh modal risk', $overview->getBody());
+    }
+
     /**
      * @return array<string, mixed>
      */

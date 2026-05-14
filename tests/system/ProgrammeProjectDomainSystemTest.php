@@ -242,6 +242,41 @@ final class ProgrammeProjectDomainSystemTest extends CIUnitTestCase
         $this->assertStringContainsString('/programmes/' . $programmeId . '/modules/hello-world#entry-' . $entryId, $response->getBody());
     }
 
+    public function testProjectDashboardDetailsPaginatesResults(): void
+    {
+        $actor = $this->createUser('phase4dashpage', 'phase4dashpage@example.com');
+        $projectId = (new ProjectModel())->insert([
+            'name' => 'Paged Dashboard Project',
+            'description' => null,
+            'owner_user_id' => (int) $actor['id'],
+        ], true);
+
+        $this->assertIsInt($projectId);
+
+        for ($i = 1; $i <= 30; $i++) {
+            (new ModuleRaidEntryModel())->insert([
+                'module_slug' => 'risk_register_project',
+                'scope_type' => 'project',
+                'scope_id' => $projectId,
+                'title' => 'Paged risk ' . $i,
+                'description' => 'Pagination test row ' . $i,
+                'owner_user_id' => (int) $actor['id'],
+                'status' => 'open',
+                'priority' => 'medium',
+                'impact' => 'medium',
+                'likelihood' => 'medium',
+                'created_by_user_id' => (int) $actor['id'],
+                'updated_by_user_id' => (int) $actor['id'],
+            ]);
+        }
+
+        $response = $this->withSession($this->sessionForUser($actor))
+            ->get('/projects/' . $projectId . '/dashboard/details');
+
+        $response->assertOK();
+        $this->assertStringContainsString('/projects/' . $projectId . '/dashboard/details?page=2', $response->getBody());
+    }
+
     private function grantCreationPermissions(int $userId): void
     {
         $rbac = new RbacService();

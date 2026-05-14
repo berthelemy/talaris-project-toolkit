@@ -5,6 +5,7 @@
 /** @var array<string, string> $moduleOptions */
 /** @var array{module:string,status:string,priority:string,q:string} $filters */
 /** @var list<array{id:int,module_slug:string,module_name:string,title:string,owner_username:string,status:string,priority:string,updated_at:string,source_url:string}> $records */
+/** @var array{current_page:int,total_pages:int,per_page:int,total_rows:int,has_prev:bool,has_next:bool,prev_url:string,next_url:string} $pagination */
 
 $pageTitle = (string) lang($scopeType === 'project' ? 'Module.projectDashboardDetailsTitle' : 'Module.programmeDashboardDetailsTitle');
 $active = $scopeType === 'project' ? 'projects' : 'programmes';
@@ -74,6 +75,14 @@ $showStatusPriority = $scopeType === 'project';
                 <h3 class="h6 mb-0"><?= esc(lang('Module.entriesTitle')) ?></h3>
             </div>
 
+            <div class="px-3 py-2 border-bottom text-muted small">
+                <?= esc(lang('Module.dashboardPaginationSummary', [
+                    (string) ($pagination['current_page'] ?? 1),
+                    (string) ($pagination['total_pages'] ?? 1),
+                    (string) ($pagination['total_rows'] ?? 0),
+                ])) ?>
+            </div>
+
             <?php if ($records === []): ?>
                 <p class="text-muted p-4 mb-0"><?= esc(lang('Module.dashboardNoRecords')) ?></p>
             <?php else: ?>
@@ -112,6 +121,20 @@ $showStatusPriority = $scopeType === 'project';
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                </div>
+            <?php endif; ?>
+
+            <?php if (($pagination['total_pages'] ?? 1) > 1): ?>
+                <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                    <?php if ((bool) ($pagination['has_prev'] ?? false)): ?>
+                        <a class="btn btn-outline-secondary btn-sm" href="<?= esc((string) ($pagination['prev_url'] ?? '#')) ?>"><?= esc(lang('Module.dashboardPaginationPrev')) ?></a>
+                    <?php else: ?>
+                        <span></span>
+                    <?php endif; ?>
+
+                    <?php if ((bool) ($pagination['has_next'] ?? false)): ?>
+                        <a class="btn btn-outline-secondary btn-sm" href="<?= esc((string) ($pagination['next_url'] ?? '#')) ?>"><?= esc(lang('Module.dashboardPaginationNext')) ?></a>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
         </div>

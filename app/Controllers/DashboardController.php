@@ -92,7 +92,12 @@ class DashboardController extends BaseController
             'q' => trim((string) $this->request->getGet('q')),
         ];
 
-        $query = (new ModuleRaidEntryModel())
+        $page = max(1, (int) $this->request->getGet('page'));
+        $perPage = 25;
+        $offset = ($page - 1) * $perPage;
+
+        $db = db_connect();
+        $query = $db->table('module_raid_entries')
             ->select('module_raid_entries.id, module_raid_entries.module_slug, module_raid_entries.title, module_raid_entries.description, module_raid_entries.status, module_raid_entries.priority, module_raid_entries.updated_at, users.username AS owner_username')
             ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
             ->where('module_raid_entries.scope_type', 'project')
@@ -117,9 +122,14 @@ class DashboardController extends BaseController
                 ->groupEnd();
         }
 
+        $countQuery = clone $query;
+        $totalRows = $countQuery->countAllResults();
+
         $rows = $query
             ->orderBy('module_raid_entries.updated_at', 'DESC')
-            ->findAll();
+            ->limit($perPage, $offset)
+            ->get()
+            ->getResultArray();
 
         $records = [];
         foreach ($rows as $row) {
@@ -149,6 +159,7 @@ class DashboardController extends BaseController
             'records' => $records,
             'filters' => $filters,
             'moduleOptions' => $moduleNames,
+            'pagination' => $this->buildPaginationData('projects/' . $projectId . '/dashboard/details', $filters, $page, $perPage, $totalRows),
         ]);
     }
 
@@ -182,6 +193,10 @@ class DashboardController extends BaseController
             'q' => trim((string) $this->request->getGet('q')),
         ];
 
+        $page = max(1, (int) $this->request->getGet('page'));
+        $perPage = 25;
+        $offset = ($page - 1) * $perPage;
+
         $query = (new ModuleHelloWorldEntryModel())
             ->select('id, module_slug, message, created_at, updated_at')
             ->where('scope_type', 'programme')
@@ -195,7 +210,11 @@ class DashboardController extends BaseController
             $query->like('message', $filters['q']);
         }
 
-        $rows = $query->orderBy('updated_at', 'DESC')->findAll();
+        $totalRows = $query->countAllResults(false);
+
+        $rows = $query
+            ->orderBy('updated_at', 'DESC')
+            ->findAll($perPage, $offset);
 
         $moduleOptions = [
             ModuleRegistryService::HELLO_WORLD_PROGRAMME => 'Hello World Programme',
@@ -223,7 +242,41 @@ class DashboardController extends BaseController
             'records' => $records,
             'filters' => $filters,
             'moduleOptions' => $moduleOptions,
+            'pagination' => $this->buildPaginationData('programmes/' . $programmeId . '/dashboard/details', $filters, $page, $perPage, $totalRows),
         ]);
+    }
+
+    /**
+     * @param array<string, string> $filters
+     * @return array<string, int|string|bool>
+     */
+    private function buildPaginationData(string $basePath, array $filters, int $page, int $perPage, int $totalRows): array
+    {
+        $totalPages = max(1, (int) ceil($totalRows / $perPage));
+        $currentPage = min($page, $totalPages);
+
+        $queryParams = [];
+        foreach ($filters as $key => $value) {
+            if ($value === '') {
+                continue;
+            }
+
+            $queryParams[$key] = $value;
+        }
+
+        $baseUrl = site_url($basePath);
+        $queryString = $queryParams === [] ? '' : ('&' . http_build_query($queryParams));
+
+        return [
+            'current_page' => $currentPage,
+            'total_pages' => $totalPages,
+            'per_page' => $perPage,
+            'total_rows' => $totalRows,
+            'has_prev' => $currentPage > 1,
+            'has_next' => $currentPage < $totalPages,
+            'prev_url' => $baseUrl . '?page=' . max(1, $currentPage - 1) . $queryString,
+            'next_url' => $baseUrl . '?page=' . min($totalPages, $currentPage + 1) . $queryString,
+        ];
     }
 
     /**

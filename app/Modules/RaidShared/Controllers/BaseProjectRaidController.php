@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Modules\ModuleApiAuthorizationService;
 use App\Libraries\Modules\ModuleRegistryService;
+use App\Libraries\Modules\ModuleWidgetService;
 use App\Models\ModuleRaidEntryModel;
 use App\Models\ProjectModel;
 use App\Models\UserModel;
@@ -105,11 +106,11 @@ abstract class BaseProjectRaidController extends BaseController
         $likelihood = trim((string) $this->request->getPost('likelihood'));
 
         if ($impact === '') {
-            $impact = (string) ($entry['impact'] ?? 'low');
+            $impact = 'low';
         }
 
         if ($likelihood === '') {
-            $likelihood = (string) ($entry['likelihood'] ?? 'low');
+            $likelihood = 'low';
         }
 
         $priority = $this->isRiskModule()
@@ -166,6 +167,8 @@ abstract class BaseProjectRaidController extends BaseController
             'scope_id' => $projectId,
             'entry_id' => $entryId,
         ]);
+
+        (new ModuleWidgetService())->invalidateScopeCaches('project', $projectId);
 
         return $this->redirectModule($projectId)->with('success', lang('Module.raidEntryCreatedSuccess'));
     }
@@ -241,6 +244,8 @@ abstract class BaseProjectRaidController extends BaseController
             'entry_id' => $entryId,
         ]);
 
+        (new ModuleWidgetService())->invalidateScopeCaches('project', $projectId);
+
         return $this->redirectModule($projectId)->with('success', lang('Module.raidEntryUpdatedSuccess'));
     }
 
@@ -271,6 +276,8 @@ abstract class BaseProjectRaidController extends BaseController
             'scope_id' => $projectId,
             'entry_id' => $entryId,
         ]);
+
+        (new ModuleWidgetService())->invalidateScopeCaches('project', $projectId);
 
         return $this->redirectModule($projectId)->with('success', lang('Module.raidEntryClosedSuccess'));
     }

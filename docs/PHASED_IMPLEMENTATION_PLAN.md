@@ -536,7 +536,7 @@ User has explicitly requested **detailed specification document** for project da
 - [x] Widget ordering changes enforce RBAC (administrator defaults and manager-level context overrides) with audit logging.
 - [ ] Drill-down pages from each widget to detail views. (Dedicated cross-widget detail pages implemented; continue widget-specific deep links as modules expand)
 - [ ] Source links from details to originating module records. (Implemented for project RAID entries and programme Hello World entries; validate remaining modules as they are onboarded)
-- [ ] Performance tuning for dashboard queries and pagination.
+- [ ] Performance tuning for dashboard queries and pagination. (Pagination and bounded result windows implemented on dashboard detail pages; continue query/index tuning as data volume grows)
 - [ ] Module interface contract alignment:
 	- [ ] Module views exposed consistently at `/projects/{id}/modules/{module}` and `/programmes/{id}/modules/{module}` where applicable.
 	- [ ] Module APIs remain available for inter-module reads/updates and are documented.
@@ -561,11 +561,13 @@ User has explicitly requested **detailed specification document** for project da
 	- `/projects/{id}/dashboard/details`
 	- `/programmes/{id}/dashboard/details`
 - Added source-link traceability from detail rows back to originating module records (project RAID anchors and programme Hello World anchors).
+- Added dashboard detail-page pagination (25 records/page) with filtered next/previous navigation and result summaries to keep query and render costs bounded.
 - Added system coverage:
 	- `WidgetLayoutPreferencesSystemTest::testProjectWidgetLayoutPageShowsDragAndKeyboardOrderingControls`
 	- `WidgetLayoutPreferencesSystemTest::testProgrammeManagerCanUpdateProgrammeWidgetLayoutWithAudit`
 	- `ProgrammeProjectDomainSystemTest::testProjectDashboardDetailsShowsCrossWidgetSourceLinks`
 	- `ProgrammeProjectDomainSystemTest::testProgrammeDashboardDetailsShowsSourceLinks`
+	- `ProgrammeProjectDomainSystemTest::testProjectDashboardDetailsPaginatesResults`
 	- `RaidModulesSystemTest::testRiskWidgetDrillDownLinkTargetsExistingEntryAnchor`
 - Stabilized locale-sensitive read-only assertion in RAID system tests by asserting localized language-string output instead of hard-coded French text.
 - Remaining scope:
