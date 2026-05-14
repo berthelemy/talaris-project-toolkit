@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Modules\ModuleRegistryService;
+use App\Libraries\Modules\ModuleWidgetLayoutService;
 use App\Libraries\Modules\ModuleWidgetService;
 use App\Models\ProgrammeModel;
 use App\Models\ProgrammeProjectModel;
@@ -144,13 +145,18 @@ class ProgrammeController extends BaseController
 
         $programmeStatus = $this->computeProgrammeStatus($linkedProjects);
 
-        $widgets = (new ModuleWidgetService())->renderWidgets('programme', $programmeId);
+        $widgetService = new ModuleWidgetService();
+        $widgets = $widgetService->renderWidgets('programme', $programmeId);
+        $canManageWidgetLayout = $this->canManageProgrammeWidgetLayout($actorId, $programme);
+        $widgetLayoutOptions = $this->buildProgrammeWidgetLayoutOptions($programmeId, $actorId, $widgetService);
 
         return view('programmes/show', [
             'programme' => $programme,
             'programmeStatus' => $programmeStatus,
             'linkedProjects' => $linkedProjects,
             'widgets' => $widgets,
+            'canManageWidgetLayout' => $canManageWidgetLayout,
+            'widgetLayoutOptions' => $widgetLayoutOptions,
             'canOpenHelloModule' => (new ModuleRegistryService())
                 ->isEnabled(ModuleRegistryService::HELLO_WORLD_PROGRAMME, 'programme'),
         ]);
@@ -333,6 +339,91 @@ class ProgrammeController extends BaseController
         return redirect()->to('/dashboard')->with('success', lang('Domain.programmeManagerAssignedSuccess'));
     }
 
+    /**
+     * Display widget layout management page for a programme.
+     *
+     * @param int $programmeId Programme identifier.
+     * @return string|RedirectResponse
+     */
+    public function editWidgetLayout(int $programmeId): string|RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+        $programme = (new ProgrammeModel())->find($programmeId);
+
+        if ($actorId === null) {
+            return redirect()->to('/login')->with('error', lang('Auth.loginRequired'));
+        }
+
+        if ($programme === null) {
+            return redirect()->to('/programmes')->with('error', lang('Domain.programmeNotFound'));
+        }
+
+        if (! $this->canViewProgramme($actorId, $programme) || ! $this->canManageProgrammeWidgetLayout($actorId, $programme)) {
+            return redirect()->to('/programmes')->with('error', lang('Domain.notAuthorized'));
+        }
+
+        $widgetService = new ModuleWidgetService();
+        $widgetLayoutOptions = $this->buildProgrammeWidgetLayoutOptions($programmeId, $actorId, $widgetService);
+
+        return view('programmes/widget_layout_edit', [
+            'programme' => $programme,
+            'widgetLayoutOptions' => $widgetLayoutOptions,
+        ]);
+    }
+
+    /**
+     * Update programme widget layout preferences.
+     *
+     * @param int $programmeId Programme identifier.
+     * @return RedirectResponse
+     */
+    public function updateWidgetLayout(int $programmeId): RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+        $programme = (new ProgrammeModel())->find($programmeId);
+
+        if ($actorId === null || $programme === null || ! $this->canManageProgrammeWidgetLayout($actorId, $programme)) {
+            return redirect()->to('/dashboard')->with('error', lang('Domain.notAuthorized'));
+        }
+
+        $widgetService = new ModuleWidgetService();
+        $registry = new ModuleRegistryService();
+        $layoutService = new ModuleWidgetLayoutService();
+        $modules = $registry->getEnabledModulesByType('programme');
+
+        $visibilityInput = (array) $this->request->getPost('widget_visible');
+        $orderInput = (array) $this->request->getPost('widget_order');
+        $changes = [];
+
+        foreach ($modules as $module) {
+            $slug = (string) ($module['slug'] ?? '');
+            if ($slug === '') {
+                continue;
+            }
+
+            if (! $widgetService->canAccessModuleForActor($actorId, $module, $programmeId)) {
+                continue;
+            }
+
+            $isVisible = isset($visibilityInput[$slug]);
+            $displayOrder = max(0, (int) ($orderInput[$slug] ?? (int) ($module['display_order'] ?? 0)));
+
+            $layoutService->upsert('programme', $programmeId, $slug, $isVisible, $displayOrder, $actorId);
+            $changes[] = [
+                'module_slug' => $slug,
+                'is_visible' => $isVisible,
+                'display_order' => $displayOrder,
+            ];
+        }
+
+        (new AuditLogger())->log('programme_widget_layout_updated', 'success', $actorId, [
+            'programme_id' => $programmeId,
+            'changes' => $changes,
+        ]);
+
+        return redirect()->to('/programmes/' . $programmeId)->with('success', lang('Module.programmeLayoutUpdatedSuccess'));
+    }
+
     private function canCreateProgramme(int $actorId): bool
     {
         $rbac = new RbacService();
@@ -371,6 +462,21 @@ class ProgrammeController extends BaseController
         return $rbac->hasPermission($actorId, 'programme.read_own', 'programme', (int) $programme['id'])
             || $rbac->hasPermission($actorId, 'programme.update_own', 'programme', (int) $programme['id'])
             || $rbac->hasPermission($actorId, 'programme.delete_own', 'programme', (int) $programme['id'])
+            || $this->isSystemAdministrator($actorId);
+    }
+
+    /**
+     * @param array<string, mixed> $programme
+     */
+    private function canManageProgrammeWidgetLayout(int $actorId, array $programme): bool
+    {
+        if ($this->canManageProgramme($actorId, $programme)) {
+            return true;
+        }
+
+        $rbac = new RbacService();
+
+        return $rbac->hasPermission($actorId, 'programme.content.update', 'programme', (int) ($programme['id'] ?? 0))
             || $this->isSystemAdministrator($actorId);
     }
 
@@ -490,5 +596,43 @@ class ProgrammeController extends BaseController
         }
 
         return 'not_started';
+    }
+
+    /**
+     * @return list<array{slug: string, name: string, is_visible: bool, display_order: int}>
+     */
+    private function buildProgrammeWidgetLayoutOptions(int $programmeId, int $actorId, ModuleWidgetService $widgetService): array
+    {
+        $modules = (new ModuleRegistryService())->getEnabledModulesByType('programme');
+        $layoutService = new ModuleWidgetLayoutService();
+        $defaults = $layoutService->getDefaultByScope('programme');
+        $scoped = $layoutService->getScoped('programme', $programmeId);
+
+        $options = [];
+        foreach ($modules as $module) {
+            $slug = (string) ($module['slug'] ?? '');
+            if ($slug === '' || ! $widgetService->canAccessModuleForActor($actorId, $module, $programmeId)) {
+                continue;
+            }
+
+            $layout = $layoutService->resolveForModule($module, $defaults, $scoped);
+            $options[] = [
+                'slug' => $slug,
+                'name' => (string) ($module['name'] ?? $slug),
+                'is_visible' => $layout['is_visible'],
+                'display_order' => $layout['display_order'],
+            ];
+        }
+
+        usort($options, static function (array $a, array $b): int {
+            $orderCompare = ((int) $a['display_order']) <=> ((int) $b['display_order']);
+            if ($orderCompare !== 0) {
+                return $orderCompare;
+            }
+
+            return strcasecmp((string) $a['name'], (string) $b['name']);
+        });
+
+        return $options;
     }
 }

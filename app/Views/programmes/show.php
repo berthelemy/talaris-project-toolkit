@@ -7,6 +7,7 @@ $active = 'programmes';
 <?= $this->section('content') ?>
     <?php $canOpenHelloModule = (bool) ($canOpenHelloModule ?? false); ?>
     <?php $widgets = (string) ($widgets ?? ''); ?>
+    <?php $canManageWidgetLayout = (bool) ($canManageWidgetLayout ?? false); ?>
     <?php if (session('error') !== null): ?>
         <div class="alert alert-danger" role="alert"><?= esc((string) session('error')) ?></div>
     <?php endif; ?>
@@ -43,6 +44,13 @@ $active = 'programmes';
                 <span class="badge text-bg-secondary align-self-start align-self-md-center"><?= esc(lang('Module.statusDisabled')) ?></span>
             <?php endif; ?>
         </div>
+    </div>
+
+    <div class="d-flex flex-column flex-sm-row gap-2 justify-content-sm-end mb-2">
+        <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('programmes/' . (int) ($programme['id'] ?? 0) . '/dashboard/details') ?>"><?= esc(lang('Module.dashboardDetailsButton')) ?></a>
+        <?php if ($canManageWidgetLayout): ?>
+            <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('programmes/' . (int) ($programme['id'] ?? 0) . '/widgets/layout') ?>"><?= esc(lang('Module.programmeLayoutManageWidgets')) ?></a>
+        <?php endif; ?>
     </div>
 
     <?php if ($widgets !== ''): ?>

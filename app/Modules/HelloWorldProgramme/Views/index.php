@@ -76,7 +76,7 @@
             <?php else: ?>
                 <ul class="list-group list-group-flush">
                     <?php foreach ($entries as $entry): ?>
-                        <li class="list-group-item">
+                        <li id="entry-<?= (int) ($entry['id'] ?? 0) ?>" class="list-group-item">
                             <input
                                 id="entry-message-<?= (int) ($entry['id'] ?? 0) ?>"
                                 name="message"

@@ -257,7 +257,7 @@ $active = 'projects';
                         </thead>
                         <tbody>
                         <?php foreach ($entries as $entry): ?>
-                            <tr>
+                            <tr id="entry-<?= (int) ($entry['id'] ?? 0) ?>">
                                 <td>
                                     <div class="fw-semibold"><?= esc((string) ($entry['title'] ?? '')) ?></div>
                                     <?php if ((string) ($entry['description'] ?? '') !== ''): ?>

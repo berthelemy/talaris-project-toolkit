@@ -21,6 +21,8 @@ $routes->get('reset-password/(:segment)', 'AuthController::resetPasswordForm/$1'
 $routes->post('reset-password/(:segment)', 'AuthController::resetPassword/$1');
 
 $routes->get('dashboard', 'DashboardController::index', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->get('programmes/(:num)/dashboard/details', 'DashboardController::programmeDetails/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->get('projects/(:num)/dashboard/details', 'DashboardController::projectDetails/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('impersonate/(:num)', 'ImpersonationController::start/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('impersonate/stop', 'ImpersonationController::stop', ['filter' => ['auth', 'sessiontimeout']]);
 
@@ -61,6 +63,8 @@ $routes->post('programmes/(:num)/delete', 'ProgrammeController::delete/$1', ['fi
 $routes->post('programmes/(:num)/projects/(:num)/link', 'ProgrammeController::linkProject/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('programmes/(:num)/projects/(:num)/unlink', 'ProgrammeController::unlinkProject/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('programmes/(:num)/managers', 'ProgrammeController::assignManager/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->get('programmes/(:num)/widgets/layout', 'ProgrammeController::editWidgetLayout/$1', ['filter' => ['auth', 'sessiontimeout']]);
+$routes->post('programmes/(:num)/widgets/layout', 'ProgrammeController::updateWidgetLayout/$1', ['filter' => ['auth', 'sessiontimeout']]);
 
 $routes->get('projects', 'ProjectController::index', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->get('projects/(:num)', 'ProjectController::show/$1', ['filter' => ['auth', 'sessiontimeout']]);

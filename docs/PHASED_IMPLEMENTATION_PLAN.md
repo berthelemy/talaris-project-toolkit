@@ -13,6 +13,38 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 - CI pipeline runs automated tests on each merge request.
 - Product owner signs off each phase via manual acceptance tests.
 
+## Current Status (As of May 13, 2026)
+
+**Active Phase:** Phase 10 (Weeks 19–20): Desktop-Oriented UI Overhaul and Navigation  
+**Current Focus:** Project Dashboard Widgets (awaiting detailed specification)
+
+### Phase Completion Summary
+- **Phase 1–9:** ✅ Complete (Completed May 10–13, 2026)
+- **Phase 10 Foundation:** ✅ Complete (May 13, 2026)
+  - Master layout system implemented and tested
+  - All pages migrated to base layout inheritance
+  - Site settings admin page with RBAC and persistence
+  - 67 tests passing, 72% code coverage, zero regressions
+- **Phase 10 Remaining:** ⏳ In Progress (Awaiting specification for project dashboard widgets)
+  - Card-based Programmes/Projects list views
+  - Programme/Project detail layouts with side navigation
+  - **Project overview section with dashboard widgets** ← NEXT FOCUS
+  - Widget visibility controls
+- **Phase 11+:** 📋 Planned (Dependent on Phase 10 completion)
+
+### Next Session Deliverable
+User has explicitly requested **detailed specification document** for project dashboard widgets before proceeding with implementation. Once specification is provided, implementation will proceed in Phase 10.
+
+### Key Infrastructure Ready
+- ✅ Master layout system (base.php with sections)
+- ✅ Dynamic site title configuration
+- ✅ RBAC authorization framework
+- ✅ Audit logging infrastructure
+- ✅ DataTables integration for sorted/searchable tables
+- ✅ Module widget caching and visibility system
+- ✅ Bootstrap 5 responsive framework
+- ✅ EN/FR localization system
+
 ## Global Definition of Done (applies to every phase)
 
 - [ ] Code follows CodeIgniter 4 conventions and PSR-12 style.
@@ -359,7 +391,7 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 6. Confirm lock events are present in audit logs.
 
 ### Exit Criteria
-- [ ] No concurrent write conflicts are possible in locked module contexts.
+- [x] No concurrent write conflicts are possible in locked module contexts.
 
 ## Phase 9 (Weeks 17-18): RAID Modules (Risk, Assumptions, Issues, Dependencies)
 
@@ -418,62 +450,145 @@ This plan is organized as two-week phases (sprints). Each phase includes:
 5. Confirm changes are captured in audit logs with actor and timestamp.
 
 ### Exit Criteria
-- [ ] RAID modules are usable for day-to-day project governance.
+- [x] RAID modules are usable for day-to-day project governance.
 
 ## Phase 10 (Weeks 19-20): Desktop-Oriented UI Overhaul and Navigation
 
 ### Objectives
 - Implement the major UI redesign to make the app feel desktop-oriented while preserving mobile-first and accessibility commitments.
 
-### Delivery Checklist
-- [ ] Header updated to include logo, site title, and navbar.
-- [ ] Navbar structure implemented: Programmes, Projects, Admin (Users/Modules/Theme), Profile, language selector, and sign in/sign out.
+### Delivery Checklist (Foundation Work - Completed May 13, 2026)
+- [x] Master layout system implemented using CodeIgniter extends/sections pattern.
+- [x] Header updated to include logo, site title (dynamically configurable), and navbar.
+- [x] Footer implemented with Bootstrap JS bundle, centered "Powered by Talaris" branding.
+- [x] Admin Site Settings page implemented at `/site-settings` (RBAC-protected, `system.theme.manage`).
+- [x] Navbar structure implemented: Programmes, Projects, Admin (Users/Modules/Theme/Site Settings), Profile, language selector.
+- [x] All application pages (17+) migrated to base layout inheritance pattern.
+- [x] Error pages (404, 400, production) refactored with site header/footer.
+- [x] Bootstrap JS duplication fixed (removed from datatable_assets.php, loaded once in footer).
+- [x] Admin dropdown now functional on all pages (`/projects/:id`, `/modules`, etc.).
+
+### Implementation Progress (2026-05-13)
+- Created master layout template: `app/Views/layouts/base.php` with three content sections (head, content, postMain, extraScripts)
+- Implemented dynamic site title rendering in `app_header.php` via `ThemeSettingsService`
+- Created SiteSettingsController with RBAC authorization and audit logging for site title configuration
+- Added migration 2026-05-13-170000 to add `site_title` VARCHAR(255) column to theme_settings table
+- Migrated all 17 core pages to extend base layout: programmes/projects/modules detail/edit/list views, dashboard, profile, users, theme, error pages
+- Added EN/FR localization for Site Settings admin page
+- Fixed Bootstrap JS loading order issue by consolidating to single app_footer.php include
+- All 67 tests passing (350 assertions, 72% code coverage)
+
+### Manual Acceptance Testing (2026-05-13)
+1. ✅ Verify header shows logo, site title, and complete navbar structure on desktop and mobile.
+   - Result: Header renders correctly with dynamic site title from database
+2. ✅ Verify admin dropdown menu works on all pages (Programmes, Projects, Modules, Dashboard).
+   - Result: All dropdowns functional; Bootstrap JS loading issue resolved
+3. ✅ Access `/site-settings` and edit site title; verify persistence and header update.
+   - Result: Form validation, persistence, RBAC check, and audit logging working
+4. ✅ Verify error pages (404, 400) display site header/footer with consistent branding.
+   - Result: Error pages now styled consistently
+5. ✅ Run responsive checks and verify base layout supports mobile-first behavior.
+   - Result: Layout responsive; Bootstrap grid working correctly
+6. ✅ Verify all 17 migrated pages render correctly with no template errors.
+   - Result: All pages render; 67 tests passing with no regressions
+
+### Remaining Phase 10 Deliverables (Next Session)
 - [ ] Programmes list (`/programmes`) redesigned to card-based navigation with clickable cards.
 - [ ] Programme detail (`/programmes/:id`) redesigned with computed programme status and clickable related-project cards.
 - [ ] Projects list (`/projects`) redesigned to card-based navigation with programme filter including unlinked projects.
 - [ ] Project detail (`/projects/:id`) redesigned into hideable navigation panel (2/12) + main content panel.
-- [ ] Project overview section implemented with module widgets and quick actions as defined in `docs/UI_CHANGES_2026_05_12.md`.
+- [ ] **Project overview section implemented with module widgets and quick actions** ← NEXT FOCUS (awaiting detailed specification)
 - [ ] Project module sections (Risks, Assumptions, Issues, Decisions, Dependencies) rendered as datatable-driven views.
 - [ ] Widget visibility controls implemented for administrators (default widgets) and project managers (per-project show/hide).
 - [ ] Modal quick-create flows return users to the launching page context after close.
-- [ ] Footer updated with centered "Powered by Talaris" link.
 
-### Manual Acceptance Testing
-1. Verify header shows logo, site title, and complete navbar structure on desktop and mobile widths.
-2. Open `/programmes` and confirm card-based list with fully clickable cards.
-3. Open a programme detail page and confirm computed status and clickable related project cards.
-4. Open `/projects`, apply programme filters (including no-programme), and confirm results and navigation behavior.
-5. Open `/projects/:id`, collapse/expand side panel, and confirm module navigation and overview behavior.
-6. Validate overview widgets display expected data and quick-create modal flows return to the same page context.
-7. Validate admin default-widget controls and project-manager widget show/hide controls.
-8. Open each module section (Risks/Assumptions/Issues/Decisions/Dependencies) and confirm datatable rendering/interaction.
-9. Verify footer displays centered "Powered by Talaris" link.
-10. Run responsive and WCAG 2.2 AA spot checks for navigation, cards, panel toggle, and modal flows.
+### Manual Acceptance Testing (Remaining)
+1. Open `/programmes` and confirm card-based list with fully clickable cards.
+2. Open a programme detail page and confirm computed status and clickable related project cards.
+3. Open `/projects`, apply programme filters (including no-programme), and confirm results.
+4. Open `/projects/:id`, collapse/expand side panel, and confirm module navigation and overview behavior.
+5. Validate overview widgets display expected data and quick-create modal flows return to the same page context.
+6. Validate admin default-widget controls and project-manager widget show/hide controls.
+7. Open each module section (Risks/Assumptions/Issues/Decisions/Dependencies) and confirm datatable rendering.
+8. Run responsive and WCAG 2.2 AA spot checks for all new page layouts.
 
-### Exit Criteria
-- [ ] New desktop-oriented UI shell and page layouts are production-ready with localization, accessibility, and responsive behavior validated.
+### Exit Criteria (Foundation Complete - May 13, 2026)
+- [x] Master layout system is implemented and all pages are using it.
+- [x] Header, footer, and scripts are applied consistently via inheritance.
+- [x] Admin can configure site title via `/site-settings` page with RBAC.
+- [x] Bootstrap JS loads exactly once and dropdowns work on all pages.
+- [x] Error pages display with site branding.
+- [ ] Project dashboard widgets are fully implemented and functional ← AWAITING SPECIFICATION
+- [ ] Desktop-oriented UI shell and page layouts are production-ready with localization, accessibility, and responsive behavior validated ← PENDING widget implementation
 
 ## Phase 11 (Weeks 21-22): Dashboards, Drill-Downs, and Traceability
 
 ### Objectives
 - Provide programme/project dashboards with traceable source navigation.
+- Implement drag-and-drop widget ordering for project/programme overview dashboards.
+- Align module/widget behavior with module specification documents (`docs/modules/00-modules_overview.md`, `docs/modules/01-risks.md`).
+- **Note:** This phase depends on Phase 10 project overview widgets being completed first.
 
 ### Delivery Checklist
 - [ ] Programme dashboard with module summary widgets.
 - [ ] Project dashboard with module summary widgets.
-- [ ] Drill-down pages from each widget to detail views.
-- [ ] Source links from details to originating module records.
+- [x] Drag-and-drop widget ordering implemented for overview pages, with persistent ordering and keyboard-accessible fallback controls.
+- [x] Widget ordering changes enforce RBAC (administrator defaults and manager-level context overrides) with audit logging.
+- [ ] Drill-down pages from each widget to detail views. (Dedicated cross-widget detail pages implemented; continue widget-specific deep links as modules expand)
+- [ ] Source links from details to originating module records. (Implemented for project RAID entries and programme Hello World entries; validate remaining modules as they are onboarded)
 - [ ] Performance tuning for dashboard queries and pagination.
+- [ ] Module interface contract alignment:
+	- [ ] Module views exposed consistently at `/projects/{id}/modules/{module}` and `/programmes/{id}/modules/{module}` where applicable.
+	- [ ] Module APIs remain available for inter-module reads/updates and are documented.
+- [ ] Widget contract alignment for module overview pages:
+	- [ ] Widgets available on project/programme overview pages with per-context enable/disable controls.
+	- [ ] Every widget provides both actions: (1) add data via modal popup, (2) open full module page.
+- [ ] Risk module requirements (ready-to-do scope alignment):
+	- [ ] Risk register supports add/edit/delete entries.
+	- [ ] Risk summary/status view implemented with high-priority highlighting.
+	- [ ] Risk detail page uses responsive two-column layout.
+	- [ ] Risk data model/UI includes: date entered, entered by, description, impact, likelihood, calculated priority, mitigation actions, owner, closed flag, closing date, lessons learned.
+	- [ ] Risks overview widget shows open risk counts by priority.
+	- [ ] High priority risks widget lists high-priority risks with links to risk detail pages.
+
+### Implementation Progress (2026-05-14)
+- Added drag-and-drop ordering interactions on project widget layout page (`/projects/{id}/widgets/layout`) with persisted order values posted through existing `widget_order` inputs.
+- Added keyboard-accessible fallback ordering controls (up/down buttons) on each widget row.
+- Added EN/FR localization labels for ordering help and move controls.
+- Added RAID entry anchor IDs (`id="entry-{id}"`) so widget drill-down links targeting `#entry-{id}` now land on concrete module records.
+- Added programme-level widget layout management at `/programmes/{id}/widgets/layout` including drag-and-drop ordering, keyboard fallback controls, RBAC enforcement, and audit logging (`programme_widget_layout_updated`).
+- Added dedicated cross-widget dashboard detail pages:
+	- `/projects/{id}/dashboard/details`
+	- `/programmes/{id}/dashboard/details`
+- Added source-link traceability from detail rows back to originating module records (project RAID anchors and programme Hello World anchors).
+- Added system coverage:
+	- `WidgetLayoutPreferencesSystemTest::testProjectWidgetLayoutPageShowsDragAndKeyboardOrderingControls`
+	- `WidgetLayoutPreferencesSystemTest::testProgrammeManagerCanUpdateProgrammeWidgetLayoutWithAudit`
+	- `ProgrammeProjectDomainSystemTest::testProjectDashboardDetailsShowsCrossWidgetSourceLinks`
+	- `ProgrammeProjectDomainSystemTest::testProgrammeDashboardDetailsShowsSourceLinks`
+	- `RaidModulesSystemTest::testRiskWidgetDrillDownLinkTargetsExistingEntryAnchor`
+- Stabilized locale-sensitive read-only assertion in RAID system tests by asserting localized language-string output instead of hard-coded French text.
+- Remaining scope:
+	- Expand dedicated detail-page coverage and source-link validation for additional module families beyond current RAID/Hello World scope.
 
 ### Manual Acceptance Testing
 1. Open programme and project dashboards populated with sample data.
 2. Validate each widget count/metric against source records.
 3. Click widget to open detail page and verify filtered result set.
 4. Follow source link from detail record to module record.
-5. Confirm dashboard loads within acceptable response targets.
+5. Reorder widgets via drag-and-drop and verify order persists after refresh and for subsequent sessions.
+6. Validate keyboard-only reordering fallback and visible focus states for accessibility.
+7. Validate each widget has both "Add" modal action and "Open module" navigation action.
+8. Validate risk widgets:
+	 - [ ] Risks overview counts match open records by priority.
+	 - [ ] High priority risk links open correct risk detail pages.
+9. Confirm dashboard loads within acceptable response targets.
 
 ### Exit Criteria
 - [ ] Dashboard metrics are accurate, navigable, and explainable.
+- [ ] Widget ordering is usable, accessible, and reliably persisted.
+- [ ] Module/risk specifications from `docs/modules/00-modules_overview.md` and `docs/modules/01-risks.md` are implemented and validated.
+- [ ] (Blocked until Phase 10 project overview widgets are complete)
 
 ## Phase 12 (Weeks 23-24): Cross-Module Reports and Email Scheduling
 

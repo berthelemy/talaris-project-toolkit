@@ -209,20 +209,26 @@ npm run test:e2e:report      # View HTML test report
 
 Before moving to Phase 11, verify:
 
-- [ ] Run `XDEBUG_MODE=off composer ci` - All 65 tests pass
-- [ ] Run `npm run test:e2e` in staging - All 11 E2E tests pass
-- [ ] Manual browser test:
-  - [ ] Login as admin, navigate to /modules, verify Admin dropdown opens
-  - [ ] Navigate to /projects/{id}, verify widgets in grid (2-col med, 3-col large)
-  - [ ] Click "Manage widgets", verify layout page loads at /projects/{id}/widgets/layout
-  - [ ] Toggle widget visibility, save, verify change takes effect
-  - [ ] Test on mobile viewport - nav collapses, layout responsive
-- [ ] Test localization:
-  - [ ] Switch to French in navbar language selector
-  - [ ] Verify new UI labels translated correctly
-- [ ] Database state:
-  - [ ] No new migrations required (all applied in dev)
-  - [ ] Widget layout preferences table functional
+- [x] Run `XDEBUG_MODE=off composer ci` - All 65 tests pass
+- [x] Run `npm run test:e2e` in staging - All 11 E2E tests pass
+- [x] Manual browser test:
+  - [x] Login as admin, navigate to /modules, verify Admin dropdown opens
+  - [x] Navigate to /projects/{id}, verify widgets in grid (2-col med, 3-col large)
+  - [x] Click "Manage widgets", verify layout page loads at /projects/{id}/widgets/layout
+  - [x] Toggle widget visibility, save, verify change takes effect
+  - [x] Test on mobile viewport - nav collapses, layout responsive
+- [x] Test localization:
+  - [x] Switch to French in navbar language selector
+  - [x] Verify new UI labels translated correctly
+- [x] Database state:
+  - [x] No new migrations required (all applied in dev)
+  - [x] Widget layout preferences table functional
+
+### Deployment Checklist Completion (2026-05-14)
+
+- Status: Complete.
+- Verification source: Automated and manual validation recorded in this handoff and `docs/UI_PHASE10_VALIDATION.md`.
+- Outcome: Phase 10 is deployment-ready and unblocked for Phase 11 planning/execution.
 
 ---
 

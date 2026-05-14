@@ -57,6 +57,10 @@ $active = 'projects';
                 </div>
             </div>
 
+            <div class="d-flex justify-content-end mb-2">
+                <a class="btn btn-outline-secondary btn-sm" href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/dashboard/details') ?>"><?= esc(lang('Module.dashboardDetailsButton')) ?></a>
+            </div>
+
             <?php if ($widgets !== ''): ?>
                 <div class="mb-4">
                     <div class="row g-3">

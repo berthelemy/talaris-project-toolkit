@@ -99,7 +99,7 @@ final class RaidModulesSystemTest extends CIUnitTestCase
             ->get('/projects/' . $projectId . '/modules/issue-tracker');
 
         $page->assertOK();
-        $this->assertStringContainsString('lecture seule', strtolower($page->getBody()));
+        $this->assertStringContainsString(strtolower((string) lang('Module.readOnlyNotice')), strtolower($page->getBody()));
 
         $post = $this->withSession($this->authSession($member))
             ->withBodyFormat('form')
@@ -245,6 +245,44 @@ final class RaidModulesSystemTest extends CIUnitTestCase
 
         $this->assertStringContainsString('Open incident', $body);
         $this->assertStringNotContainsString('Closed incident', $body);
+    }
+
+    public function testRiskWidgetDrillDownLinkTargetsExistingEntryAnchor(): void
+    {
+        $manager = $this->createUser('raidmanager5', 'raidmanager5@example.com');
+        $projectId = $this->createProject((int) $manager['id'], 'RAID Project 6');
+
+        (new RbacService())->assignRoleToUser((int) $manager['id'], 'project_manager', 'project', $projectId, (int) $manager['id']);
+
+        $entryId = (new ModuleRaidEntryModel())->insert([
+            'module_slug' => 'risk_register_project',
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'title' => 'High probability outage',
+            'description' => 'Service provider uptime risk.',
+            'owner_user_id' => (int) $manager['id'],
+            'status' => 'open',
+            'impact' => 'high',
+            'likelihood' => 'high',
+            'priority' => 'critical',
+            'mitigation_actions' => 'Add standby provider.',
+            'created_by_user_id' => (int) $manager['id'],
+            'updated_by_user_id' => (int) $manager['id'],
+        ], true);
+
+        $this->assertIsInt($entryId);
+
+        $projectOverview = $this->withSession($this->authSession($manager))
+            ->get('/projects/' . $projectId);
+
+        $projectOverview->assertOK();
+        $this->assertStringContainsString('/projects/' . $projectId . '/modules/risk-register#entry-' . $entryId, $projectOverview->getBody());
+
+        $modulePage = $this->withSession($this->authSession($manager))
+            ->get('/projects/' . $projectId . '/modules/risk-register');
+
+        $modulePage->assertOK();
+        $this->assertStringContainsString('id="entry-' . $entryId . '"', $modulePage->getBody());
     }
 
     /**
