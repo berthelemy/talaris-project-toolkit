@@ -5,13 +5,24 @@ namespace App\Modules\DependenciesRegisterProject\Widgets;
 use App\Libraries\Modules\ModuleWidgetInterface;
 use App\Models\ModuleRaidEntryModel;
 
+/**
+ * Provides Dependencies Register dashboard widget data.
+ */
 class ModuleWidget implements ModuleWidgetInterface
 {
+    /**
+     * @param int $scopeId Project identifier.
+     */
     public function getWidgetView(int $scopeId): ?string
     {
         return 'App\Modules\DependenciesRegisterProject\Views\widget';
     }
 
+    /**
+     * @param int $scopeId Project identifier.
+     * @param array<string,mixed> $config Widget configuration.
+     * @return array{entries:list<array<string,mixed>>,entry_count:int}
+     */
     public function getWidgetData(int $scopeId, array $config = []): array
     {
         $maxEntries = (int) ($config['max_entries'] ?? 5);
@@ -36,6 +47,9 @@ class ModuleWidget implements ModuleWidgetInterface
         ];
     }
 
+    /**
+     * @return array{max_entries:int}
+     */
     public function getDefaultConfig(): array
     {
         return ['max_entries' => 5];

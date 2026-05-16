@@ -5,9 +5,14 @@ namespace App\Modules\AssumptionsRegisterProject\Widgets;
 use App\Libraries\Modules\ModuleWidgetInterface;
 use App\Models\ModuleRaidEntryModel;
 
+/**
+ * Provides Assumptions Register dashboard widget definitions and data.
+ */
 class ModuleWidget implements ModuleWidgetInterface
 {
     /**
+     * @param int $scopeId Project identifier.
+     * @param array<string,mixed> $config Widget configuration.
      * @return list<array{key:string,name:string,view:string,data:array<string,mixed>}>
      */
     public function getWidgetDefinitions(int $scopeId, array $config = []): array
@@ -35,11 +40,19 @@ class ModuleWidget implements ModuleWidgetInterface
         ];
     }
 
+    /**
+     * @param int $scopeId Project identifier.
+     */
     public function getWidgetView(int $scopeId): ?string
     {
         return null;
     }
 
+    /**
+     * @param int $scopeId Project identifier.
+     * @param array<string,mixed> $config Widget configuration.
+     * @return array<string,mixed>
+     */
     public function getWidgetData(int $scopeId, array $config = []): array
     {
         $maxEntries = max(1, (int) ($config['max_entries'] ?? 5));
@@ -50,6 +63,9 @@ class ModuleWidget implements ModuleWidgetInterface
         );
     }
 
+    /**
+     * @return array{max_entries:int}
+     */
     public function getDefaultConfig(): array
     {
         return ['max_entries' => 5];
