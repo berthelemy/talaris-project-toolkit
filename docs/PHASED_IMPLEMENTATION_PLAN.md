@@ -339,7 +339,7 @@ User has explicitly requested **detailed specification document** for project da
 - Added widget RBAC permission checks, data/HTML caching, usage metrics, and failure logging signals.
 - Added admin controls on `/modules` for widget display order and module widget config (`max_entries`).
 - Added two additional project reference modules (`risk_register_project`, `issue_tracker_project`) with routes, controllers, views, and widgets.
-- Added internal module API endpoints under `/api/modules/...` with authorization service and audit events.
+- Added internal module API service-layer integration with authorization service and audit events (no direct public HTTP module API endpoints).
 - Added autosave endpoints for Hello World programme/project entries, including optimistic conflict handling (`409`).
 - Added frontend autosave client (`public/js/autosave.js`) with debounced save, status messaging, and conflict refresh behavior.
 - Added tests: `tests/system/ModuleApiSystemTest.php`, `tests/system/ModuleAutosaveSystemTest.php`, and `tests/unit/modules/DirectoryToSlugTest.php`.

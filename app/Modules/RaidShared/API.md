@@ -8,6 +8,10 @@
 - `dependencies_register_project`
 - `decisions_register_project`
 
+## Internal Module Integration
+- Cross-module API integration is internal-only via service-layer calls.
+- No direct HTTP module API endpoints (for example `/api/modules/...`) are exposed.
+
 ## Public Internal Controller Surface
 Base class: `Controllers/BaseProjectRaidController.php`
 

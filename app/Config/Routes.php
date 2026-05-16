@@ -39,11 +39,6 @@ $routes->post('modules/(:segment)/widget-config', 'ModuleManagementController::u
 $routes->post('modules/(:segment)/widget-layout-default', 'ModuleManagementController::updateDefaultWidgetLayout/$1', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('modules/locks/(:num)/release', 'ModuleManagementController::releaseLock/$1', ['filter' => ['auth', 'sessiontimeout']]);
 
-$routes->get('api/modules/(:segment)/(:segment)', 'ModuleApiController::read/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
-$routes->post('api/modules/(:segment)/(:segment)', 'ModuleApiController::create/$1/$2', ['filter' => ['auth', 'sessiontimeout']]);
-$routes->post('api/modules/(:segment)/(:segment)/(:num)', 'ModuleApiController::update/$1/$2/$3', ['filter' => ['auth', 'sessiontimeout']]);
-$routes->put('api/modules/(:segment)/(:segment)/(:num)', 'ModuleApiController::update/$1/$2/$3', ['filter' => ['auth', 'sessiontimeout']]);
-
 $routes->get('users', 'UserManagementController::index', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->post('users', 'UserManagementController::create', ['filter' => ['auth', 'sessiontimeout']]);
 $routes->get('users/(:num)/edit', 'UserManagementController::edit/$1', ['filter' => ['auth', 'sessiontimeout']]);

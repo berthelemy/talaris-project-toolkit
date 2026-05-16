@@ -6,8 +6,14 @@
 - Version: `1.0.0`
 - Widget permission: `module.hello_world_programme.widget.read`
 
+## Internal Module Integration
+- Cross-module API access is internal-only via `App\Libraries\Modules\ModuleInternalApiService`.
+- No direct HTTP module API endpoints (for example `/api/modules/...`) are exposed.
+
 ## HTTP Routes
 Defined in `Config/routes.php`.
+
+These are application page/action routes for authenticated users, not cross-module API endpoints.
 
 - `GET /programmes/{programmeId}/modules/hello-world`
   - Controller: `HelloWorldProgrammeController::index`
@@ -22,6 +28,8 @@ Defined in `Config/routes.php`.
 ### Request
 - `message` (required, max 500 chars)
 - `last_updated_at` (optional optimistic lock value)
+
+The autosave endpoint is a module page action endpoint, not a cross-module API endpoint.
 
 ### Responses
 - `200` success with updated entry and CSRF hash

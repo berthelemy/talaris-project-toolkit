@@ -2,11 +2,17 @@
 
 This document defines the internal module API contract introduced in Phase 7.
 
-## Endpoints
+## Internal Service Contract
 
-- `GET /api/modules/{moduleSlug}/{resource}`
-- `POST /api/modules/{moduleSlug}/{resource}`
-- `PUT /api/modules/{moduleSlug}/{resource}/{id}`
+Internal module integration must use `App\Libraries\Modules\ModuleInternalApiService`.
+
+Methods:
+
+- `read(string $moduleSlug, string $resource, array $query, int $actorId): array`
+- `create(string $moduleSlug, string $resource, array $data, int $actorId): array`
+- `update(string $moduleSlug, string $resource, int $id, array $data, int $actorId): array`
+
+There are no public HTTP routes for the internal module API.
 
 ## Supported Resource
 
@@ -27,8 +33,8 @@ Current implementation supports:
 
 ## Audit Events
 
-- `module_api_read`
-- `module_api_write`
+- `module_internal_api_read`
+- `module_internal_api_write`
 - `autosave_update`
 - `module_lock_acquired`
 - `module_lock_denied`

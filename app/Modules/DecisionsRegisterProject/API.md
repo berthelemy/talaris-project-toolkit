@@ -6,8 +6,14 @@
 - Version: `1.0.0`
 - Widget permission: `module.decisions_register_project.widget.read`
 
+## Internal Module Integration
+- Cross-module API access is internal-only via `App\Libraries\Modules\ModuleInternalApiService`.
+- No direct HTTP module API endpoints (for example `/api/modules/...`) are exposed.
+
 ## HTTP Routes
 Defined in `Config/routes.php`.
+
+These are application page/action routes for authenticated users, not cross-module API endpoints.
 
 - `GET /projects/{projectId}/modules/decisions-register`
 - `POST /projects/{projectId}/modules/decisions-register`
