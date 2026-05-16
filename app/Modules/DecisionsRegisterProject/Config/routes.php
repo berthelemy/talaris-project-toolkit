@@ -13,3 +13,4 @@ $routes->get('projects/(:num)/modules/decisions-register', 'DecisionsRegisterCon
 $routes->post('projects/(:num)/modules/decisions-register', 'DecisionsRegisterController::create/$1', ['namespace' => 'App\Modules\DecisionsRegisterProject\Controllers']);
 $routes->post('projects/(:num)/modules/decisions-register/(:num)/update', 'DecisionsRegisterController::update/$1/$2', ['namespace' => 'App\Modules\DecisionsRegisterProject\Controllers']);
 $routes->post('projects/(:num)/modules/decisions-register/(:num)/close', 'DecisionsRegisterController::close/$1/$2', ['namespace' => 'App\Modules\DecisionsRegisterProject\Controllers']);
+$routes->post('projects/(:num)/modules/decisions-register/(:num)/delete', 'DecisionsRegisterController::delete/$1/$2', ['namespace' => 'App\Modules\DecisionsRegisterProject\Controllers']);

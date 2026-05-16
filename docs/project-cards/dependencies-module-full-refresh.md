@@ -1,7 +1,7 @@
 ---
 title: Card - Dependencies Module Full Refresh
 type: card
-status: Ready to do
+status: in-progress
 updated: 2026-05-16
 blocked_by:
   - phase-10-desktop-ui-overhaul-and-navigation

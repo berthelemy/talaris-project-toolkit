@@ -13,3 +13,4 @@ $routes->get('projects/(:num)/modules/issue-tracker', 'IssueTrackerController::i
 $routes->post('projects/(:num)/modules/issue-tracker', 'IssueTrackerController::create/$1', ['namespace' => 'App\Modules\IssueTrackerProject\Controllers']);
 $routes->post('projects/(:num)/modules/issue-tracker/(:num)/update', 'IssueTrackerController::update/$1/$2', ['namespace' => 'App\Modules\IssueTrackerProject\Controllers']);
 $routes->post('projects/(:num)/modules/issue-tracker/(:num)/close', 'IssueTrackerController::close/$1/$2', ['namespace' => 'App\Modules\IssueTrackerProject\Controllers']);
+$routes->post('projects/(:num)/modules/issue-tracker/(:num)/delete', 'IssueTrackerController::delete/$1/$2', ['namespace' => 'App\Modules\IssueTrackerProject\Controllers']);

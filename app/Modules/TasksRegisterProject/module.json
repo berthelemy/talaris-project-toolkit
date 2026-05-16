@@ -1,0 +1,9 @@
+{
+  "slug": "tasks_register_project",
+  "version": "1.1.0",
+  "dependencies": [],
+  "widget_permission": "module.tasks_register_project.widget.read",
+  "widget_config": {
+    "max_entries": 5
+  }
+}

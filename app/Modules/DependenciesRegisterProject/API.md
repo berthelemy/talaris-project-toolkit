@@ -19,25 +19,36 @@ These are application page/action routes for authenticated users, not cross-modu
 - `POST /projects/{projectId}/modules/dependencies-register`
 - `POST /projects/{projectId}/modules/dependencies-register/{entryId}/update`
 - `POST /projects/{projectId}/modules/dependencies-register/{entryId}/close`
+- `POST /projects/{projectId}/modules/dependencies-register/{entryId}/delete`
 
 All routes are served by `DependenciesRegisterController` via shared RAID behavior.
 
 ## Request Field Contract (create/update)
-- Common RAID fields:
+- Core dependency fields:
   - `title`
   - `description`
+  - `dependency_type` (`internal|external|supplier|customer|technical|regulatory|other`)
+  - `related_work_package`
+  - `depends_on`
   - `owner_user_id`
-  - `status` (`open|in_review|closed`)
+  - `impact_level` (`low|medium|high`)
   - `priority` (`low|medium|high|critical`)
+  - `mitigation_actions`
+  - `escalation_required` (`0|1`)
   - `target_date` (`Y-m-d`)
   - `review_date` (`Y-m-d`)
-- Dependency-specific fields:
-  - `impact_level` (`low|medium|high`)
+  - `lessons_learned`
+- Lifecycle fields:
+  - `status` (`open|in_progress|at_risk|blocked|fulfilled|cancelled|closed`)
 
 ## Widget Public Interface
 Implemented by `Widgets/ModuleWidget.php`:
-- `getWidgetView(int $scopeId)` -> dependency widget view path
-- `getWidgetData(int $scopeId, array $config = [])`
-  - returns medium/high impact dependencies for project scope
+- `getWidgetDefinitions(int $scopeId, array $config = [])`
+  - `overview`: dependencies grouped by status and impact level
+  - `at_risk`: dependencies with high impact, blocked, or at-risk status
+  - `overdue`: dependencies with passed target date and unresolved status
+- Backward-compatible methods:
+  - `getWidgetView()` returns `null`
+  - `getWidgetData()` returns merged data set
 - `getDefaultConfig()`
   - `max_entries` default `5`

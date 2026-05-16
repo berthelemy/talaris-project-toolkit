@@ -102,6 +102,8 @@ views:
           - project-cards/phase-09-raid-modules.md
         "card\x1fin-progress":
           - project-cards/phase-11-dashboards-traceability-and-module-refresh.md
+          - project-cards/decisions-module-full-refresh.md
+          - project-cards/dependencies-module-full-refresh.md
       "note.status\x1fnote.board": {}
     columnColors:
       file.file: {}

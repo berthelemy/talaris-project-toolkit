@@ -17,6 +17,7 @@
  * @var bool $isDecisionModule
  * @var bool $isIssueModule
  * @var bool $isDependencyModule
+ * @var bool $isTaskModule
  * @var string $backUrl
  */
 
@@ -109,11 +110,50 @@ $active = 'projects';
                                         </div>
                                     <?php else: ?>
                                         <div data-risk-display>
-                                            <div class="fw-semibold\"><?= esc((string) ($entry['title'] ?? '')) ?></div>
+                                            <div class="fw-semibold"><?= esc((string) ($entry['title'] ?? '')) ?></div>
                                             <?php if ((string) ($entry['description'] ?? '') !== ''): ?>
-                                                <div class="text-muted small\"><?= esc((string) ($entry['description'] ?? '')) ?></div>
+                                                <div class="text-muted small"><?= esc((string) ($entry['description'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isDecisionModule && (string) ($entry['decision_category'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.decisionsCategoryLabel')) ?>:</strong> <?= esc((string) ($entry['decision_category'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isDecisionModule && (string) ($entry['decision_rationale'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.decisionsRationaleLabel')) ?>:</strong> <?= esc((string) ($entry['decision_rationale'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isDependencyModule && (string) ($entry['dependency_type'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.dependenciesTypeLabel')) ?>:</strong> <?= esc((string) lang('Module.dependenciesType' . ucfirst((string) ($entry['dependency_type'] ?? 'other')))) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isDependencyModule && (string) ($entry['related_work_package'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.dependenciesRelatedWorkLabel')) ?>:</strong> <?= esc((string) ($entry['related_work_package'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isDependencyModule && (string) ($entry['depends_on'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.dependenciesDependsOnLabel')) ?>:</strong> <?= esc((string) ($entry['depends_on'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isIssueModule && (string) ($entry['impact_level'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.raidColumnImpactLevel')) ?>:</strong> <?= esc((string) lang('Module.impactLevel' . ucfirst((string) ($entry['impact_level'] ?? 'medium')))) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isIssueModule && (string) ($entry['mitigation_actions'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.raidColumnMitigationActions')) ?>:</strong> <?= esc((string) ($entry['mitigation_actions'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isTaskModule && (string) ($entry['task_category'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.tasksTaskCategoryLabel')) ?>:</strong> <?= esc((string) ($entry['task_category'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isTaskModule && (string) ($entry['related_objective'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.tasksRelatedObjectiveLabel')) ?>:</strong> <?= esc((string) ($entry['related_objective'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isTaskModule && (string) ($entry['due_date'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.tasksDueDateLabel')) ?>:</strong> <?= esc((string) ($entry['due_date'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isTaskModule): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.tasksPercentCompleteLabel')) ?>:</strong> <?= esc((string) ((int) ($entry['percent_complete'] ?? 0))) ?>%</div>
+                                            <?php endif; ?>
+                                            <?php if ($isTaskModule && (string) ($entry['next_action'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.tasksNextActionLabel')) ?>:</strong> <?= esc((string) ($entry['next_action'] ?? '')) ?></div>
                                             <?php endif; ?>
                                             <?php if ($isAssumptionModule && (string) ($entry['lessons_learned'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.assumptionsColumnLessonsLearned')) ?>:</strong> <?= esc((string) ($entry['lessons_learned'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if (($isDecisionModule || $isDependencyModule || $isIssueModule || $isTaskModule) && (string) ($entry['lessons_learned'] ?? '') !== ''): ?>
                                                 <div class="text-muted small"><strong><?= esc(lang('Module.assumptionsColumnLessonsLearned')) ?>:</strong> <?= esc((string) ($entry['lessons_learned'] ?? '')) ?></div>
                                             <?php endif; ?>
                                         </div>
@@ -122,9 +162,77 @@ $active = 'projects';
                                             <?php if (! $isAssumptionModule): ?>
                                                 <textarea form="<?= esc($riskEditFormId) ?>" name="description" rows="2" class="form-control form-control-sm" data-risk-row-editable disabled><?= esc((string) ($entry['description'] ?? '')) ?></textarea>
                                             <?php endif; ?>
+                                            <?php if ($isDecisionModule): ?>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="decision_date" type="date" class="form-control form-control-sm" value="<?= esc((string) ($entry['decision_date'] ?? '')) ?>" data-risk-row-editable disabled>
+                                                <select form="<?= esc($riskEditFormId) ?>" name="made_by_user_id" class="form-select form-select-sm" data-risk-row-editable disabled>
+                                                    <option value=""></option>
+                                                    <?php foreach ($owners as $owner): ?>
+                                                        <option value="<?= (int) ($owner['id'] ?? 0) ?>" <?= (int) ($entry['made_by_user_id'] ?? 0) === (int) ($owner['id'] ?? 0) ? 'selected' : '' ?>><?= esc((string) ($owner['username'] ?? '')) ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <select form="<?= esc($riskEditFormId) ?>" name="approver_user_id" class="form-select form-select-sm" data-risk-row-editable disabled>
+                                                    <option value=""></option>
+                                                    <?php foreach ($owners as $owner): ?>
+                                                        <option value="<?= (int) ($owner['id'] ?? 0) ?>" <?= (int) ($entry['approver_user_id'] ?? 0) === (int) ($owner['id'] ?? 0) ? 'selected' : '' ?>><?= esc((string) ($owner['username'] ?? '')) ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="decision_category" type="text" class="form-control form-control-sm" maxlength="100" value="<?= esc((string) ($entry['decision_category'] ?? '')) ?>" placeholder="<?= esc(lang('Module.decisionsCategoryLabel')) ?>" data-risk-row-editable disabled>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="decision_rationale" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.decisionsRationaleLabel')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['decision_rationale'] ?? '')) ?></textarea>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="alternatives_considered" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.decisionsAlternativesLabel')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['alternatives_considered'] ?? '')) ?></textarea>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="chosen_option" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.decisionsChosenOptionLabel')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['chosen_option'] ?? '')) ?></textarea>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="implementation_actions" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.decisionsImplementationActionsLabel')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['implementation_actions'] ?? '')) ?></textarea>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="lessons_learned" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.assumptionsColumnLessonsLearned')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['lessons_learned'] ?? '')) ?></textarea>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="superseded_by_entry_id" type="number" min="1" class="form-control form-control-sm" value="<?= esc((string) ($entry['superseded_by_entry_id'] ?? '')) ?>" placeholder="<?= esc(lang('Module.decisionsSupersededByLabel')) ?>" data-risk-row-editable disabled>
+                                            <?php endif; ?>
+                                            <?php if ($isDependencyModule): ?>
+                                                <select form="<?= esc($riskEditFormId) ?>" name="dependency_type" class="form-select form-select-sm" data-risk-row-editable disabled>
+                                                    <option value=""></option>
+                                                    <?php foreach (['internal', 'external', 'supplier', 'customer', 'technical', 'regulatory', 'other'] as $dependencyType): ?>
+                                                        <option value="<?= esc($dependencyType) ?>" <?= (string) ($entry['dependency_type'] ?? '') === $dependencyType ? 'selected' : '' ?>><?= esc((string) lang('Module.dependenciesType' . ucfirst($dependencyType))) ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="related_work_package" type="text" class="form-control form-control-sm" maxlength="255" value="<?= esc((string) ($entry['related_work_package'] ?? '')) ?>" placeholder="<?= esc(lang('Module.dependenciesRelatedWorkLabel')) ?>" data-risk-row-editable disabled>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="depends_on" type="text" class="form-control form-control-sm" maxlength="255" value="<?= esc((string) ($entry['depends_on'] ?? '')) ?>" placeholder="<?= esc(lang('Module.dependenciesDependsOnLabel')) ?>" data-risk-row-editable disabled>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="mitigation_actions" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.raidColumnMitigationActions')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['mitigation_actions'] ?? '')) ?></textarea>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="lessons_learned" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.assumptionsColumnLessonsLearned')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['lessons_learned'] ?? '')) ?></textarea>
+                                                <div class="form-check">
+                                                    <input form="<?= esc($riskEditFormId) ?>" class="form-check-input" type="checkbox" name="escalation_required" value="1" id="<?= esc('escalation-required-' . (int) ($entry['id'] ?? 0)) ?>" <?= (int) ($entry['escalation_required'] ?? 0) === 1 ? 'checked' : '' ?> data-risk-row-editable disabled>
+                                                    <label class="form-check-label" for="<?= esc('escalation-required-' . (int) ($entry['id'] ?? 0)) ?>"><?= esc(lang('Module.dependenciesEscalationRequiredLabel')) ?></label>
+                                                </div>
+                                            <?php endif; ?>
                                             <?php if ($isAssumptionModule): ?>
                                                 <textarea form="<?= esc($riskEditFormId) ?>" name="lessons_learned" rows="2" class="form-control form-control-sm" data-risk-row-editable disabled><?= esc((string) ($entry['lessons_learned'] ?? '')) ?></textarea>
                                                 <input form="<?= esc($riskEditFormId) ?>" type="hidden" name="priority" value="<?= esc((string) ($entry['priority'] ?? 'medium')) ?>">
+                                            <?php endif; ?>
+                                            <?php if ($isIssueModule): ?>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="date_reported" type="date" class="form-control form-control-sm" value="<?= esc((string) ($entry['date_reported'] ?? '')) ?>" data-risk-row-editable disabled>
+                                                <select form="<?= esc($riskEditFormId) ?>" name="reporter_user_id" class="form-select form-select-sm" data-risk-row-editable disabled>
+                                                    <option value=""></option>
+                                                    <?php foreach ($owners as $owner): ?>
+                                                        <option value="<?= (int) ($owner['id'] ?? 0) ?>" <?= (int) ($entry['reporter_user_id'] ?? 0) === (int) ($owner['id'] ?? 0) ? 'selected' : '' ?>><?= esc((string) ($owner['username'] ?? '')) ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <select form="<?= esc($riskEditFormId) ?>" name="impact_level" class="form-select form-select-sm" data-risk-row-editable disabled>
+                                                    <option value=""></option>
+                                                    <?php foreach ($impactLevelOptions as $option): ?>
+                                                        <option value="<?= esc($option) ?>" <?= (string) ($entry['impact_level'] ?? '') === $option ? 'selected' : '' ?>><?= esc((string) lang('Module.impactLevel' . ucfirst($option))) ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="mitigation_actions" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.raidColumnMitigationActions')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['mitigation_actions'] ?? '')) ?></textarea>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="lessons_learned" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.assumptionsColumnLessonsLearned')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['lessons_learned'] ?? '')) ?></textarea>
+                                            <?php endif; ?>
+                                            <?php if ($isTaskModule): ?>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="task_category" type="text" class="form-control form-control-sm" maxlength="100" value="<?= esc((string) ($entry['task_category'] ?? '')) ?>" placeholder="<?= esc(lang('Module.tasksTaskCategoryLabel')) ?>" data-risk-row-editable disabled>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="related_objective" type="text" class="form-control form-control-sm" maxlength="255" value="<?= esc((string) ($entry['related_objective'] ?? '')) ?>" placeholder="<?= esc(lang('Module.tasksRelatedObjectiveLabel')) ?>" data-risk-row-editable disabled>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="related_module_entry_id" type="number" min="1" class="form-control form-control-sm" value="<?= esc((string) ($entry['related_module_entry_id'] ?? '')) ?>" placeholder="<?= esc(lang('Module.tasksRelatedModuleEntryLabel')) ?>" data-risk-row-editable disabled>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="collaborators" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.tasksCollaboratorsLabel')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['collaborators'] ?? '')) ?></textarea>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="percent_complete" type="number" min="0" max="100" class="form-control form-control-sm" value="<?= esc((string) ($entry['percent_complete'] ?? 0)) ?>" placeholder="<?= esc(lang('Module.tasksPercentCompleteLabel')) ?>" data-risk-row-editable disabled>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="planned_start_date" type="date" class="form-control form-control-sm" value="<?= esc((string) ($entry['planned_start_date'] ?? '')) ?>" data-risk-row-editable disabled>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="due_date" type="date" class="form-control form-control-sm" value="<?= esc((string) ($entry['due_date'] ?? '')) ?>" data-risk-row-editable disabled>
+                                                <input form="<?= esc($riskEditFormId) ?>" name="completed_date" type="date" class="form-control form-control-sm" value="<?= esc((string) ($entry['completed_date'] ?? '')) ?>" data-risk-row-editable disabled>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="blocked_reason" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.tasksBlockedReasonLabel')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['blocked_reason'] ?? '')) ?></textarea>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="next_action" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.tasksNextActionLabel')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['next_action'] ?? '')) ?></textarea>
+                                                <textarea form="<?= esc($riskEditFormId) ?>" name="lessons_learned" rows="2" class="form-control form-control-sm" placeholder="<?= esc(lang('Module.assumptionsColumnLessonsLearned')) ?>" data-risk-row-editable disabled><?= esc((string) ($entry['lessons_learned'] ?? '')) ?></textarea>
                                             <?php endif; ?>
                                         </div>
                                     <?php endif; ?>
@@ -282,6 +390,10 @@ $active = 'projects';
                                             <button type="button" class="btn btn-sm btn-outline-secondary" data-risk-edit-toggle><?= esc(lang('Module.raidEditButton')) ?></button>
                                             <button type="submit" form="<?= esc($riskEditFormId) ?>" class="btn btn-sm btn-primary d-none" data-risk-edit-save><?= esc(lang('Module.raidUpdateButton')) ?></button>
                                             <button type="button" class="btn btn-sm btn-outline-secondary d-none" data-risk-edit-cancel><?= esc(lang('Domain.cancelButton')) ?></button>
+                                            <form method="post" action="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/modules/' . $moduleRouteSegment . '/' . (int) ($entry['id'] ?? 0) . '/delete') ?>" onsubmit="return window.confirm('<?= esc((string) lang('Module.raidDeleteConfirm'), 'js') ?>');">
+                                                <?= csrf_field() ?>
+                                                <button type="submit" class="btn btn-sm btn-outline-danger w-100"><?= esc(lang('Module.raidDeleteButton')) ?></button>
+                                            </form>
                                         </div>
                                     </td>
                                 <?php endif; ?>
@@ -467,12 +579,116 @@ $active = 'projects';
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-dependency-type"><?= esc(lang('Module.dependenciesTypeLabel')) ?></label>
+                                        <select id="raid-create-dependency-type" name="dependency_type" class="form-select">
+                                            <option value=""></option>
+                                            <?php foreach (['internal', 'external', 'supplier', 'customer', 'technical', 'regulatory', 'other'] as $dependencyType): ?>
+                                                <option value="<?= esc($dependencyType) ?>"><?= esc((string) lang('Module.dependenciesType' . ucfirst($dependencyType))) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label" for="raid-create-related-work-package"><?= esc(lang('Module.dependenciesRelatedWorkLabel')) ?></label>
+                                        <input id="raid-create-related-work-package" name="related_work_package" type="text" class="form-control" maxlength="255">
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label" for="raid-create-depends-on"><?= esc(lang('Module.dependenciesDependsOnLabel')) ?></label>
+                                        <input id="raid-create-depends-on" name="depends_on" type="text" class="form-control" maxlength="255">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-dependency-mitigation-actions"><?= esc(lang('Module.raidColumnMitigationActions')) ?></label>
+                                        <textarea id="raid-create-dependency-mitigation-actions" name="mitigation_actions" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-dependency-lessons-learned"><?= esc(lang('Module.assumptionsColumnLessonsLearned')) ?></label>
+                                        <textarea id="raid-create-dependency-lessons-learned" name="lessons_learned" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check mt-2">
+                                            <input id="raid-create-escalation-required" class="form-check-input" type="checkbox" name="escalation_required" value="1">
+                                            <label class="form-check-label" for="raid-create-escalation-required"><?= esc(lang('Module.dependenciesEscalationRequiredLabel')) ?></label>
+                                        </div>
+                                    </div>
                                 <?php endif; ?>
 
                                 <?php if ($isIssueModule): ?>
                                     <div class="col-6 col-md-3">
                                         <label class="form-label" for="raid-create-date-reported"><?= esc(lang('Module.raidColumnReported')) ?></label>
                                         <input id="raid-create-date-reported" name="date_reported" type="date" class="form-control">
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-reporter-user-id"><?= esc(lang('Module.raidColumnReporter')) ?></label>
+                                        <select id="raid-create-reporter-user-id" name="reporter_user_id" class="form-select">
+                                            <option value=""></option>
+                                            <?php foreach ($owners as $owner): ?>
+                                                <option value="<?= (int) ($owner['id'] ?? 0) ?>"><?= esc((string) ($owner['username'] ?? '')) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-issue-impact-level"><?= esc(lang('Module.raidColumnImpactLevel')) ?></label>
+                                        <select id="raid-create-issue-impact-level" name="impact_level" class="form-select">
+                                            <option value=""></option>
+                                            <?php foreach ($impactLevelOptions as $option): ?>
+                                                <option value="<?= esc($option) ?>"><?= esc((string) lang('Module.impactLevel' . ucfirst($option))) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-issue-resolution-actions"><?= esc(lang('Module.raidColumnMitigationActions')) ?></label>
+                                        <textarea id="raid-create-issue-resolution-actions" name="mitigation_actions" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-issue-lessons-learned"><?= esc(lang('Module.assumptionsColumnLessonsLearned')) ?></label>
+                                        <textarea id="raid-create-issue-lessons-learned" name="lessons_learned" rows="2" class="form-control"></textarea>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if ($isTaskModule): ?>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-task-category"><?= esc(lang('Module.tasksTaskCategoryLabel')) ?></label>
+                                        <input id="raid-create-task-category" name="task_category" type="text" class="form-control" maxlength="100">
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-task-related-objective"><?= esc(lang('Module.tasksRelatedObjectiveLabel')) ?></label>
+                                        <input id="raid-create-task-related-objective" name="related_objective" type="text" class="form-control" maxlength="255">
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-task-related-module-entry-id"><?= esc(lang('Module.tasksRelatedModuleEntryLabel')) ?></label>
+                                        <input id="raid-create-task-related-module-entry-id" name="related_module_entry_id" type="number" min="1" class="form-control">
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-task-percent-complete"><?= esc(lang('Module.tasksPercentCompleteLabel')) ?></label>
+                                        <input id="raid-create-task-percent-complete" name="percent_complete" type="number" min="0" max="100" value="0" class="form-control">
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-task-planned-start-date"><?= esc(lang('Module.tasksPlannedStartDateLabel')) ?></label>
+                                        <input id="raid-create-task-planned-start-date" name="planned_start_date" type="date" class="form-control">
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-task-due-date"><?= esc(lang('Module.tasksDueDateLabel')) ?></label>
+                                        <input id="raid-create-task-due-date" name="due_date" type="date" class="form-control">
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-task-completed-date"><?= esc(lang('Module.tasksCompletedDateLabel')) ?></label>
+                                        <input id="raid-create-task-completed-date" name="completed_date" type="date" class="form-control">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-task-collaborators"><?= esc(lang('Module.tasksCollaboratorsLabel')) ?></label>
+                                        <textarea id="raid-create-task-collaborators" name="collaborators" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-task-blocked-reason"><?= esc(lang('Module.tasksBlockedReasonLabel')) ?></label>
+                                        <textarea id="raid-create-task-blocked-reason" name="blocked_reason" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-task-next-action"><?= esc(lang('Module.tasksNextActionLabel')) ?></label>
+                                        <textarea id="raid-create-task-next-action" name="next_action" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-task-lessons-learned"><?= esc(lang('Module.assumptionsColumnLessonsLearned')) ?></label>
+                                        <textarea id="raid-create-task-lessons-learned" name="lessons_learned" rows="2" class="form-control"></textarea>
                                     </div>
                                 <?php endif; ?>
 
@@ -497,6 +713,43 @@ $active = 'projects';
                                                 <option value="<?= (int) ($owner['id'] ?? 0) ?>"><?= esc((string) ($owner['username'] ?? '')) ?></option>
                                             <?php endforeach; ?>
                                         </select>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-approver-user-id"><?= esc(lang('Module.decisionsApproverLabel')) ?></label>
+                                        <select id="raid-create-approver-user-id" name="approver_user_id" class="form-select">
+                                            <option value=""></option>
+                                            <?php foreach ($owners as $owner): ?>
+                                                <option value="<?= (int) ($owner['id'] ?? 0) ?>"><?= esc((string) ($owner['username'] ?? '')) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-decision-category"><?= esc(lang('Module.decisionsCategoryLabel')) ?></label>
+                                        <input id="raid-create-decision-category" name="decision_category" type="text" class="form-control" maxlength="100">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-decision-rationale"><?= esc(lang('Module.decisionsRationaleLabel')) ?></label>
+                                        <textarea id="raid-create-decision-rationale" name="decision_rationale" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-alternatives-considered"><?= esc(lang('Module.decisionsAlternativesLabel')) ?></label>
+                                        <textarea id="raid-create-alternatives-considered" name="alternatives_considered" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-chosen-option"><?= esc(lang('Module.decisionsChosenOptionLabel')) ?></label>
+                                        <textarea id="raid-create-chosen-option" name="chosen_option" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-implementation-actions"><?= esc(lang('Module.decisionsImplementationActionsLabel')) ?></label>
+                                        <textarea id="raid-create-implementation-actions" name="implementation_actions" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="raid-create-decision-lessons-learned"><?= esc(lang('Module.assumptionsColumnLessonsLearned')) ?></label>
+                                        <textarea id="raid-create-decision-lessons-learned" name="lessons_learned" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label" for="raid-create-superseded-by-entry-id"><?= esc(lang('Module.decisionsSupersededByLabel')) ?></label>
+                                        <input id="raid-create-superseded-by-entry-id" name="superseded_by_entry_id" type="number" min="1" class="form-control">
                                     </div>
                                 <?php endif; ?>
                             </div>

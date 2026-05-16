@@ -72,6 +72,7 @@ abstract class BaseProjectRaidController extends BaseController
             'isDecisionModule' => $this->isDecisionModule(),
             'isIssueModule' => $this->isIssueModule(),
             'isDependencyModule' => $this->isDependencyModule(),
+            'isTaskModule' => $this->isTaskModule(),
             'backUrl' => '/projects/' . $projectId,
             'filters' => [
                 'q' => trim((string) $this->request->getGet('q')),
@@ -101,7 +102,7 @@ abstract class BaseProjectRaidController extends BaseController
             return redirect()->back()->withInput()->with('error', lang('Domain.ownerInvalid'));
         }
 
-        $status = trim((string) ($this->request->getPost('status') ?: 'open'));
+        $status = trim((string) ($this->request->getPost('status') ?: $this->defaultStatus()));
         $impact = trim((string) $this->request->getPost('impact'));
         $likelihood = trim((string) $this->request->getPost('likelihood'));
 
@@ -153,12 +154,33 @@ abstract class BaseProjectRaidController extends BaseController
             'impact' => $this->nullableString($impact),
             'likelihood' => $this->nullableString($likelihood),
             'impact_if_not_valid' => $this->nullableString((string) $this->request->getPost('impact_if_not_valid')),
-            'impact_level' => $this->isAssumptionModule() || $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('impact_level')) : null,
-            'lessons_learned' => $this->isAssumptionModule() ? $this->nullableString((string) $this->request->getPost('lessons_learned')) : null,
-            'target_date' => $this->nullableDate((string) $this->request->getPost('target_date')),
+            'impact_level' => $this->isAssumptionModule() || $this->isDependencyModule() || $this->isIssueModule() ? $this->nullableString((string) $this->request->getPost('impact_level')) : null,
+            'lessons_learned' => $this->isAssumptionModule() || $this->isDecisionModule() || $this->isDependencyModule() || $this->isIssueModule() || $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('lessons_learned')) : null,
+            'target_date' => $this->nullableDate((string) ($this->request->getPost('target_date') ?: $this->request->getPost('due_date'))),
             'review_date' => $this->nullableDate((string) $this->request->getPost('review_date')),
             'decision_date' => $decisionDate,
             'made_by_user_id' => $this->nullableUserId((string) ($this->request->getPost('made_by_user_id') ?: (string) $actorId)),
+            'decision_category' => $this->isDecisionModule() ? $this->nullableString((string) $this->request->getPost('decision_category')) : null,
+            'decision_rationale' => $this->isDecisionModule() ? $this->nullableString((string) $this->request->getPost('decision_rationale')) : null,
+            'alternatives_considered' => $this->isDecisionModule() ? $this->nullableString((string) $this->request->getPost('alternatives_considered')) : null,
+            'chosen_option' => $this->isDecisionModule() ? $this->nullableString((string) $this->request->getPost('chosen_option')) : null,
+            'approver_user_id' => $this->isDecisionModule() ? $this->nullableUserId((string) $this->request->getPost('approver_user_id')) : null,
+            'implementation_actions' => $this->isDecisionModule() ? $this->nullableString((string) $this->request->getPost('implementation_actions')) : null,
+            'superseded_by_entry_id' => $this->isDecisionModule() ? $this->nullableUserId((string) $this->request->getPost('superseded_by_entry_id')) : null,
+            'dependency_type' => $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('dependency_type')) : null,
+            'related_work_package' => $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('related_work_package')) : null,
+            'depends_on' => $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('depends_on')) : null,
+            'escalation_required' => $this->isDependencyModule() ? ($this->request->getPost('escalation_required') ? 1 : 0) : 0,
+            'task_category' => $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('task_category')) : null,
+            'related_objective' => $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('related_objective')) : null,
+            'related_module_entry_id' => $this->isTaskModule() ? $this->nullableInt((string) $this->request->getPost('related_module_entry_id')) : null,
+            'collaborators' => $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('collaborators')) : null,
+            'percent_complete' => $this->isTaskModule() ? max(0, min(100, (int) ($this->request->getPost('percent_complete') ?? 0))) : null,
+            'planned_start_date' => $this->isTaskModule() ? $this->nullableDate((string) $this->request->getPost('planned_start_date')) : null,
+            'due_date' => $this->isTaskModule() ? $this->nullableDate((string) $this->request->getPost('due_date')) : null,
+            'completed_date' => $this->isTaskModule() ? $this->nullableDate((string) ($this->request->getPost('completed_date') ?: ($status === 'completed' ? date('Y-m-d') : ''))) : null,
+            'blocked_reason' => $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('blocked_reason')) : null,
+            'next_action' => $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('next_action')) : null,
             'closed_at' => $status === 'closed' ? date('Y-m-d H:i:s') : null,
             'created_by_user_id' => $actorId,
             'updated_by_user_id' => $actorId,
@@ -201,7 +223,7 @@ abstract class BaseProjectRaidController extends BaseController
             return redirect()->back()->withInput()->with('error', lang('Domain.ownerInvalid'));
         }
 
-        $status = trim((string) ($this->request->getPost('status') ?: ($entry['status'] ?? 'open')));
+        $status = trim((string) ($this->request->getPost('status') ?: ($entry['status'] ?? $this->defaultStatus())));
         $priority = $this->isRiskModule()
             ? $this->calculateRiskPriority(
                 trim((string) $this->request->getPost('impact')),
@@ -233,12 +255,33 @@ abstract class BaseProjectRaidController extends BaseController
             'impact' => $this->nullableString(trim((string) $this->request->getPost('impact'))),
             'likelihood' => $this->nullableString(trim((string) $this->request->getPost('likelihood'))),
             'impact_if_not_valid' => $this->nullableString((string) $this->request->getPost('impact_if_not_valid')),
-            'impact_level' => $this->isAssumptionModule() || $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('impact_level')) : ($entry['impact_level'] ?? null),
-            'lessons_learned' => $this->isAssumptionModule() ? $this->nullableString((string) $this->request->getPost('lessons_learned')) : ($entry['lessons_learned'] ?? null),
-            'target_date' => $this->nullableDate((string) $this->request->getPost('target_date')),
+            'impact_level' => $this->isAssumptionModule() || $this->isDependencyModule() || $this->isIssueModule() ? $this->nullableString((string) $this->request->getPost('impact_level')) : ($entry['impact_level'] ?? null),
+            'lessons_learned' => $this->isAssumptionModule() || $this->isDecisionModule() || $this->isDependencyModule() || $this->isIssueModule() || $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('lessons_learned')) : ($entry['lessons_learned'] ?? null),
+            'target_date' => $this->nullableDate((string) ($this->request->getPost('target_date') ?: $this->request->getPost('due_date'))),
             'review_date' => $this->nullableDate((string) $this->request->getPost('review_date')),
             'decision_date' => $this->nullableDate((string) $this->request->getPost('decision_date')),
             'made_by_user_id' => $this->nullableUserId((string) ($this->request->getPost('made_by_user_id') ?: (string) ($entry['made_by_user_id'] ?? 0))),
+            'decision_category' => $this->isDecisionModule() ? $this->nullableString((string) $this->request->getPost('decision_category')) : ($entry['decision_category'] ?? null),
+            'decision_rationale' => $this->isDecisionModule() ? $this->nullableString((string) $this->request->getPost('decision_rationale')) : ($entry['decision_rationale'] ?? null),
+            'alternatives_considered' => $this->isDecisionModule() ? $this->nullableString((string) $this->request->getPost('alternatives_considered')) : ($entry['alternatives_considered'] ?? null),
+            'chosen_option' => $this->isDecisionModule() ? $this->nullableString((string) $this->request->getPost('chosen_option')) : ($entry['chosen_option'] ?? null),
+            'approver_user_id' => $this->isDecisionModule() ? $this->nullableUserId((string) $this->request->getPost('approver_user_id')) : ($entry['approver_user_id'] ?? null),
+            'implementation_actions' => $this->isDecisionModule() ? $this->nullableString((string) $this->request->getPost('implementation_actions')) : ($entry['implementation_actions'] ?? null),
+            'superseded_by_entry_id' => $this->isDecisionModule() ? $this->nullableUserId((string) $this->request->getPost('superseded_by_entry_id')) : ($entry['superseded_by_entry_id'] ?? null),
+            'dependency_type' => $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('dependency_type')) : ($entry['dependency_type'] ?? null),
+            'related_work_package' => $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('related_work_package')) : ($entry['related_work_package'] ?? null),
+            'depends_on' => $this->isDependencyModule() ? $this->nullableString((string) $this->request->getPost('depends_on')) : ($entry['depends_on'] ?? null),
+            'escalation_required' => $this->isDependencyModule() ? ($this->request->getPost('escalation_required') ? 1 : 0) : ($entry['escalation_required'] ?? 0),
+            'task_category' => $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('task_category')) : ($entry['task_category'] ?? null),
+            'related_objective' => $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('related_objective')) : ($entry['related_objective'] ?? null),
+            'related_module_entry_id' => $this->isTaskModule() ? $this->nullableInt((string) $this->request->getPost('related_module_entry_id')) : ($entry['related_module_entry_id'] ?? null),
+            'collaborators' => $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('collaborators')) : ($entry['collaborators'] ?? null),
+            'percent_complete' => $this->isTaskModule() ? max(0, min(100, (int) ($this->request->getPost('percent_complete') ?? ($entry['percent_complete'] ?? 0)))) : ($entry['percent_complete'] ?? null),
+            'planned_start_date' => $this->isTaskModule() ? $this->nullableDate((string) $this->request->getPost('planned_start_date')) : ($entry['planned_start_date'] ?? null),
+            'due_date' => $this->isTaskModule() ? $this->nullableDate((string) $this->request->getPost('due_date')) : ($entry['due_date'] ?? null),
+            'completed_date' => $this->isTaskModule() ? $this->nullableDate((string) ($this->request->getPost('completed_date') ?: ($status === 'completed' ? date('Y-m-d') : ''))) : ($entry['completed_date'] ?? null),
+            'blocked_reason' => $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('blocked_reason')) : ($entry['blocked_reason'] ?? null),
+            'next_action' => $this->isTaskModule() ? $this->nullableString((string) $this->request->getPost('next_action')) : ($entry['next_action'] ?? null),
             'closed_at' => $status === 'closed' ? (($entry['closed_at'] ?? null) ?: date('Y-m-d H:i:s')) : null,
             'updated_by_user_id' => $actorId,
         ]);
@@ -288,6 +331,35 @@ abstract class BaseProjectRaidController extends BaseController
         return $this->redirectModule($projectId)->with('success', lang('Module.raidEntryClosedSuccess'));
     }
 
+    public function delete(int $projectId, int $entryId): RedirectResponse
+    {
+        $actorId = $this->sessionUserId();
+
+        if (! $this->canWrite($actorId, $projectId)) {
+            return $this->redirectModule($projectId)->with('error', lang('Domain.notAuthorized'));
+        }
+
+        $entryModel = new ModuleRaidEntryModel();
+        $entry = $entryModel->find($entryId);
+
+        if (! is_array($entry) || ! $this->matchesModuleScope($entry, $projectId)) {
+            return $this->redirectModule($projectId)->with('error', lang('Module.raidEntryNotFound'));
+        }
+
+        $entryModel->delete($entryId);
+
+        (new AuditLogger())->log('raid_entry_deleted', 'success', $actorId, [
+            'module_slug' => $this->moduleSlug(),
+            'scope_type' => 'project',
+            'scope_id' => $projectId,
+            'entry_id' => $entryId,
+        ]);
+
+        (new ModuleWidgetService())->invalidateScopeCaches('project', $projectId);
+
+        return $this->redirectModule($projectId)->with('success', lang('Module.raidEntryDeletedSuccess'));
+    }
+
     /**
      * @return list<array<string, mixed>>
      */
@@ -328,7 +400,7 @@ abstract class BaseProjectRaidController extends BaseController
             $builder->orderBy("CASE priority WHEN 'critical' THEN 1 WHEN 'high' THEN 2 WHEN 'medium' THEN 3 ELSE 4 END", 'ASC', false);
             $builder->orderBy('updated_at', 'DESC');
         } elseif ($sort === 'status_asc') {
-            $builder->orderBy("CASE status WHEN 'open' THEN 1 WHEN 'in_review' THEN 2 ELSE 3 END", 'ASC', false);
+            $builder->orderBy($this->statusSortCaseExpression(), 'ASC', false);
             $builder->orderBy('updated_at', 'DESC');
         } else {
             $builder->orderBy('updated_at', 'DESC');
@@ -342,7 +414,30 @@ abstract class BaseProjectRaidController extends BaseController
      */
     private function statusOptions(): array
     {
+        if ($this->isDecisionModule()) {
+            return ['draft', 'proposed', 'approved', 'implemented', 'rejected', 'superseded', 'closed'];
+        }
+
+        if ($this->isDependencyModule()) {
+            return ['open', 'in_progress', 'at_risk', 'blocked', 'fulfilled', 'cancelled', 'closed'];
+        }
+
+        if ($this->isIssueModule()) {
+            return ['open', 'in_review', 'blocked', 'resolved', 'closed'];
+        }
+
+        if ($this->isTaskModule()) {
+            return ['open', 'in_progress', 'blocked', 'in_review', 'completed', 'cancelled', 'closed'];
+        }
+
         return ['open', 'in_review', 'closed'];
+    }
+
+    private function defaultStatus(): string
+    {
+        $statuses = $this->statusOptions();
+
+        return $statuses[0] ?? 'open';
     }
 
     /**
@@ -378,6 +473,7 @@ abstract class BaseProjectRaidController extends BaseController
         $titleRule = $this->isDecisionModule() ? 'permit_empty|max_length[200]' : 'required|max_length[200]';
         $descriptionRule = $this->isDecisionModule() ? 'required|max_length[5000]' : 'permit_empty|max_length[5000]';
         $decisionDateRule = 'permit_empty|valid_date[Y-m-d]';
+        $statusRule = 'permit_empty|in_list[' . implode(',', $this->statusOptions()) . ']';
 
         return [
             'title' => $titleRule,
@@ -387,7 +483,7 @@ abstract class BaseProjectRaidController extends BaseController
             'mitigation_actions' => 'permit_empty|max_length[5000]',
             'validation_actions' => 'permit_empty|max_length[5000]',
             'owner_user_id' => 'permit_empty|is_natural_no_zero',
-            'status' => 'permit_empty|in_list[open,in_review,closed]',
+            'status' => $statusRule,
             'priority' => 'permit_empty|in_list[low,medium,high,critical]',
             'impact' => 'permit_empty|in_list[low,medium,high]',
             'likelihood' => 'permit_empty|in_list[low,medium,high]',
@@ -398,6 +494,27 @@ abstract class BaseProjectRaidController extends BaseController
             'review_date' => 'permit_empty|valid_date[Y-m-d]',
             'decision_date' => $decisionDateRule,
             'made_by_user_id' => 'permit_empty|is_natural_no_zero',
+            'decision_category' => 'permit_empty|max_length[100]',
+            'decision_rationale' => 'permit_empty|max_length[5000]',
+            'alternatives_considered' => 'permit_empty|max_length[5000]',
+            'chosen_option' => 'permit_empty|max_length[5000]',
+            'approver_user_id' => 'permit_empty|is_natural_no_zero',
+            'implementation_actions' => 'permit_empty|max_length[5000]',
+            'superseded_by_entry_id' => 'permit_empty|is_natural_no_zero',
+            'dependency_type' => 'permit_empty|in_list[internal,external,supplier,customer,technical,regulatory,other]',
+            'related_work_package' => 'permit_empty|max_length[255]',
+            'depends_on' => 'permit_empty|max_length[255]',
+            'escalation_required' => 'permit_empty|in_list[0,1]',
+            'task_category' => 'permit_empty|max_length[100]',
+            'related_objective' => 'permit_empty|max_length[255]',
+            'related_module_entry_id' => 'permit_empty|is_natural_no_zero',
+            'collaborators' => 'permit_empty|max_length[5000]',
+            'percent_complete' => 'permit_empty|integer|greater_than_equal_to[0]|less_than_equal_to[100]',
+            'planned_start_date' => 'permit_empty|valid_date[Y-m-d]',
+            'due_date' => 'permit_empty|valid_date[Y-m-d]',
+            'completed_date' => 'permit_empty|valid_date[Y-m-d]',
+            'blocked_reason' => 'permit_empty|max_length[5000]',
+            'next_action' => 'permit_empty|max_length[5000]',
         ];
     }
 
@@ -473,6 +590,17 @@ abstract class BaseProjectRaidController extends BaseController
         return $userId > 0 ? $userId : null;
     }
 
+    private function nullableInt(string $value): ?int
+    {
+        $trimmed = trim($value);
+
+        if ($trimmed === '' || ! ctype_digit($trimmed)) {
+            return null;
+        }
+
+        return (int) $trimmed;
+    }
+
     /**
      * @return list<string>
      */
@@ -514,6 +642,11 @@ abstract class BaseProjectRaidController extends BaseController
         return $this->moduleSlug() === 'dependencies_register_project';
     }
 
+    private function isTaskModule(): bool
+    {
+        return $this->moduleSlug() === 'tasks_register_project';
+    }
+
     private function calculateRiskPriority(string $impact, string $likelihood): string
     {
         $scale = [
@@ -539,6 +672,17 @@ abstract class BaseProjectRaidController extends BaseController
         }
 
         return 'low';
+    }
+
+    private function statusSortCaseExpression(): string
+    {
+        $parts = [];
+
+        foreach ($this->statusOptions() as $index => $status) {
+            $parts[] = "WHEN '" . addslashes($status) . "' THEN " . ($index + 1);
+        }
+
+        return 'CASE status ' . implode(' ', $parts) . ' ELSE 999 END';
     }
 
     private function redirectModule(int $projectId): RedirectResponse

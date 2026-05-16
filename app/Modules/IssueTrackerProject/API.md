@@ -3,7 +3,7 @@
 ## Module Metadata
 - Slug: `issue_tracker_project`
 - Scope: `project`
-- Version: `1.0.0`
+- Version: `1.1.0`
 - Widget permission: `module.issue_tracker_project.widget.read`
 
 ## Internal Module Integration
@@ -19,6 +19,7 @@ These are application page/action routes for authenticated users, not cross-modu
 - `POST /projects/{projectId}/modules/issue-tracker`
 - `POST /projects/{projectId}/modules/issue-tracker/{entryId}/update`
 - `POST /projects/{projectId}/modules/issue-tracker/{entryId}/close`
+- `POST /projects/{projectId}/modules/issue-tracker/{entryId}/delete`
 
 All routes are served by `IssueTrackerController` via shared RAID behavior.
 
@@ -27,18 +28,25 @@ All routes are served by `IssueTrackerController` via shared RAID behavior.
   - `title`
   - `description`
   - `owner_user_id`
-  - `status` (`open|in_review|closed`)
+  - `status` (`open|in_review|blocked|resolved|closed`)
   - `priority` (`low|medium|high|critical`)
   - `target_date` (`Y-m-d`)
   - `review_date` (`Y-m-d`)
 - Issue-specific fields:
   - `date_reported` (`Y-m-d`)
   - `reporter_user_id`
+  - `impact_level` (`low|medium|high`)
+  - `mitigation_actions` (resolution actions)
+  - `lessons_learned`
 
 ## Widget Public Interface
 Implemented by `Widgets/ModuleWidget.php`:
-- `getWidgetView(int $scopeId)` -> issue widget view path
-- `getWidgetData(int $scopeId, array $config = [])`
-  - returns active/open issue entries for project scope
+- `getWidgetDefinitions(int $scopeId, array $config = [])`
+  - `overview`: issue totals grouped by status and priority
+  - `high_priority`: active high/critical issues
+  - `overdue`: active issues past target date
+- Backward-compatible methods:
+  - `getWidgetView()` returns `null`
+  - `getWidgetData()` returns merged aggregate data
 - `getDefaultConfig()`
   - `max_entries` default `5`

@@ -12,22 +12,16 @@
             <i class="bi bi-chat-left-text"></i>
             <?= lang('Module.programmeHelloWorldTitle') ?>
         </h5>
-        <a href="<?= base_url('programmes/' . $scope_id . '/modules/hello-world') ?>" class="btn btn-sm btn-outline-primary">
-            <?= lang('Module.openModule') ?>
-        </a>
+        <div class="btn-group btn-group-sm" role="group">
+            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#helloProgrammeModalAdd-<?= (int) $scope_id ?>">
+                <?= lang('Module.addNew') ?>
+            </button>
+            <a href="<?= base_url('programmes/' . $scope_id . '/modules/hello-world') ?>" class="btn btn-outline-primary">
+                <?= lang('Module.openModule') ?>
+            </a>
+        </div>
     </div>
     <div class="card-body">
-        <form method="post" action="<?= site_url('programmes/' . $scope_id . '/modules/hello-world') ?>" class="row g-2 mb-3">
-            <?= csrf_field() ?>
-            <div class="col-12">
-                <label class="form-label" for="hello-programme-message-<?= $scope_id ?>"><?= lang('Module.entryLabel') ?></label>
-                <input id="hello-programme-message-<?= $scope_id ?>" class="form-control form-control-sm" type="text" name="message" maxlength="500" required>
-            </div>
-            <div class="col-12 d-grid">
-                <button class="btn btn-sm btn-primary" type="submit"><?= lang('Module.entryCreateButton') ?></button>
-            </div>
-        </form>
-
         <?php if (empty($entries)): ?>
             <p class="text-muted mb-0"><?= lang('Module.entriesNone') ?></p>
         <?php else: ?>
@@ -51,5 +45,27 @@
                 </div>
             <?php endif; ?>
         <?php endif; ?>
+    </div>
+</div>
+
+<div class="modal fade" id="helloProgrammeModalAdd-<?= (int) $scope_id ?>" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><?= lang('Module.entryCreateButton') ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" action="<?= site_url('programmes/' . $scope_id . '/modules/hello-world') ?>">
+                <?= csrf_field() ?>
+                <div class="modal-body">
+                    <label class="form-label" for="hello-programme-message-<?= $scope_id ?>\"><?= lang('Module.entryLabel') ?></label>
+                    <input id="hello-programme-message-<?= $scope_id ?>" class="form-control" type="text" name="message" maxlength="500" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= lang('Domain.cancelButton') ?></button>
+                    <button class="btn btn-primary" type="submit"><?= lang('Module.entryCreateButton') ?></button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

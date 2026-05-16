@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\IssueTrackerProject\Widgets;
+namespace App\Modules\TasksRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
 use App\Models\ModuleRaidEntryModel;
 
 /**
- * Provides Issue Tracker dashboard widget definitions and data.
+ * Provides Tasks Register dashboard widget definitions and data.
  */
 class ModuleWidget implements ModuleWidgetInterface
 {
@@ -22,24 +22,24 @@ class ModuleWidget implements ModuleWidgetInterface
         return [
             [
                 'key' => 'overview',
-                'name' => (string) lang('Module.issuesWidgetOverviewTitle'),
-                'view' => 'App\\Modules\\IssueTrackerProject\\Views\\widget_overview',
+                'name' => (string) lang('Module.tasksWidgetOverviewTitle'),
+                'view' => 'App\\Modules\\TasksRegisterProject\\Views\\widget_overview',
                 'data' => [
                     'status_counts' => $this->overviewStatusCounts($scopeId),
                     'priority_counts' => $this->overviewPriorityCounts($scopeId),
                 ],
             ],
             [
-                'key' => 'high_priority',
-                'name' => (string) lang('Module.issuesWidgetHighPriorityTitle'),
-                'view' => 'App\\Modules\\IssueTrackerProject\\Views\\widget_high_priority',
-                'data' => $this->highPriorityData($scopeId, $maxEntries),
+                'key' => 'my_open',
+                'name' => (string) lang('Module.tasksWidgetMyOpenTitle'),
+                'view' => 'App\\Modules\\TasksRegisterProject\\Views\\widget_my_open',
+                'data' => $this->myOpenTasksData($scopeId, $maxEntries),
             ],
             [
                 'key' => 'overdue',
-                'name' => (string) lang('Module.issuesWidgetOverdueTitle'),
-                'view' => 'App\\Modules\\IssueTrackerProject\\Views\\widget_overdue',
-                'data' => $this->overdueData($scopeId, $maxEntries),
+                'name' => (string) lang('Module.tasksWidgetOverdueTitle'),
+                'view' => 'App\\Modules\\TasksRegisterProject\\Views\\widget_overdue',
+                'data' => $this->overdueTasksData($scopeId, $maxEntries),
             ],
         ];
     }
@@ -64,10 +64,10 @@ class ModuleWidget implements ModuleWidgetInterface
         return [
             'status_counts' => $this->overviewStatusCounts($scopeId),
             'priority_counts' => $this->overviewPriorityCounts($scopeId),
-            'high_priority_entries' => $this->highPriorityData($scopeId, $maxEntries)['entries'],
-            'high_priority_entry_count' => $this->highPriorityData($scopeId, $maxEntries)['entry_count'],
-            'overdue_entries' => $this->overdueData($scopeId, $maxEntries)['entries'],
-            'overdue_entry_count' => $this->overdueData($scopeId, $maxEntries)['entry_count'],
+            'my_open_entries' => $this->myOpenTasksData($scopeId, $maxEntries)['entries'],
+            'my_open_entry_count' => $this->myOpenTasksData($scopeId, $maxEntries)['entry_count'],
+            'overdue_entries' => $this->overdueTasksData($scopeId, $maxEntries)['entries'],
+            'overdue_entry_count' => $this->overdueTasksData($scopeId, $maxEntries)['entry_count'],
         ];
     }
 
@@ -80,21 +80,23 @@ class ModuleWidget implements ModuleWidgetInterface
     }
 
     /**
-     * @return array{open:int,in_review:int,blocked:int,resolved:int,closed:int}
+     * @return array{open:int,in_progress:int,blocked:int,in_review:int,completed:int,cancelled:int,closed:int}
      */
     private function overviewStatusCounts(int $scopeId): array
     {
         $counts = [
             'open' => 0,
-            'in_review' => 0,
+            'in_progress' => 0,
             'blocked' => 0,
-            'resolved' => 0,
+            'in_review' => 0,
+            'completed' => 0,
+            'cancelled' => 0,
             'closed' => 0,
         ];
 
         $rows = (new ModuleRaidEntryModel())
             ->select('module_raid_entries.status, COUNT(*) AS total')
-            ->where('module_raid_entries.module_slug', 'issue_tracker_project')
+            ->where('module_raid_entries.module_slug', 'tasks_register_project')
             ->where('module_raid_entries.scope_type', 'project')
             ->where('module_raid_entries.scope_id', $scopeId)
             ->groupBy('module_raid_entries.status')
@@ -126,10 +128,10 @@ class ModuleWidget implements ModuleWidgetInterface
 
         $rows = (new ModuleRaidEntryModel())
             ->select('module_raid_entries.priority, COUNT(*) AS total')
-            ->where('module_raid_entries.module_slug', 'issue_tracker_project')
+            ->where('module_raid_entries.module_slug', 'tasks_register_project')
             ->where('module_raid_entries.scope_type', 'project')
             ->where('module_raid_entries.scope_id', $scopeId)
-            ->where('module_raid_entries.status !=', 'closed')
+            ->whereNotIn('module_raid_entries.status', ['closed'])
             ->groupBy('module_raid_entries.priority')
             ->findAll();
 
@@ -148,14 +150,21 @@ class ModuleWidget implements ModuleWidgetInterface
     /**
      * @return array{entries:list<array<string,mixed>>,entry_count:int}
      */
-    private function highPriorityData(int $scopeId, int $maxEntries): array
+    private function myOpenTasksData(int $scopeId, int $maxEntries): array
     {
+        $actorId = (int) (session('user_id') ?? 0);
+
+        if ($actorId <= 0) {
+            return ['entries' => [], 'entry_count' => 0];
+        }
+
         $entries = (new ModuleRaidEntryModel())
-            ->where('module_slug', 'issue_tracker_project')
+            ->where('module_slug', 'tasks_register_project')
             ->where('scope_type', 'project')
             ->where('scope_id', $scopeId)
-            ->whereIn('priority', ['high', 'critical'])
-            ->where('status !=', 'closed')
+            ->where('owner_user_id', $actorId)
+            ->whereNotIn('status', ['completed', 'closed', 'cancelled'])
+            ->orderBy('due_date', 'ASC')
             ->orderBy('updated_at', 'DESC')
             ->limit($maxEntries)
             ->findAll();
@@ -169,17 +178,17 @@ class ModuleWidget implements ModuleWidgetInterface
     /**
      * @return array{entries:list<array<string,mixed>>,entry_count:int}
      */
-    private function overdueData(int $scopeId, int $maxEntries): array
+    private function overdueTasksData(int $scopeId, int $maxEntries): array
     {
         $today = date('Y-m-d');
 
         $entries = (new ModuleRaidEntryModel())
-            ->where('module_slug', 'issue_tracker_project')
+            ->where('module_slug', 'tasks_register_project')
             ->where('scope_type', 'project')
             ->where('scope_id', $scopeId)
-            ->where('target_date <', $today)
-            ->where('status !=', 'closed')
-            ->orderBy('target_date', 'ASC')
+            ->where('due_date <', $today)
+            ->whereNotIn('status', ['completed', 'closed'])
+            ->orderBy('due_date', 'ASC')
             ->orderBy('updated_at', 'DESC')
             ->limit($maxEntries)
             ->findAll();

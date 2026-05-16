@@ -19,24 +19,38 @@ These are application page/action routes for authenticated users, not cross-modu
 - `POST /projects/{projectId}/modules/decisions-register`
 - `POST /projects/{projectId}/modules/decisions-register/{entryId}/update`
 - `POST /projects/{projectId}/modules/decisions-register/{entryId}/close`
+- `POST /projects/{projectId}/modules/decisions-register/{entryId}/delete`
 
 All routes are served by `DecisionsRegisterController` via shared RAID behavior.
 
 ## Request Field Contract (create/update)
-- Decision-specific required fields:
+- Core decision fields:
+  - `title`
   - `description`
   - `decision_date` (`Y-m-d`)
+  - `decision_category`
+  - `decision_rationale`
+  - `alternatives_considered`
+  - `chosen_option`
   - `made_by_user_id`
-- Additional supported RAID fields:
-  - `status` (`open|in_review|closed`)
+  - `approver_user_id`
+  - `implementation_actions`
+  - `superseded_by_entry_id` (optional)
+  - `lessons_learned`
+- Lifecycle and planning fields:
+  - `status` (`draft|proposed|approved|implemented|rejected|superseded|closed`)
   - `priority` (`low|medium|high|critical`)
   - `target_date` (`Y-m-d`)
   - `review_date` (`Y-m-d`)
 
 ## Widget Public Interface
 Implemented by `Widgets/ModuleWidget.php`:
-- `getWidgetView(int $scopeId)` -> decisions widget view path
-- `getWidgetData(int $scopeId, array $config = [])`
-  - returns latest decisions by date
+- `getWidgetDefinitions(int $scopeId, array $config = [])`
+  - `overview`: decisions grouped by lifecycle status
+  - `pending_implementation`: approved decisions pending implementation
+  - `recent_key`: recent approved/implemented high-priority decisions
+- Backward-compatible methods:
+  - `getWidgetView()` returns `null`
+  - `getWidgetData()` returns merged data set
 - `getDefaultConfig()`
   - `max_entries` default `5`

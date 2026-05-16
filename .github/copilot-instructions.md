@@ -30,6 +30,7 @@ Use these repository skills whenever tasks match their scope. Choose the most sp
 - `.github/skills/docs-markdown-jekyll/SKILL.md`
 - `.github/skills/gpl-open-source-compliance/SKILL.md`
 - `.github/skills/project-management-raid-domain/SKILL.md`
+- `.github/skills/kanban-methodology-best-practices/SKILL.md`
 
 ## Working Rules
 - The priority for development tasks is to look at those documents with the status: Ready to do
