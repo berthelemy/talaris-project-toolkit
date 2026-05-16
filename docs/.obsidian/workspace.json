@@ -1,0 +1,223 @@
+{
+  "main": {
+    "id": "1686c0bbba332254",
+    "type": "split",
+    "children": [
+      {
+        "id": "60d51e3f84553fd8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9692571f037e79af",
+            "type": "leaf",
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "00-kanban.base",
+                "viewName": "Kanban"
+              },
+              "icon": "columns",
+              "title": "00-kanban"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "fae750d0fcf68e4b",
+    "type": "split",
+    "children": [
+      {
+        "id": "a6c9b4b4389a44cd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c1917ee34af04785",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "9f805fcbc4d51198",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "98e083aeb4343c2c",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "8920beb67624d174",
+    "type": "split",
+    "children": [
+      {
+        "id": "50089afbe7083ea0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5ff3061f3f8868c1",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "moc/MOC-Planning.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for MOC-Planning"
+            }
+          },
+          {
+            "id": "1ce9c936216547b2",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "moc/MOC-Planning.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from MOC-Planning"
+            }
+          },
+          {
+            "id": "a4bc140e0613dd9d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "42fd8e43c194baa9",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "9b385c7a5c76b962",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "moc/MOC-Planning.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of MOC-Planning"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "9692571f037e79af",
+  "lastOpenFiles": [
+    "handoffs/HANDOFF_NEXT_SESSION_PHASE6.md",
+    "00-kanban.base",
+    "requirements/modules/00-modules_overview.md",
+    "requirements/UI_CHANGES_2026_05_12.md",
+    "Project-reports/BOARD.md",
+    "Project-reports",
+    "moc/MOC-Handoffs.md",
+    "handoffs/HANDOFF_PHASE1.md",
+    "moc/MOC-What-Is-A-MOC.md",
+    "project-cards/INDEX-DATAVIEW.md",
+    "Development/MODULE_AUTHORING_GUIDE.md",
+    "project-cards/BOARD.md",
+    "project-cards/decisions-module-full-refresh.md",
+    "Development/MODULE_STRUCTURE.md",
+    "Development/MODULE_INTERNAL_API.md",
+    "Development/MODULE_FRAMEWORK.md",
+    "Development/INSTALLATION.md",
+    "Development",
+    "handoffs/HANDOFF_PHASE10_LAYOUT_AND_SITE_SETTINGS.md",
+    "handoffs/HANDOFF_PHASE5.md",
+    "handoffs/HANDOFF_PHASE4.md",
+    "handoffs/HANDOFF_NEXT_SESSION_PHASE11.md",
+    "handoffs/HANDOFF_NEXT_SESSION_PHASE11_RAID_ASSUMPTIONS_WIDGETS.md",
+    "handoffs/HANDOFF_NEXT_SESSION_PHASE10.md",
+    "handoffs/HANDOFF_NEXT_SESSION_PHASE9.md",
+    "handoffs/HANDOFF_NEXT_SESSION_PHASE7.md",
+    "handoffs",
+    "requirements/DATABASE_MIGRATIONS.md",
+    "requirements/CONFIGURATION.md",
+    "requirements/modules",
+    "requirements",
+    "project-cards/00-kanban.base",
+    "project-cards",
+    "project-kanban-cards/00-kanban.base",
+    "project-kanban-cards"
+  ]
+}

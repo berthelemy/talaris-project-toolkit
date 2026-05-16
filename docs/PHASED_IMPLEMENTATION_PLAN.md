@@ -1,4 +1,13 @@
+---
+title: Talaris Project Toolkit: Phased Implementation Plan
+type: plan
+updated: 2026-05-16
+---
 # Talaris Project Toolkit: Phased Implementation Plan
+
+> Kanban tracking source of truth: [[project-cards/BOARD|Implementation Kanban Board]]
+>
+> Phase and module refresh work items are now tracked as separate Obsidian cards in [[project-cards]].
 
 The project name "Talaris" is derived from the Latin *talaria* (the winged sandals of Hermes), implying speed and communication.
 
