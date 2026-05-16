@@ -145,3 +145,4 @@ views:
     wrapPropertyValues: true
     swimlaneByProperty: note.type
     cardTitleProperty: note.title
+    quickAddFolder: project-cards
