@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\RaidShared\Models;
 
 use CodeIgniter\Model;
 
+/**
+ * Shared persistence model for RAID-style module entries.
+ */
 class ModuleRaidEntryModel extends Model
 {
     protected $table            = 'module_raid_entries';

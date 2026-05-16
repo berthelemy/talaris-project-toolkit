@@ -3,7 +3,7 @@
 namespace App\Modules\TasksRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
-use App\Models\ModuleRaidEntryModel;
+use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
 
 /**
  * Provides Tasks Register dashboard widget definitions and data.

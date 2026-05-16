@@ -3,7 +3,7 @@
 namespace App\Modules\IssueTrackerProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
-use App\Models\ModuleRaidEntryModel;
+use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
 
 /**
  * Provides Issue Tracker dashboard widget definitions and data.

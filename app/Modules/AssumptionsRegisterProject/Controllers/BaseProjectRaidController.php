@@ -7,7 +7,7 @@ use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Modules\ModuleApiAuthorizationService;
 use App\Libraries\Modules\ModuleRegistryService;
 use App\Libraries\Modules\ModuleWidgetService;
-use App\Models\ModuleRaidEntryModel;
+use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
 use App\Models\ProjectModel;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;

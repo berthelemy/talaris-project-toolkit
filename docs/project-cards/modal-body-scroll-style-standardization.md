@@ -1,7 +1,7 @@
 ---
 title: Card - Modal Body Scroll Style Standardization
 type: card
-status: To define
+status: Ready to do
 updated: 2026-05-16
 ---
 # Card - Modal Body Scroll Style Standardization

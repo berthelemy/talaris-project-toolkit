@@ -8,7 +8,7 @@ use App\Libraries\Auth\RbacService;
 use App\Libraries\Modules\ModuleApiAuthorizationService;
 use App\Libraries\Modules\ModuleLockService;
 use App\Libraries\Modules\ModuleRegistryService;
-use App\Models\ModuleHelloWorldEntryModel;
+use App\Modules\HelloWorldProgramme\Models\HelloWorldEntryModel;
 use App\Models\ProgrammeModel;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -41,7 +41,7 @@ class HelloWorldController extends BaseController
             return redirect()->to('/programmes/' . $programmeId)->with('error', lang('Module.disabledForScope'));
         }
 
-        $entries = (new ModuleHelloWorldEntryModel())
+        $entries = (new HelloWorldEntryModel())
             ->where('module_slug', ModuleRegistryService::HELLO_WORLD_PROGRAMME)
             ->where('scope_type', 'programme')
             ->where('scope_id', $programmeId)
@@ -109,7 +109,7 @@ class HelloWorldController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        (new ModuleHelloWorldEntryModel())->insert([
+        (new HelloWorldEntryModel())->insert([
             'module_slug' => ModuleRegistryService::HELLO_WORLD_PROGRAMME,
             'scope_type' => 'programme',
             'scope_id' => $programmeId,
@@ -152,7 +152,7 @@ class HelloWorldController extends BaseController
             return $this->lockDeniedJson((array) ($lockResult['lock'] ?? []));
         }
 
-        $entryModel = new ModuleHelloWorldEntryModel();
+        $entryModel = new HelloWorldEntryModel();
         $entry = $entryModel->find($entryId);
 
         if (! is_array($entry)

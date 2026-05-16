@@ -4,7 +4,7 @@ namespace App\Modules\HelloWorldProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
 use App\Libraries\Modules\ModuleRegistryService;
-use App\Models\ModuleHelloWorldEntryModel;
+use App\Modules\HelloWorldProject\Models\HelloWorldEntryModel;
 
 /**
  * Project-scope dashboard widget for Hello World module entries.
@@ -31,7 +31,7 @@ class ModuleWidget implements ModuleWidgetInterface
             $maxEntries = 5;
         }
 
-        $entries = (new ModuleHelloWorldEntryModel())
+        $entries = (new HelloWorldEntryModel())
             ->where('module_slug', ModuleRegistryService::HELLO_WORLD_PROJECT)
             ->where('scope_type', 'project')
             ->where('scope_id', $scopeId)

@@ -4,7 +4,7 @@ namespace App\Modules\HelloWorldProgramme\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
 use App\Libraries\Modules\ModuleRegistryService;
-use App\Models\ModuleHelloWorldEntryModel;
+use App\Modules\HelloWorldProgramme\Models\HelloWorldEntryModel;
 
 /**
  * Programme-scope dashboard widget for Hello World module entries.
@@ -31,7 +31,7 @@ class ModuleWidget implements ModuleWidgetInterface
             $maxEntries = 5;
         }
 
-        $entries = (new ModuleHelloWorldEntryModel())
+        $entries = (new HelloWorldEntryModel())
             ->where('module_slug', ModuleRegistryService::HELLO_WORLD_PROGRAMME)
             ->where('scope_type', 'programme')
             ->where('scope_id', $scopeId)

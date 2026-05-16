@@ -1,0 +1,9 @@
+{
+  "slug": "meeting_notes_project",
+  "version": "0.1.0",
+  "dependencies": [],
+  "widget_permission": "module.meeting_notes_project.widget.read",
+  "widget_config": {
+    "max_entries": 5
+  }
+}

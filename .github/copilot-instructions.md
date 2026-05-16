@@ -42,6 +42,7 @@ Use these repository skills whenever tasks match their scope. Choose the most sp
 - Build and review UI changes to meet WCAG 2.2 Level AA.
 - Add or update automated tests (unit, integration, system) for meaningful behavioral changes.
 - Update Markdown documentation when behavior, configuration, or module APIs change.
+- All modules should be standalone and their directories should contain all the code necessary to install and run the module within the application
 - Require `README.md` in every module directory; all new modules must include `README.md` with purpose, scope, key components, and links to module API docs.
 - Ensure all PHP files include full PHPDoc annotations for classes, methods, and variables.
 - After any code change, run all relevant tests to validate behavior and prevent regressions.

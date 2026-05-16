@@ -2,7 +2,8 @@
 
 namespace App\Libraries\Modules;
 
-use App\Models\ModuleHelloWorldEntryModel;
+use App\Modules\HelloWorldProgramme\Models\HelloWorldEntryModel as HelloWorldProgrammeEntryModel;
+use App\Modules\HelloWorldProject\Models\HelloWorldEntryModel as HelloWorldProjectEntryModel;
 
 class HelloWorldModuleApi implements ModuleApiInterface
 {
@@ -15,7 +16,7 @@ class HelloWorldModuleApi implements ModuleApiInterface
         $scopeType = (string) ($query['scope_type'] ?? '');
         $scopeId = (int) ($query['scope_id'] ?? 0);
 
-        $entries = (new ModuleHelloWorldEntryModel())
+        $entries = $this->modelForSlug($moduleSlug)
             ->where('module_slug', $moduleSlug)
             ->where('scope_type', $scopeType)
             ->where('scope_id', $scopeId)
@@ -37,7 +38,7 @@ class HelloWorldModuleApi implements ModuleApiInterface
             return ['ok' => false, 'error' => 'invalid_message'];
         }
 
-        $id = (new ModuleHelloWorldEntryModel())->insert([
+        $id = $this->modelForSlug($moduleSlug)->insert([
             'module_slug' => $moduleSlug,
             'scope_type' => (string) ($data['scope_type'] ?? ''),
             'scope_id' => (int) ($data['scope_id'] ?? 0),
@@ -58,7 +59,8 @@ class HelloWorldModuleApi implements ModuleApiInterface
             return ['ok' => false, 'error' => 'unsupported_resource'];
         }
 
-        $entry = (new ModuleHelloWorldEntryModel())->find($id);
+        $model = $this->modelForSlug($moduleSlug);
+        $entry = $model->find($id);
         if (! is_array($entry) || (string) ($entry['module_slug'] ?? '') !== $moduleSlug) {
             return ['ok' => false, 'error' => 'not_found'];
         }
@@ -73,9 +75,21 @@ class HelloWorldModuleApi implements ModuleApiInterface
             return ['ok' => false, 'error' => 'conflict'];
         }
 
-        (new ModuleHelloWorldEntryModel())->update($id, ['message' => $message]);
-        $updated = (new ModuleHelloWorldEntryModel())->find($id);
+        $model->update($id, ['message' => $message]);
+        $updated = $model->find($id);
 
         return ['ok' => true, 'entry' => $updated];
+    }
+
+    /**
+     * @return HelloWorldProjectEntryModel|HelloWorldProgrammeEntryModel
+     */
+    private function modelForSlug(string $moduleSlug): HelloWorldProjectEntryModel|HelloWorldProgrammeEntryModel
+    {
+        if ($moduleSlug === ModuleRegistryService::HELLO_WORLD_PROGRAMME) {
+            return new HelloWorldProgrammeEntryModel();
+        }
+
+        return new HelloWorldProjectEntryModel();
     }
 }
