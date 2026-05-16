@@ -44,7 +44,6 @@ define('MEETING_NOTES_WIDGET_ADD_MODAL_RENDERED', true);
                                 <option value="draft" selected>Draft</option>
                                 <option value="finalized">Finalized</option>
                                 <option value="archived">Archived</option>
-                                <option value="closed">Closed</option>
                             </select>
                         </div>
                         <div class="col-12 col-md-6">
@@ -86,12 +85,15 @@ define('MEETING_NOTES_WIDGET_ADD_MODAL_RENDERED', true);
                             <textarea id="meeting-note-discussion" class="form-control" name="discussion_text" rows="3"></textarea>
                         </div>
                         <div class="col-12">
-                            <label class="form-label" for="meeting-note-decisions">Decisions made</label>
-                            <textarea id="meeting-note-decisions" class="form-control" name="decisions_text" rows="2"></textarea>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label" for="meeting-note-raised-links">Risks/issues/dependencies raised</label>
-                            <textarea id="meeting-note-raised-links" class="form-control" name="raised_links_text" rows="2"></textarea>
+                            <label class="form-label">Linked module entries</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button type="button" class="btn btn-outline-primary btn-sm" disabled>Add decision</button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" disabled>Add risk</button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" disabled>Add issue</button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" disabled>Add dependency</button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" disabled>Add task</button>
+                            </div>
+                            <div class="form-text">Create the meeting note first, then use the Add decision/risk/issue/dependency/task buttons on the saved note to create linked entries in each module.</div>
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="meeting-note-lessons">Lessons learned</label>

@@ -100,7 +100,7 @@ class ModuleWidget implements ModuleWidgetInterface
     }
 
     /**
-     * @return array{draft:int,finalized:int,archived:int,closed:int}
+     * @return array{draft:int,finalized:int,archived:int}
      */
     private function statusCounts(int $scopeId): array
     {
@@ -108,7 +108,6 @@ class ModuleWidget implements ModuleWidgetInterface
             'draft' => 0,
             'finalized' => 0,
             'archived' => 0,
-            'closed' => 0,
         ];
 
         $rows = (new MeetingNoteModel())

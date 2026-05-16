@@ -17,5 +17,4 @@ $routes->post('projects/(:num)/modules/meeting-notes/(:num)/risks', 'MeetingNote
 $routes->post('projects/(:num)/modules/meeting-notes/(:num)/assumptions', 'MeetingNotesController::createRelatedAssumption/$1/$2', ['namespace' => 'App\Modules\MeetingNotesProject\Controllers']);
 $routes->post('projects/(:num)/modules/meeting-notes/(:num)/issues', 'MeetingNotesController::createRelatedIssue/$1/$2', ['namespace' => 'App\Modules\MeetingNotesProject\Controllers']);
 $routes->post('projects/(:num)/modules/meeting-notes/(:num)/dependencies', 'MeetingNotesController::createRelatedDependency/$1/$2', ['namespace' => 'App\Modules\MeetingNotesProject\Controllers']);
-$routes->post('projects/(:num)/modules/meeting-notes/(:num)/close', 'MeetingNotesController::close/$1/$2', ['namespace' => 'App\Modules\MeetingNotesProject\Controllers']);
 $routes->post('projects/(:num)/modules/meeting-notes/(:num)/delete', 'MeetingNotesController::delete/$1/$2', ['namespace' => 'App\Modules\MeetingNotesProject\Controllers']);

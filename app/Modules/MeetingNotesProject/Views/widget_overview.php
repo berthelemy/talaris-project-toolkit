@@ -1,6 +1,6 @@
 <?php
 /**
- * @var array{draft:int,finalized:int,archived:int,closed:int} $status_counts
+ * @var array{draft:int,finalized:int,archived:int} $status_counts
  * @var array{stand-up:int,planning:int,steering:int,review:int,retrospective:int,other:int} $type_counts
  * @var int $scope_id
  * @var list<array{id:int,username:string}> $owners

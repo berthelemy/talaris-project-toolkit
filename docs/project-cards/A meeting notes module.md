@@ -1,6 +1,6 @@
 ---
 title: Card - Meeting Notes Module
-status: in-progress
+status: done
 type: card
 updated: 2026-05-16
 ---
@@ -50,7 +50,7 @@ Action items created in meeting notes should support traceable links to related 
 - Action status per action item (open, in progress, blocked, completed, cancelled)
 - Linked task reference per action item (optional, required when task is created)
 - Follow-up meeting date (optional)
-- Status (draft, finalized, archived, closed)
+- Status (draft, finalized, archived)
 
 
 ### Internal Integration Requirements
@@ -67,8 +67,8 @@ Action items created in meeting notes should support traceable links to related 
 Each meeting note should be rendered as a link to open meeting note details.
 
 ## Definition of Done
-- CRUD including delete and closure tracking.
-- Lifecycle workflow: draft, finalized, archived, closed.
+- CRUD including delete.
+- Lifecycle workflow: draft, finalized, archived.
 - Meeting metadata, attendees, discussion, decisions, and action tracking fields aligned to spec.
 - Tasks-module linking implemented when module is present, with graceful fallback when absent.
 - Widgets: meetings overview, open meeting actions, upcoming follow-ups.

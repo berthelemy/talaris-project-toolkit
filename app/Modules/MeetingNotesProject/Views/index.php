@@ -138,6 +138,9 @@ $active = 'projects';
                                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#meeting-note-add-issue-<?= $noteId ?>">Add issue</button>
                                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#meeting-note-add-decision-<?= $noteId ?>">Add decision</button>
                                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#meeting-note-add-dependency-<?= $noteId ?>">Add dependency</button>
+                                <?php if ($tasks_module_enabled): ?>
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#meeting-note-add-action-<?= $noteId ?>">Add task</button>
+                                <?php endif; ?>
                                             <?php if (! $is_read_only): ?>
                                                 <!-- Add Risk Modal -->
                                                 <div class="modal fade" id="meeting-note-add-risk-<?= $noteId ?>" tabindex="-1">
@@ -368,12 +371,6 @@ $active = 'projects';
                                                 </div>
                                             <?php endif; ?>
                                 <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#meeting-note-edit-<?= $noteId ?>">Edit</button>
-                                <?php if ((string) ($note['status'] ?? '') !== 'closed'): ?>
-                                    <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/meeting-notes/' . $noteId . '/close') ?>">
-                                        <?= csrf_field() ?>
-                                        <button type="submit" class="btn btn-outline-warning">Close</button>
-                                    </form>
-                                <?php endif; ?>
                                 <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/meeting-notes/' . $noteId . '/delete') ?>" onsubmit="return confirm('Delete this meeting note?');">
                                     <?= csrf_field() ?>
                                     <button type="submit" class="btn btn-outline-danger">Delete</button>
@@ -502,7 +499,7 @@ $active = 'projects';
                                         <div class="col-12 col-md-6">
                                             <label class="form-label">Status</label>
                                             <select class="form-select" name="status">
-                                                <?php foreach (['draft', 'finalized', 'archived', 'closed'] as $status): ?>
+                                                <?php foreach (['draft', 'finalized', 'archived'] as $status): ?>
                                                     <option value="<?= esc($status) ?>" <?= (string) ($note['status'] ?? 'draft') === $status ? 'selected' : '' ?>><?= esc(ucfirst($status)) ?></option>
                                                 <?php endforeach; ?>
                                             </select>
@@ -550,12 +547,19 @@ $active = 'projects';
                                             <textarea class="form-control" name="discussion_text" rows="3"><?= esc((string) ($note['discussion_text'] ?? '')) ?></textarea>
                                         </div>
                                         <div class="col-12">
-                                            <label class="form-label">Decisions</label>
-                                            <textarea class="form-control" name="decisions_text" rows="2"><?= esc((string) ($note['decisions_text'] ?? '')) ?></textarea>
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="form-label">Risks/issues/dependencies raised</label>
-                                            <textarea class="form-control" name="raised_links_text" rows="2"><?= esc((string) ($note['raised_links_text'] ?? '')) ?></textarea>
+                                            <label class="form-label">Linked module entries</label>
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <?php if ($decisions_module_enabled): ?>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#meeting-note-add-decision-<?= $noteId ?>">Add decision</button>
+                                                <?php endif; ?>
+                                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#meeting-note-add-risk-<?= $noteId ?>">Add risk</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#meeting-note-add-issue-<?= $noteId ?>">Add issue</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#meeting-note-add-dependency-<?= $noteId ?>">Add dependency</button>
+                                                <?php if ($tasks_module_enabled): ?>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#meeting-note-add-action-<?= $noteId ?>">Add task</button>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="form-text">These buttons create linked entries in the respective modules for this meeting note.</div>
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label">Lessons learned</label>

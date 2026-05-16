@@ -1,3 +1,25 @@
+<?php
+
+namespace App\Modules\MeetingNotesProject\Controllers;
+
+use App\Controllers\BaseController;
+use App\Libraries\Auth\AuditLogger;
+use App\Libraries\Modules\ModuleApiAuthorizationService;
+use App\Libraries\Modules\ModuleRegistryService;
+use App\Libraries\Modules\ModuleWidgetService;
+use App\Models\ProjectModel;
+use App\Models\UserModel;
+use App\Modules\MeetingNotesProject\Models\MeetingNoteModel;
+use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
+use CodeIgniter\HTTP\RedirectResponse;
+
+/**
+ * Project meeting notes controller.
+ */
+class MeetingNotesController extends BaseController
+{
+    private const ACTION_TASK_CATEGORY = 'meeting_action';
+
     /**
      * @return RedirectResponse
      */
@@ -302,7 +324,7 @@
             'follow_up_date' => $this->nullableDate((string) $this->request->getPost('follow_up_date')),
             'status' => $status,
             'lessons_learned' => $this->nullableString((string) $this->request->getPost('lessons_learned')),
-            'closed_at' => $status === 'closed' ? (($note['closed_at'] ?? null) ?: date('Y-m-d H:i:s')) : null,
+            'closed_at' => null,
             'updated_by_user_id' => (int) $actorId,
         ]);
 
@@ -316,35 +338,6 @@
         (new ModuleWidgetService())->invalidateScopeCaches('project', $projectId);
 
         return $this->redirectModule($projectId)->with('success', 'Meeting note updated successfully.');
-    }
-
-    /**
-     * @return RedirectResponse
-     */
-    public function close(int $projectId, int $noteId): RedirectResponse
-    {
-        $actorId = $this->sessionUserId();
-
-        if (! $this->canWrite($actorId, $projectId)) {
-            return $this->redirectModule($projectId)->with('error', lang('Domain.notAuthorized'));
-        }
-
-        $noteModel = new MeetingNoteModel();
-        $note = $noteModel->find($noteId);
-
-        if (! is_array($note) || ! $this->matchesScope($note, $projectId)) {
-            return $this->redirectModule($projectId)->with('error', 'Meeting note not found.');
-        }
-
-        $noteModel->update($noteId, [
-            'status' => 'closed',
-            'closed_at' => date('Y-m-d H:i:s'),
-            'updated_by_user_id' => (int) $actorId,
-        ]);
-
-        (new ModuleWidgetService())->invalidateScopeCaches('project', $projectId);
-
-        return $this->redirectModule($projectId)->with('success', 'Meeting note closed successfully.');
     }
 
     /**
@@ -666,7 +659,7 @@
             'decisions_text' => 'permit_empty|max_length[5000]',
             'raised_links_text' => 'permit_empty|max_length[5000]',
             'follow_up_date' => 'permit_empty|valid_date[Y-m-d]',
-            'status' => 'permit_empty|in_list[draft,finalized,archived,closed]',
+            'status' => 'permit_empty|in_list[draft,finalized,archived]',
             'lessons_learned' => 'permit_empty|max_length[5000]',
         ];
     }
