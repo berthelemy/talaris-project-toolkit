@@ -31,6 +31,7 @@ This plan is organized as two-week phases (sprints). Each phase includes:
   - **Project overview section with dashboard widgets** ← NEXT FOCUS
   - Widget visibility controls
 - **Phase 11+:** 📋 Planned (Dependent on Phase 10 completion)
+	- Full module refresh scope added for Issues, Decisions, Dependencies, and Tasks to align with updated module requirements.
 
 ### Next Session Deliverable
 User has explicitly requested **detailed specification document** for project dashboard widgets before proceeding with implementation. Once specification is provided, implementation will proceed in Phase 10.
@@ -521,12 +522,13 @@ User has explicitly requested **detailed specification document** for project da
 - [ ] Project dashboard widgets are fully implemented and functional ← AWAITING SPECIFICATION
 - [ ] Desktop-oriented UI shell and page layouts are production-ready with localization, accessibility, and responsive behavior validated ← PENDING widget implementation
 
-## Phase 11 (Weeks 21-22): Dashboards, Drill-Downs, and Traceability
+## Phase 11 (Weeks 21-22): Dashboards, Drill-Downs, Traceability, and Module Refresh
 
 ### Objectives
 - Provide programme/project dashboards with traceable source navigation.
 - Implement drag-and-drop widget ordering for project/programme overview dashboards.
 - Align module/widget behavior with module specification documents (`docs/modules/00-modules_overview.md`, `docs/modules/01-risks.md`).
+- Complete a full update of Issues, Decisions, Dependencies, and Tasks modules to meet the new requirements in `docs/modules/03-issues.md`, `docs/modules/04-decisions.md`, `docs/modules/05-dependencies.md`, and `docs/modules/06-tasks.md`.
 - **Note:** This phase depends on Phase 10 project overview widgets being completed first.
 
 ### Delivery Checklist
@@ -550,6 +552,26 @@ User has explicitly requested **detailed specification document** for project da
 	- [ ] Risk data model/UI includes: date entered, entered by, description, impact, likelihood, calculated priority, mitigation actions, owner, closed flag, closing date, lessons learned.
 	- [x] Risks overview widget shows open risk counts by priority.
 	- [x] High priority risks widget lists high-priority risks with links to risk detail pages.
+- [ ] Issues module full requirements update (`docs/modules/03-issues.md`):
+	- [ ] CRUD support including delete and closure tracking.
+	- [ ] Full status workflow (open, in review, blocked, resolved, closed) with resolution actions.
+	- [ ] Data model/UI fields aligned to issue specification, including reporter/date reported/target resolution date.
+	- [ ] Widgets implemented: Issues overview, High priority issues, Overdue issues.
+- [ ] Decisions module full requirements update (`docs/modules/04-decisions.md`):
+	- [ ] CRUD support including delete and closure tracking.
+	- [ ] Decision lifecycle workflow (draft through implemented/rejected/superseded/closed).
+	- [ ] Data model/UI fields aligned to decision specification (rationale, alternatives, approver, implementation actions, superseded-by link).
+	- [ ] Widgets implemented: Decisions overview, Pending implementation decisions, Recent key decisions.
+- [ ] Dependencies module full requirements update (`docs/modules/05-dependencies.md`):
+	- [ ] CRUD support including delete and closure tracking.
+	- [ ] Dependency lifecycle workflow (open through fulfilled/cancelled/closed) with escalation handling.
+	- [ ] Data model/UI fields aligned to dependency specification (dependency type, depends on, impact, mitigation, escalation flag).
+	- [ ] Widgets implemented: Dependencies overview, At-risk dependencies, Overdue dependencies.
+- [ ] Tasks module full requirements update (`docs/modules/06-tasks.md`):
+	- [ ] New/updated module implementation with CRUD support including delete and closure tracking.
+	- [ ] Task lifecycle workflow (open, in progress, blocked, in review, completed, cancelled, closed) with progress tracking.
+	- [ ] Data model/UI fields aligned to task specification (owner/collaborators, percent complete, blocked reason, next action, dates).
+	- [ ] Widgets implemented: Tasks overview, My open tasks, Overdue tasks.
 
 ### Implementation Progress (2026-05-14)
 - Added drag-and-drop ordering interactions on project widget layout page (`/projects/{id}/widgets/layout`) with persisted order values posted through existing `widget_order` inputs.
@@ -586,12 +608,16 @@ User has explicitly requested **detailed specification document** for project da
 8. Validate risk widgets:
 	 - [ ] Risks overview counts match open records by priority.
 	 - [ ] High priority risk links open correct risk detail pages.
-9. Confirm dashboard loads within acceptable response targets.
+9. Validate issues module against `docs/modules/03-issues.md` including CRUD, lifecycle statuses, and widgets.
+10. Validate decisions module against `docs/modules/04-decisions.md` including lifecycle/supersession behavior and widgets.
+11. Validate dependencies module against `docs/modules/05-dependencies.md` including escalation and overdue tracking widgets.
+12. Validate tasks module against `docs/modules/06-tasks.md` including assignment/progress fields and widgets.
+13. Confirm dashboard and updated module pages load within acceptable response targets.
 
 ### Exit Criteria
 - [ ] Dashboard metrics are accurate, navigable, and explainable.
 - [ ] Widget ordering is usable, accessible, and reliably persisted.
-- [ ] Module/risk specifications from `docs/modules/00-modules_overview.md` and `docs/modules/01-risks.md` are implemented and validated.
+- [ ] Module specifications from `docs/modules/00-modules_overview.md` through `docs/modules/06-tasks.md` are implemented and validated.
 - [ ] (Blocked until Phase 10 project overview widgets are complete)
 
 ## Phase 12 (Weeks 23-24): Cross-Module Reports and Email Scheduling
