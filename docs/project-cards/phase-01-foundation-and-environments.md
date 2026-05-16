@@ -1,7 +1,7 @@
 ---
 title: Phase 1 - Foundation and Environments
 type: card
-status: done
+status: Done
 updated: 2026-05-16
 ---
 # Phase 1 - Foundation and Environments

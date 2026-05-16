@@ -2,7 +2,7 @@
 title: Module Structure Reference
 type: doc
 updated: 2026-05-16
-status: complete
+status: Done
 ---
 # Module Structure Reference
 

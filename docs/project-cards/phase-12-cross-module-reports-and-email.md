@@ -1,7 +1,7 @@
 ---
 title: Phase 12 - Cross-module Reports and Email Scheduling
 type: card
-status: planned
+status: To define
 updated: 2026-05-16
 ---
 # Phase 12 - Cross-module Reports and Email Scheduling

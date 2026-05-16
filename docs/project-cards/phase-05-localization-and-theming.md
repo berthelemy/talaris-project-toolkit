@@ -1,7 +1,7 @@
 ---
 title: Phase 5 - Localization and Theming
 type: card
-status: done
+status: Done
 updated: 2026-05-16
 ---
 # Phase 5 - Localization and Theming

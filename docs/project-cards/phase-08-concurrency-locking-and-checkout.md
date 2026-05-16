@@ -1,7 +1,7 @@
 ---
 title: Phase 8 - Concurrency Locking and Checkout
 type: card
-status: done
+status: Done
 updated: 2026-05-16
 ---
 # Phase 8 - Concurrency Locking and Checkout

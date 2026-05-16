@@ -2,7 +2,7 @@
 title: Module Framework Guide (Phase 6)
 type: doc
 updated: 2026-05-16
-status: complete
+status: Done
 ---
 # Module Framework Guide (Phase 6)
 

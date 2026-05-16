@@ -1,7 +1,7 @@
 ---
 title: Phase 7 - Internal Module APIs and Autosave
 type: card
-status: done
+status: Done
 updated: 2026-05-16
 ---
 # Phase 7 - Internal Module APIs and Autosave

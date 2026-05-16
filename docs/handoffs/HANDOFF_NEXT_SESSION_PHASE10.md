@@ -1,7 +1,7 @@
 ---
 title: Next Session Handoff Phase 10 Kickoff (Desktop-Oriented UI Overhaul and Navigation)
 type: handoff
-status: next-session
+status:
 updated: 2026-05-16
 ---
 # Next Session Handoff: Phase 10 Kickoff (Desktop-Oriented UI Overhaul and Navigation)

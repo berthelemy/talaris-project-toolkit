@@ -2,7 +2,7 @@
 title: Installation
 type: doc
 updated: 2026-05-16
-status: complete
+status: Done
 ---
 # Installation
 

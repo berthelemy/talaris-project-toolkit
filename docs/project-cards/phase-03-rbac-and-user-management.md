@@ -1,7 +1,7 @@
 ---
 title: Phase 3 - RBAC and User Management
 type: card
-status: done
+status: Done
 updated: 2026-05-16
 ---
 # Phase 3 - RBAC and User Management

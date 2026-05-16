@@ -1,7 +1,7 @@
 ---
 title: Phase 11 - Dashboards, Traceability, and Module Refresh
 type: card
-status: blocked
+status: in-progress
 updated: 2026-05-16
 blocked_by:
   - phase-10-desktop-ui-overhaul-and-navigation

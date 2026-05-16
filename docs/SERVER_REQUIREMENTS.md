@@ -2,7 +2,6 @@
 title: Server Requirements
 type: doc
 updated: 2026-05-16
-status: Done
 ---
 # Server Requirements
 

@@ -1,7 +1,7 @@
 ---
 title: Phase 5 Handoff Localization and Theming
 type: handoff
-status: complete
+status: Done
 updated: 2026-05-16
 ---
 # Phase 5 Handoff: Localization and Theming

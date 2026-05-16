@@ -1,7 +1,7 @@
 ---
 title: Phase 4 Handoff Programmes, Projects, and Core Domain Model
 type: handoff
-status: complete
+status: Done
 updated: 2026-05-16
 ---
 # Phase 4 Handoff: Programmes, Projects, and Core Domain Model

@@ -1,7 +1,7 @@
 ---
 title: Handoff Phase 10 Foundation – Layout System and Site Settings
 type: handoff
-status: complete
+status: Done
 updated: 2026-05-16
 ---
 # Handoff: Phase 10 Foundation – Layout System and Site Settings

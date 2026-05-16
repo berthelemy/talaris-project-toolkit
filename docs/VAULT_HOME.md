@@ -1,6 +1,6 @@
 ---
-title: "VAULT_HOME"
+title: VAULT_HOME
 type: doc
-status: reference
+status:
 updated: 2026-05-16
 ---

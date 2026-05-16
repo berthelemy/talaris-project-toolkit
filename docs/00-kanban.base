@@ -60,13 +60,12 @@ views:
         - modules/06-tasks.md
       note.status:
         - Uncategorized
-        - blocked
-        - complete
-        - done
+        - Blocked
+        - To define
+        - Ready to do
         - in-progress
-        - next-session
-        - planned
-        - reference
+        - Done
+        - complete
     cardOrders:
       file.file: {}
       note.status: {}
@@ -81,6 +80,28 @@ views:
           - Development/MODULE_STRUCTURE.md
           - Development/INSTALLATION.md
           - Development/MODULE_AUTHORING_GUIDE.md
+        "card\x1fblocked": []
+        "card\x1fReady to do":
+          - project-cards/issues-module-full-refresh.md
+          - project-cards/decisions-module-full-refresh.md
+          - project-cards/dependencies-module-full-refresh.md
+          - project-cards/tasks-module-full-refresh.md
+        "card\x1fplanned": []
+        "card\x1fTo define":
+          - project-cards/phase-12-cross-module-reports-and-email.md
+          - project-cards/phase-13-hardening-accessibility-and-release.md
+        "card\x1fDone":
+          - project-cards/phase-01-foundation-and-environments.md
+          - project-cards/phase-02-authentication-core-and-session-security.md
+          - project-cards/phase-03-rbac-and-user-management.md
+          - project-cards/phase-04-programmes-projects-core-domain.md
+          - project-cards/phase-05-localization-and-theming.md
+          - project-cards/phase-06-module-framework-and-hello-world.md
+          - project-cards/phase-07-internal-module-apis-and-autosave.md
+          - project-cards/phase-08-concurrency-locking-and-checkout.md
+          - project-cards/phase-09-raid-modules.md
+        "card\x1fin-progress":
+          - project-cards/phase-11-dashboards-traceability-and-module-refresh.md
       "note.status\x1fnote.board": {}
     columnColors:
       file.file: {}
@@ -119,6 +140,8 @@ views:
       "note.status\x1fnote.type":
         - doc
         - glossary
+        - card
       "note.status\x1fnote.board": []
     wrapPropertyValues: true
     swimlaneByProperty: note.type
+    cardTitleProperty: note.title

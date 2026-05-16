@@ -1,6 +1,6 @@
 ---
 title: Module Internal API and Autosave Contract
-type: api-doc
+type: doc
 updated: 2026-05-16
 ---
 # Module Internal API and Autosave Contract

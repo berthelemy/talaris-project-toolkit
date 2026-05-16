@@ -1,7 +1,7 @@
 ---
 title: Phase 2 - Authentication Core and Session Security
 type: card
-status: done
+status: Done
 updated: 2026-05-16
 ---
 # Phase 2 - Authentication Core and Session Security

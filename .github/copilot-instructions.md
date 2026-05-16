@@ -32,6 +32,8 @@ Use these repository skills whenever tasks match their scope. Choose the most sp
 - `.github/skills/project-management-raid-domain/SKILL.md`
 
 ## Working Rules
+- The priority for development tasks is to look at those documents with the status: Ready to do
+- All documents with the status: Blocked should include a statement of the reason for the blockage and any dependencies that need to be resolved.
 - Follow CodeIgniter 4 and PHP best practices.
 - Enforce PSR-12 formatting for all PHP changes.
 - Prefer secure defaults and include audit logging for data mutations.

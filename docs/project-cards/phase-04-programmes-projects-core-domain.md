@@ -1,7 +1,7 @@
 ---
 title: Phase 4 - Programmes, Projects, Core Domain
 type: card
-status: done
+status: Done
 updated: 2026-05-16
 ---
 # Phase 4 - Programmes, Projects, Core Domain

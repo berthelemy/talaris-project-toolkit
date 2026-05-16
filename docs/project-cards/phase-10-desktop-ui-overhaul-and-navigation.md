@@ -1,7 +1,7 @@
 ---
 title: Phase 10 - Desktop UI Overhaul and Navigation
 type: card
-status: in-progress
+status: Blocked
 updated: 2026-05-16
 ---
 # Phase 10 - Desktop UI Overhaul and Navigation

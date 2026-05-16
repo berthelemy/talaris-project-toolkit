@@ -1,7 +1,7 @@
 ---
 title: Handoff Phase 11 - Risk UX Stabilization and Dashboard Scope Cleanup
 type: handoff
-status: next-session
+status:
 updated: 2026-05-16
 ---
 # Handoff: Phase 11 - Risk UX Stabilization and Dashboard Scope Cleanup
