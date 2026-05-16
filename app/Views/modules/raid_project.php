@@ -23,6 +23,14 @@
 
 $pageTitle = (string) lang($moduleTitleKey);
 $active = 'projects';
+$relatedModuleRouteSegments = [
+    'risk_register_project' => 'risk-register',
+    'assumptions_register_project' => 'assumptions-register',
+    'issue_tracker_project' => 'issue-tracker',
+    'dependencies_register_project' => 'dependencies-register',
+    'decisions_register_project' => 'decisions-register',
+    'tasks_register_project' => 'tasks-register',
+];
 ?>
 <?= $this->extend('layouts/base') ?>
 
@@ -92,6 +100,12 @@ $active = 'projects';
                             <th class="align-top" data-priority="12"><?= esc(lang('Module.raidColumnPriority')) ?></th>
                             <th class="<?= $isRiskModule ? 'align-top' : 'd-none d-md-table-cell align-top' ?>" data-priority="13"><?= esc(lang('Module.raidColumnTargetDate')) ?></th>
                             <th class="<?= $isRiskModule ? 'align-top' : 'd-none d-md-table-cell align-top' ?>" data-priority="14"><?= esc(lang('Module.raidColumnReviewDate')) ?></th>
+                            <?php if ($isIssueModule || $isTaskModule): ?>
+                                <th class="d-none d-lg-table-cell align-top" data-priority="15"><?= esc(lang('Module.assumptionsColumnDateEntered')) ?></th>
+                                <th class="d-none d-lg-table-cell align-top" data-priority="16"><?= esc(lang('Module.assumptionsColumnEnteredBy')) ?></th>
+                                <th class="d-none d-lg-table-cell align-top" data-priority="17"><?= esc(lang('Module.assumptionsColumnClosed')) ?></th>
+                                <th class="d-none d-lg-table-cell align-top" data-priority="18"><?= esc(lang('Module.assumptionsColumnClosingDate')) ?></th>
+                            <?php endif; ?>
                             <th class="<?= $isRiskModule ? 'align-top' : 'd-none d-lg-table-cell align-top' ?>" data-priority="15"><?= esc(lang('Module.raidColumnUpdatedAt')) ?></th>
                             <?php if (! $isReadOnly): ?>
                                 <th class="all align-top" data-priority="1"><?= esc(lang('Module.columnActions')) ?></th>
@@ -101,6 +115,8 @@ $active = 'projects';
                             <tbody>
                         <?php foreach ($entries as $entry): ?>
                             <?php $riskEditFormId = 'risk-edit-form-' . (int) ($entry['id'] ?? 0); ?>
+                            <?php $entryAnchorUrl = site_url('projects/' . (int) ($project['id'] ?? 0) . '/modules/' . $moduleRouteSegment) . '#entry-' . (int) ($entry['id'] ?? 0); ?>
+                            <?php $isClosedEntry = (string) ($entry['status'] ?? '') === 'closed'; ?>
                             <tr id="entry-<?= (int) ($entry['id'] ?? 0) ?>">
                                 <td>
                                     <?php if ($isRiskModule): ?>
@@ -110,7 +126,7 @@ $active = 'projects';
                                         </div>
                                     <?php else: ?>
                                         <div data-risk-display>
-                                            <div class="fw-semibold"><?= esc((string) ($entry['title'] ?? '')) ?></div>
+                                            <div class="fw-semibold"><a href="<?= esc($entryAnchorUrl) ?>"><?= esc((string) ($entry['title'] ?? '')) ?></a></div>
                                             <?php if ((string) ($entry['description'] ?? '') !== ''): ?>
                                                 <div class="text-muted small"><?= esc((string) ($entry['description'] ?? '')) ?></div>
                                             <?php endif; ?>
@@ -141,11 +157,35 @@ $active = 'projects';
                                             <?php if ($isTaskModule && (string) ($entry['related_objective'] ?? '') !== ''): ?>
                                                 <div class="text-muted small"><strong><?= esc(lang('Module.tasksRelatedObjectiveLabel')) ?>:</strong> <?= esc((string) ($entry['related_objective'] ?? '')) ?></div>
                                             <?php endif; ?>
+                                            <?php if ($isTaskModule && (int) ($entry['related_module_entry_id'] ?? 0) > 0): ?>
+                                                <?php $relatedModuleSlug = (string) ($entry['related_module_slug'] ?? ''); ?>
+                                                <?php $relatedRouteSegment = $relatedModuleRouteSegments[$relatedModuleSlug] ?? null; ?>
+                                                <div class="text-muted small">
+                                                    <strong><?= esc(lang('Module.tasksRelatedModuleEntryLabel')) ?>:</strong>
+                                                    <?php if ($relatedRouteSegment !== null): ?>
+                                                        <a href="<?= esc(site_url('projects/' . (int) (($entry['related_scope_id'] ?? 0) ?: ((int) ($project['id'] ?? 0))) . '/modules/' . $relatedRouteSegment) . '#entry-' . (int) ($entry['related_module_entry_id'] ?? 0)) ?>"><?= esc((string) ($entry['related_module_title'] ?? ('#' . (int) ($entry['related_module_entry_id'] ?? 0)))) ?></a>
+                                                    <?php else: ?>
+                                                        <?= esc((string) ($entry['related_module_entry_id'] ?? '')) ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endif; ?>
                                             <?php if ($isTaskModule && (string) ($entry['due_date'] ?? '') !== ''): ?>
                                                 <div class="text-muted small"><strong><?= esc(lang('Module.tasksDueDateLabel')) ?>:</strong> <?= esc((string) ($entry['due_date'] ?? '')) ?></div>
                                             <?php endif; ?>
                                             <?php if ($isTaskModule): ?>
                                                 <div class="text-muted small"><strong><?= esc(lang('Module.tasksPercentCompleteLabel')) ?>:</strong> <?= esc((string) ((int) ($entry['percent_complete'] ?? 0))) ?>%</div>
+                                            <?php endif; ?>
+                                            <?php if ($isTaskModule && (string) ($entry['planned_start_date'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.tasksPlannedStartDateLabel')) ?>:</strong> <?= esc((string) ($entry['planned_start_date'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isTaskModule && (string) ($entry['completed_date'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.tasksCompletedDateLabel')) ?>:</strong> <?= esc((string) ($entry['completed_date'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isTaskModule && (string) ($entry['collaborators'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.tasksCollaboratorsLabel')) ?>:</strong> <?= esc((string) ($entry['collaborators'] ?? '')) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($isTaskModule && (string) ($entry['blocked_reason'] ?? '') !== ''): ?>
+                                                <div class="text-muted small"><strong><?= esc(lang('Module.tasksBlockedReasonLabel')) ?>:</strong> <?= esc((string) ($entry['blocked_reason'] ?? '')) ?></div>
                                             <?php endif; ?>
                                             <?php if ($isTaskModule && (string) ($entry['next_action'] ?? '') !== ''): ?>
                                                 <div class="text-muted small"><strong><?= esc(lang('Module.tasksNextActionLabel')) ?>:</strong> <?= esc((string) ($entry['next_action'] ?? '')) ?></div>
@@ -380,6 +420,12 @@ $active = 'projects';
                                         </div>
                                     <?php endif; ?>
                                 </td>
+                                <?php if ($isIssueModule || $isTaskModule): ?>
+                                    <td class="d-none d-lg-table-cell"><?= esc((string) ($entry['created_at'] ?? '')) ?></td>
+                                    <td class="d-none d-lg-table-cell"><?= esc((string) ($entry['created_by_username'] ?? '')) ?></td>
+                                    <td class="d-none d-lg-table-cell"><?= esc((string) lang(((string) ($entry['closed_at'] ?? '') !== '') ? 'Module.booleanYes' : 'Module.booleanNo')) ?></td>
+                                    <td class="d-none d-lg-table-cell"><?= esc((string) ($entry['closed_at'] ?? '')) ?></td>
+                                <?php endif; ?>
                                 <td class="<?= $isRiskModule ? '' : 'd-none d-lg-table-cell' ?>"><?= esc((string) ($entry['updated_at'] ?? '')) ?></td>
                                 <?php if (! $isReadOnly): ?>
                                     <td>
@@ -390,6 +436,12 @@ $active = 'projects';
                                             <button type="button" class="btn btn-sm btn-outline-secondary" data-risk-edit-toggle><?= esc(lang('Module.raidEditButton')) ?></button>
                                             <button type="submit" form="<?= esc($riskEditFormId) ?>" class="btn btn-sm btn-primary d-none" data-risk-edit-save><?= esc(lang('Module.raidUpdateButton')) ?></button>
                                             <button type="button" class="btn btn-sm btn-outline-secondary d-none" data-risk-edit-cancel><?= esc(lang('Domain.cancelButton')) ?></button>
+                                            <?php if (! $isClosedEntry): ?>
+                                                <form method="post" action="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/modules/' . $moduleRouteSegment . '/' . (int) ($entry['id'] ?? 0) . '/close') ?>">
+                                                    <?= csrf_field() ?>
+                                                    <button type="submit" class="btn btn-sm btn-outline-secondary w-100"><?= esc(lang('Module.raidCloseButton')) ?></button>
+                                                </form>
+                                            <?php endif; ?>
                                             <form method="post" action="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/modules/' . $moduleRouteSegment . '/' . (int) ($entry['id'] ?? 0) . '/delete') ?>" onsubmit="return window.confirm('<?= esc((string) lang('Module.raidDeleteConfirm'), 'js') ?>');">
                                                 <?= csrf_field() ?>
                                                 <button type="submit" class="btn btn-sm btn-outline-danger w-100"><?= esc(lang('Module.raidDeleteButton')) ?></button>

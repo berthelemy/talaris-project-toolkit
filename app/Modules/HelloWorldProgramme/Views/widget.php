@@ -57,7 +57,7 @@
             </div>
             <form method="post" action="<?= site_url('programmes/' . $scope_id . '/modules/hello-world') ?>">
                 <?= csrf_field() ?>
-                <div class="modal-body">
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                     <label class="form-label" for="hello-programme-message-<?= $scope_id ?>\"><?= lang('Module.entryLabel') ?></label>
                     <input id="hello-programme-message-<?= $scope_id ?>" class="form-control" type="text" name="message" maxlength="500" required>
                 </div>

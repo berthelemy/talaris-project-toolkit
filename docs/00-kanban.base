@@ -90,6 +90,9 @@ views:
         "card\x1fTo define":
           - project-cards/phase-12-cross-module-reports-and-email.md
           - project-cards/phase-13-hardening-accessibility-and-release.md
+          - project-cards/Create skill to manage kanban project.md
+          - project-cards/A meeting notes module.md
+          - project-cards/Widget adding and editing interface.md
         "card\x1fDone":
           - project-cards/phase-01-foundation-and-environments.md
           - project-cards/phase-02-authentication-core-and-session-security.md

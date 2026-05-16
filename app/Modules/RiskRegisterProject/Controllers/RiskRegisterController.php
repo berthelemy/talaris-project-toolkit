@@ -2,7 +2,6 @@
 
 namespace App\Modules\RiskRegisterProject\Controllers;
 
-use App\Modules\RaidShared\Controllers\BaseProjectRaidController;
 
 /**
  * Project risk register controller.

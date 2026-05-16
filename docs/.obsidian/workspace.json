@@ -184,6 +184,8 @@
   },
   "active": "c1917ee34af04785",
   "lastOpenFiles": [
+    "project-cards/modal-body-scroll-style-standardization.md",
+    "project-cards/Project navigation panel to display on all project modules.md",
     "project-cards/A meeting notes module.md",
     "00-kanban.base",
     "project-cards/decisions-module-full-refresh.md",
@@ -212,7 +214,6 @@
     "Development/INSTALLATION.md",
     "Development/MODULE_AUTHORING_GUIDE.md",
     "Development/MODULE_STRUCTURE.md",
-    "requirements/SERVER_REQUIREMENTS.md",
     "modules",
     "Project-reports",
     "Development",

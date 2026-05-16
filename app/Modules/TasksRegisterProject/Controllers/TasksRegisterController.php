@@ -2,7 +2,6 @@
 
 namespace App\Modules\TasksRegisterProject\Controllers;
 
-use App\Modules\RaidShared\Controllers\BaseProjectRaidController;
 
 /**
  * Project tasks register controller.

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\RaidShared\Controllers;
+namespace App\Modules\IssueTrackerProject\Controllers;
 
 use App\Controllers\BaseController;
 use App\Libraries\Auth\AuditLogger;
@@ -366,11 +366,10 @@ abstract class BaseProjectRaidController extends BaseController
     private function queryEntries(ModuleRaidEntryModel $entryModel, int $projectId): array
     {
         $builder = $entryModel
-            ->select('module_raid_entries.*, users.username as owner_username, made_by.username as made_by_username, creators.username as created_by_username, related_entries.module_slug as related_module_slug, related_entries.title as related_module_title, related_entries.scope_id as related_scope_id')
+            ->select('module_raid_entries.*, users.username as owner_username, made_by.username as made_by_username, creators.username as created_by_username')
             ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
             ->join('users as made_by', 'made_by.id = module_raid_entries.made_by_user_id', 'left')
             ->join('users as creators', 'creators.id = module_raid_entries.created_by_user_id', 'left')
-            ->join('module_raid_entries as related_entries', 'related_entries.id = module_raid_entries.related_module_entry_id', 'left')
             ->where('module_raid_entries.module_slug', $this->moduleSlug())
             ->where('module_raid_entries.scope_type', 'project')
             ->where('module_raid_entries.scope_id', $projectId);

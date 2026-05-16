@@ -2,7 +2,6 @@
 
 namespace App\Modules\DependenciesRegisterProject\Controllers;
 
-use App\Modules\RaidShared\Controllers\BaseProjectRaidController;
 
 /**
  * Project dependencies register controller.

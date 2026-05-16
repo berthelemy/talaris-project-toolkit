@@ -17,4 +17,4 @@ Tracks project assumptions as RAID entries and supports inline updates, closure,
 - API contract and routes: `API.md`
 
 ## Notes
-This module uses shared RAID behavior provided by `app/Modules/RaidShared`.
+This module provides standalone RAID controller behavior inside its own namespace.

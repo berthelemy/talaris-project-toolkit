@@ -46,32 +46,5 @@
     </div>
 </div>
 
-<!-- Modal for adding new Decision entry -->
-<div class="modal fade" id="decisionModalAdd" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><?= lang('Module.addNewDecision') ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/decisions-register') ?>">
-                <?= csrf_field() ?>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label" for="decision-description"><?= lang('Module.decisionsDescriptionLabel') ?></label>
-                        <textarea id="decision-description" class="form-control" name="description" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="decision-date"><?= lang('Module.decisionsDateLabel') ?></label>
-                        <input id="decision-date" class="form-control" type="date" name="decision_date" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= lang('Domain.cancelButton') ?></button>
-                    <button type="submit" class="btn btn-primary"><?= lang('Module.raidCreateButton') ?></button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<?php include __DIR__ . '/_add_modal.php'; ?>
 

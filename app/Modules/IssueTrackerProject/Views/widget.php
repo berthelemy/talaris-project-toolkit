@@ -50,32 +50,5 @@
     </div>
 </div>
 
-<!-- Modal for adding new Issue entry -->
-<div class="modal fade" id="issueModalAdd" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><?= lang('Module.addNewIssue') ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/issue-tracker') ?>">
-                <?= csrf_field() ?>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label" for="issue-title"><?= lang('Module.raidColumnTitle') ?></label>
-                        <input id="issue-title" class="form-control" name="title" type="text" maxlength="200" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="issue-date-reported"><?= lang('Module.raidColumnReported') ?></label>
-                        <input id="issue-date-reported" class="form-control" name="date_reported" type="date">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= lang('Domain.cancelButton') ?></button>
-                    <button type="submit" class="btn btn-primary"><?= lang('Module.raidCreateButton') ?></button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<?php include __DIR__ . '/_add_modal.php'; ?>
 

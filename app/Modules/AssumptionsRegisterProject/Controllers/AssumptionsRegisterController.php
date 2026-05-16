@@ -2,7 +2,6 @@
 
 namespace App\Modules\AssumptionsRegisterProject\Controllers;
 
-use App\Modules\RaidShared\Controllers\BaseProjectRaidController;
 
 /**
  * Project assumptions register controller.

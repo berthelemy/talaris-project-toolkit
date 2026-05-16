@@ -2,7 +2,6 @@
 
 namespace App\Modules\DecisionsRegisterProject\Controllers;
 
-use App\Modules\RaidShared\Controllers\BaseProjectRaidController;
 
 /**
  * Project decisions register controller.

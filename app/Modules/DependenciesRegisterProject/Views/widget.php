@@ -48,37 +48,5 @@
     </div>
 </div>
 
-<!-- Modal for adding new Dependency entry -->
-<div class="modal fade" id="dependencyModalAdd" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><?= lang('Module.addNewDependency') ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/dependencies-register') ?>">
-                <?= csrf_field() ?>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label" for="dependency-title"><?= lang('Module.raidColumnTitle') ?></label>
-                        <input id="dependency-title" class="form-control" name="title" type="text" maxlength="200" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="dependency-impact-level"><?= lang('Module.raidColumnImpactLevel') ?></label>
-                        <select id="dependency-impact-level" class="form-select" name="impact_level">
-                            <option value=""><?= lang('Module.selectOption') ?></option>
-                            <option value="low"><?= lang('Module.impactLevelLow') ?></option>
-                            <option value="medium"><?= lang('Module.impactLevelMedium') ?></option>
-                            <option value="high"><?= lang('Module.impactLevelHigh') ?></option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= lang('Domain.cancelButton') ?></button>
-                    <button type="submit" class="btn btn-primary"><?= lang('Module.raidCreateButton') ?></button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<?php include __DIR__ . '/_add_modal.php'; ?>
 

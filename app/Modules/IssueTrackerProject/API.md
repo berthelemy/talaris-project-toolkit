@@ -21,7 +21,7 @@ These are application page/action routes for authenticated users, not cross-modu
 - `POST /projects/{projectId}/modules/issue-tracker/{entryId}/close`
 - `POST /projects/{projectId}/modules/issue-tracker/{entryId}/delete`
 
-All routes are served by `IssueTrackerController` via shared RAID behavior.
+All routes are served by `IssueTrackerController` with module-local standalone RAID behavior.
 
 ## Request Field Contract (create/update)
 - Common RAID fields:
@@ -37,6 +37,26 @@ All routes are served by `IssueTrackerController` via shared RAID behavior.
   - `reporter_user_id`
   - `impact_level` (`low|medium|high`)
   - `mitigation_actions` (resolution actions)
+  - `lessons_learned`
+
+## Exposed Data Fields (module table/detail)
+- System-managed fields:
+  - `created_at` (Date entered)
+  - `created_by_user_id` / `created_by_username` (Person entering the issue entry)
+  - `closed_at` (Closing date)
+  - `closed` boolean derived from `closed_at` (Closed)
+- Issue fields:
+  - `title` (Issue title)
+  - `description` (Issue description)
+  - `date_reported`
+  - `reporter_user_id`
+  - `impact_level`
+  - `priority`
+  - `status`
+  - `mitigation_actions` (Resolution actions)
+  - `owner_user_id`
+  - `target_date` (Target resolution date)
+  - `review_date`
   - `lessons_learned`
 
 ## Widget Public Interface

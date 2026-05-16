@@ -1,7 +1,7 @@
 ---
 title: Card - Issues Module Full Refresh
 type: card
-status: Ready to do
+status: Done
 updated: 2026-05-16
 blocked_by:
   - phase-10-desktop-ui-overhaul-and-navigation

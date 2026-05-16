@@ -2,7 +2,6 @@
 
 namespace App\Modules\IssueTrackerProject\Controllers;
 
-use App\Modules\RaidShared\Controllers\BaseProjectRaidController;
 
 /**
  * Project issue tracker controller.

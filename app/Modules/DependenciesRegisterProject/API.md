@@ -21,7 +21,7 @@ These are application page/action routes for authenticated users, not cross-modu
 - `POST /projects/{projectId}/modules/dependencies-register/{entryId}/close`
 - `POST /projects/{projectId}/modules/dependencies-register/{entryId}/delete`
 
-All routes are served by `DependenciesRegisterController` via shared RAID behavior.
+All routes are served by `DependenciesRegisterController` with module-local standalone RAID behavior.
 
 ## Request Field Contract (create/update)
 - Core dependency fields:
