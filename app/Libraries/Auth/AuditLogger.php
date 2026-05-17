@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Auth/AuditLogger.php.
+ */
+
 namespace App\Libraries\Auth;
 
 use App\Models\AuthAuditLogModel;

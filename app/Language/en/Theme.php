@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Language/en/Theme.php.
+ */
+
 return [
     'pageTitle' => 'Theme settings',
     'navLabel' => 'Theme',

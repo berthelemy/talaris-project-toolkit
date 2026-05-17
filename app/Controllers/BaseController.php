@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Controllers/BaseController.php.
+ */
+
 namespace App\Controllers;
 
 use CodeIgniter\Controller;

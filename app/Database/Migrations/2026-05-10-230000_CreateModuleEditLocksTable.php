@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Database/Migrations/2026-05-10-230000_CreateModuleEditLocksTable.php.
+ */
+
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;

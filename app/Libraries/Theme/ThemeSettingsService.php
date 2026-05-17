@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Theme/ThemeSettingsService.php.
+ */
+
 namespace App\Libraries\Theme;
 
 use App\Models\ThemeSettingsModel;

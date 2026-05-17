@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Language/en/Domain.php.
+ */
+
 return [
     'notAuthorized' => 'You are not authorized to perform this action.',
     'ownerInvalid' => 'Selected owner is invalid or inactive.',

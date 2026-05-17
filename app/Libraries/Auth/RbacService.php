@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Auth/RbacService.php.
+ */
+
 namespace App\Libraries\Auth;
 
 use App\Models\RoleModel;

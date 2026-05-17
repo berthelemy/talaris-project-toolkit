@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Modules/ModuleWidgetInterface.php.
+ */
+
 namespace App\Libraries\Modules;
 
 /**

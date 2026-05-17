@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Filters/LocaleFilter.php.
+ */
+
 namespace App\Filters;
 
 use App\Models\UserModel;

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Controllers/ProjectController.php.
+ */
+
 namespace App\Controllers;
 
 use App\Libraries\Auth\AuditLogger;

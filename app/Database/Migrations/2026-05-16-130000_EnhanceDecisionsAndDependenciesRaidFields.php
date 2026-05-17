@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Database/Migrations/2026-05-16-130000_EnhanceDecisionsAndDependenciesRaidFields.php.
+ */
+
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;

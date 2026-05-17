@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Database/Migrations/2026-05-11-081000_RegisterPhase9RaidModules.php.
+ */
+
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;

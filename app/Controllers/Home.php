@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Controllers/Home.php.
+ */
+
 namespace App\Controllers;
 
 use App\Models\UserModel;

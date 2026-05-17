@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Modules/ModuleInternalApiService.php.
+ */
+
 namespace App\Libraries\Modules;
 
 use App\Libraries\Auth\AuditLogger;

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Models/ModuleWidgetFailureModel.php.
+ */
+
 namespace App\Models;
 
 use CodeIgniter\Model;

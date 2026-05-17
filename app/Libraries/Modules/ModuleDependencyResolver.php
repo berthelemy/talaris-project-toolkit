@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Modules/ModuleDependencyResolver.php.
+ */
+
 namespace App\Libraries\Modules;
 
 use App\Models\ModuleRegistryModel;

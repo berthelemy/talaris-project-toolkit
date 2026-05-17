@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Language/fr/Module.php.
+ */
+
 return [
     'navLabel' => 'Modules',
     'managementTitle' => 'Registre des modules',

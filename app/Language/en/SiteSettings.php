@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Language/en/SiteSettings.php.
+ */
+
 return [
     'pageTitle' => 'Site settings',
     'navLabel' => 'Site settings',

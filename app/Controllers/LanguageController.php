@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Controllers/LanguageController.php.
+ */
+
 namespace App\Controllers;
 
 use App\Filters\LocaleFilter;

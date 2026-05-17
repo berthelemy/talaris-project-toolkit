@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Language/fr/Auth.php.
+ */
+
 return [
     'titleSignIn'                    => 'Connexion',
     'titleForgotPassword'            => 'Mot de passe oublie ?',

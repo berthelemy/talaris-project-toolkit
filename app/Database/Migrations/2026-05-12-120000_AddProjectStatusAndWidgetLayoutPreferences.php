@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Database/Migrations/2026-05-12-120000_AddProjectStatusAndWidgetLayoutPreferences.php.
+ */
+
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;

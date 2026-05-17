@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Models/ModuleWidgetLayoutPreferenceModel.php.
+ */
+
 namespace App\Models;
 
 use CodeIgniter\Model;

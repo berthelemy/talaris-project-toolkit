@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Modules/HelloWorldModuleApi.php.
+ */
+
 namespace App\Libraries\Modules;
 
 use App\Modules\HelloWorldProgramme\Models\HelloWorldEntryModel as HelloWorldProgrammeEntryModel;

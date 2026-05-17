@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Controllers/ImpersonationController.php.
+ */
+
 namespace App\Controllers;
 
 use App\Libraries\Auth\AuditLogger;

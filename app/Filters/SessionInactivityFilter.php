@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Filters/SessionInactivityFilter.php.
+ */
+
 namespace App\Filters;
 
 use App\Libraries\Auth\AuditLogger;

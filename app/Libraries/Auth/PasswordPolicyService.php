@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Auth/PasswordPolicyService.php.
+ */
+
 namespace App\Libraries\Auth;
 
 /**

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Language/en/Auth.php.
+ */
+
 return [
     'titleSignIn'                    => 'Sign in',
     'titleForgotPassword'            => 'Forgot your password?',

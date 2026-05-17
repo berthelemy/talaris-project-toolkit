@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Language/en/UserAdmin.php.
+ */
+
 return [
     'navLabel' => 'Users',
     'pageTitle' => 'User management',

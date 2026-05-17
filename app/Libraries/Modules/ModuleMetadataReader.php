@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Modules/ModuleMetadataReader.php.
+ */
+
 namespace App\Libraries\Modules;
 
 /**

@@ -1,4 +1,8 @@
 <?php
 
+/**
+ * File documentation for app/Language/en/Validation.php.
+ */
+
 // override core en language system validation or define your own en language validation message
 return [];

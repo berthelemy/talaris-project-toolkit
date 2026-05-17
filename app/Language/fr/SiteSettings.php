@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Language/fr/SiteSettings.php.
+ */
+
 return [
     'pageTitle' => 'Parametres du site',
     'navLabel' => 'Parametres du site',

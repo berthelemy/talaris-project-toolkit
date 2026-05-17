@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Models/UserModel.php.
+ */
+
 namespace App\Models;
 
 use CodeIgniter\Model;

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Modules/ModuleApiInterface.php.
+ */
+
 namespace App\Libraries\Modules;
 
 interface ModuleApiInterface

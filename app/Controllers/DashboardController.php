@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Controllers/DashboardController.php.
+ */
+
 namespace App\Controllers;
 
 use App\Libraries\Auth\RbacService;

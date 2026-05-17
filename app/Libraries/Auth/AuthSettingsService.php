@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Auth/AuthSettingsService.php.
+ */
+
 namespace App\Libraries\Auth;
 
 use App\Models\AuthSettingsModel;

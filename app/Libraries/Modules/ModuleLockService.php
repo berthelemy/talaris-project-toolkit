@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Libraries/Modules/ModuleLockService.php.
+ */
+
 namespace App\Libraries\Modules;
 
 use App\Libraries\Auth\AuditLogger;

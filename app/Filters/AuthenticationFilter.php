@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Filters/AuthenticationFilter.php.
+ */
+
 namespace App\Filters;
 
 use CodeIgniter\Filters\FilterInterface;
