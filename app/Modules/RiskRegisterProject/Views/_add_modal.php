@@ -17,7 +17,7 @@ $riskScaleOptions = $risk_scale_options ?? ['low', 'medium', 'high'];
             </div>
             <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/risk-register') ?>">
                 <?= csrf_field() ?>
-                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div class="modal-body module-modal-body-scroll">
                     <div class="row g-2">
                         <div class="col-12">
                             <label class="form-label" for="risk-title"><?= lang('Module.raidColumnTitle') ?></label>

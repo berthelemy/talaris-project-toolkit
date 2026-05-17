@@ -1,6 +1,6 @@
 ---
 title: Card - Remove Raid Shared Directory and Ensure Modules Are Self-Contained
-status: Ready to do
+status: Done
 type: card
 updated: 2026-05-16
 blocked_by:

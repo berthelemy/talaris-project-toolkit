@@ -152,7 +152,7 @@ $active = 'projects';
                                                             </div>
                                                             <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/meeting-notes/' . $noteId . '/risks') ?>">
                                                                 <?= csrf_field() ?>
-                                                                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                                                                <div class="modal-body module-modal-body-scroll">
                                                                     <div class="row g-3">
                                                                         <div class="col-12">
                                                                             <label class="form-label">Risk title</label>
@@ -209,7 +209,7 @@ $active = 'projects';
                                                             </div>
                                                             <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/meeting-notes/' . $noteId . '/assumptions') ?>">
                                                                 <?= csrf_field() ?>
-                                                                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                                                                <div class="modal-body module-modal-body-scroll">
                                                                     <div class="row g-3">
                                                                         <div class="col-12">
                                                                             <label class="form-label">Assumption title</label>
@@ -266,7 +266,7 @@ $active = 'projects';
                                                             </div>
                                                             <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/meeting-notes/' . $noteId . '/issues') ?>">
                                                                 <?= csrf_field() ?>
-                                                                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                                                                <div class="modal-body module-modal-body-scroll">
                                                                     <div class="row g-3">
                                                                         <div class="col-12">
                                                                             <label class="form-label">Issue title</label>
@@ -323,7 +323,7 @@ $active = 'projects';
                                                             </div>
                                                             <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/meeting-notes/' . $noteId . '/dependencies') ?>">
                                                                 <?= csrf_field() ?>
-                                                                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                                                                <div class="modal-body module-modal-body-scroll">
                                                                     <div class="row g-3">
                                                                         <div class="col-12">
                                                                             <label class="form-label">Dependency title</label>
@@ -478,7 +478,7 @@ $active = 'projects';
                             </div>
                             <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/meeting-notes/' . $noteId . '/update') ?>">
                                 <?= csrf_field() ?>
-                                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                                <div class="modal-body module-modal-body-scroll">
                                     <div class="row g-3">
                                         <div class="col-12">
                                             <label class="form-label">Meeting title</label>
@@ -587,7 +587,7 @@ $active = 'projects';
                             </div>
                             <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/meeting-notes/' . $noteId . '/decisions') ?>">
                                 <?= csrf_field() ?>
-                                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                                <div class="modal-body module-modal-body-scroll">
                                     <div class="row g-3">
                                         <div class="col-12">
                                             <label class="form-label">Decision title (optional)</label>
@@ -653,7 +653,7 @@ $active = 'projects';
                             </div>
                             <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/meeting-notes/' . $noteId . '/actions') ?>">
                                 <?= csrf_field() ?>
-                                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                                <div class="modal-body module-modal-body-scroll">
                                     <div class="row g-3">
                                         <div class="col-12">
                                             <label class="form-label">Action title</label>

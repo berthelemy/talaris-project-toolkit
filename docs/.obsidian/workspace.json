@@ -11,14 +11,13 @@
             "id": "9692571f037e79af",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "bases",
               "state": {
-                "file": "project-cards/Remove the Raid Shared directory and ensure that each module is self-contained.md",
-                "mode": "source",
-                "source": false
+                "file": "00-kanban.base",
+                "viewName": "Kanban"
               },
-              "icon": "lucide-file",
-              "title": "Remove the Raid Shared directory and ensure that each module is self-contained"
+              "icon": "columns",
+              "title": "00-kanban"
             }
           }
         ]
@@ -185,20 +184,20 @@
   },
   "active": "9692571f037e79af",
   "lastOpenFiles": [
+    "project-cards/phase-12-cross-module-reports-and-email.md",
     "00-kanban.base",
+    "project-cards/modal-body-scroll-style-standardization.md",
+    "project-cards/Widget adding and editing interface.md",
     "project-cards/Remove the Raid Shared directory and ensure that each module is self-contained.md",
     "project-cards/Ensure the model definitions are stored within the module directories and not shared.md",
     "project-cards/Project navigation panel display.md",
     "Development/MODULE_FRAMEWORK.md",
-    "project-cards/modal-body-scroll-style-standardization.md",
     "project-cards/A meeting notes module.md",
     "project-cards/decisions-module-full-refresh.md",
     "project-cards/Create skill to manage kanban project.md",
-    "project-cards/Widget adding and editing interface.md",
     "HANDOFF_NEXT_SESSION_PHASE6.md",
     "MODULE_AUTHORING_GUIDE.md",
     "project-cards/phase-11-dashboards-traceability-and-module-refresh.md",
-    "project-cards/phase-12-cross-module-reports-and-email.md",
     "VAULT_HOME.md",
     "handoffs/HANDOFF_NEXT_SESSION_PHASE11_RAID_ASSUMPTIONS_WIDGETS.md",
     "handoffs/HANDOFF_NEXT_SESSION_PHASE11.md",

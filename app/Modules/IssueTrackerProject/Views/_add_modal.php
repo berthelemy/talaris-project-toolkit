@@ -13,7 +13,7 @@ define('ISSUE_WIDGET_ADD_MODAL_RENDERED', true);
             </div>
             <form method="post" action="<?= site_url('projects/' . $scope_id . '/modules/issue-tracker') ?>">
                 <?= csrf_field() ?>
-                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div class="modal-body module-modal-body-scroll">
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label" for="issue-title"><?= esc(lang('Module.raidColumnTitle')) ?></label>

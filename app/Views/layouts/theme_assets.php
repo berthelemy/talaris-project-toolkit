@@ -59,4 +59,9 @@ $bodyFontStack = (string) ($theme['body_font_stack'] ?? '"Source Sans 3", "Segoe
     .table-light {
         --bs-table-bg: color-mix(in srgb, var(--talaris-background) 88%, var(--talaris-secondary) 12%);
     }
+
+    .module-modal-body-scroll {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
 </style>

@@ -92,6 +92,7 @@ views:
           - project-cards/A meeting notes module.md
           - project-cards/Project navigation panel to display on all project modules.md
         "card\x1fDone":
+          - project-cards/Remove the Raid Shared directory and ensure that each module is self-contained.md
           - project-cards/phase-01-foundation-and-environments.md
           - project-cards/phase-02-authentication-core-and-session-security.md
           - project-cards/Create skill to manage kanban project.md
@@ -102,6 +103,10 @@ views:
           - project-cards/phase-07-internal-module-apis-and-autosave.md
           - project-cards/phase-08-concurrency-locking-and-checkout.md
           - project-cards/phase-09-raid-modules.md
+          - project-cards/decisions-module-full-refresh.md
+          - project-cards/dependencies-module-full-refresh.md
+          - project-cards/issues-module-full-refresh.md
+          - project-cards/tasks-module-full-refresh.md
         "card\x1fin-progress":
           - project-cards/phase-11-dashboards-traceability-and-module-refresh.md
           - project-cards/decisions-module-full-refresh.md
