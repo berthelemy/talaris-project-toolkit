@@ -1,3 +1,9 @@
+/*
+ * Application theme overrides and shared utility classes.
+ * Scope: global typography, action colors, module modal scrolling, and small utility helpers.
+ */
+
+/* Global typography and color mappings */
 body {
     background-color: var(--talaris-background) !important;
     color: var(--talaris-text);
@@ -21,6 +27,7 @@ a {
     color: var(--talaris-primary);
 }
 
+/* Button variants aligned with theme tokens */
 .btn-primary {
     --bs-btn-bg: var(--talaris-primary);
     --bs-btn-border-color: var(--talaris-primary);
@@ -39,15 +46,18 @@ a {
     --bs-btn-active-border-color: color-mix(in srgb, var(--talaris-primary) 85%, #000 15%);
 }
 
+/* Table surface adaptation for themed backgrounds */
 .table-light {
     --bs-table-bg: color-mix(in srgb, var(--talaris-background) 88%, var(--talaris-secondary) 12%);
 }
 
+/* Utility: confine modal body overflow to preserve modal chrome visibility */
 .module-modal-body-scroll {
     max-height: 70vh;
     overflow-y: auto;
 }
 
+/* Shared utility sizing helpers */
 .app-header-logo {
     height: 34px;
     width: auto;

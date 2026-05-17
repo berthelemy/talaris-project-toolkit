@@ -1,6 +1,22 @@
+/**
+ * Autosave integration for input fields marked with data-autosave="true".
+ *
+ * DOM contract:
+ * - data-autosave-url
+ * - data-csrf-name
+ * - data-csrf-value
+ * - data-csrf-cookie-name
+ * - data-autosave-status (status element id)
+ */
 (function () {
     'use strict';
 
+    /**
+     * Read a cookie value by name.
+     *
+     * @param {string} name Cookie key.
+     * @returns {string} Decoded cookie value or an empty string.
+     */
     function readCookie(name) {
         const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const match = document.cookie.match(new RegExp('(?:^|; )' + escapedName + '=([^;]*)'));
@@ -8,6 +24,13 @@
         return match ? decodeURIComponent(match[1]) : '';
     }
 
+    /**
+     * Debounce callback execution to reduce write frequency.
+     *
+     * @param {Function} fn Callback to debounce.
+     * @param {number} delay Delay in milliseconds.
+     * @returns {Function} Debounced callback.
+     */
     function debounce(fn, delay) {
         let timer = null;
 
@@ -22,6 +45,14 @@
         };
     }
 
+    /**
+     * Update the status indicator linked to the edited field.
+     *
+     * @param {HTMLInputElement} target Autosave input field.
+     * @param {string} state Status state key.
+     * @param {string} message Status text to display.
+     * @returns {void}
+     */
     function setStatus(target, state, message) {
         const statusId = target.getAttribute('data-autosave-status');
         if (!statusId) {
@@ -59,6 +90,12 @@
         status.classList.add('text-danger');
     }
 
+    /**
+     * Persist the latest field value to the backend autosave endpoint.
+     *
+     * @param {HTMLInputElement} input Autosave-enabled input element.
+     * @returns {Promise<void>}
+     */
     async function autosaveField(input) {
         const url = input.getAttribute('data-autosave-url');
         const field = input.getAttribute('name');
@@ -124,6 +161,11 @@
         }
     }
 
+    /**
+     * Bind debounced autosave handlers to all autosave-enabled inputs.
+     *
+     * @returns {void}
+     */
     function initializeAutosave() {
         const autosaveInputs = document.querySelectorAll('input[data-autosave="true"]');
 

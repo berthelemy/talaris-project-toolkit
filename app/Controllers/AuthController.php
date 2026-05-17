@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Authentication controller workflows for login/session lifecycle and password reset handling.
+ */
+
 namespace App\Controllers;
 
 use App\Libraries\Auth\AuditLogger;
@@ -32,7 +36,7 @@ class AuthController extends BaseController
     }
 
     /**
-        * Validate credentials, establish session state, and audit login outcome.
+     * Validate credentials, establish session state, and audit login outcome.
      *
      * @return RedirectResponse
      */
@@ -79,7 +83,7 @@ class AuthController extends BaseController
     }
 
     /**
-        * Terminate active session and redirect to login page.
+     * Terminate active session and redirect to login page.
      *
      * @return RedirectResponse
      */
@@ -164,12 +168,12 @@ class AuthController extends BaseController
         return redirect()->to('/forgot-password')->with('success', lang('Auth.resetEmailSent'));
     }
 
-    /**
-        * Render reset-password form when token is still valid.
-     *
-        * @param string $token Raw reset token from route.
-     * @return string|RedirectResponse
-     */
+     /**
+      * Render reset-password form when token is still valid.
+      *
+      * @param string $token Raw reset token from route.
+      * @return string|RedirectResponse
+      */
     public function resetPasswordForm(string $token): string|RedirectResponse
     {
         if (! $this->hasValidResetToken($token)) {
@@ -179,12 +183,12 @@ class AuthController extends BaseController
         return view('auth/reset_password', ['token' => $token]);
     }
 
-    /**
-        * Validate new password and complete reset for a valid token.
-     *
-        * @param string $token Raw reset token from route.
-     * @return RedirectResponse
-     */
+     /**
+      * Validate new password and complete reset for a valid token.
+      *
+      * @param string $token Raw reset token from route.
+      * @return RedirectResponse
+      */
     public function resetPassword(string $token): RedirectResponse
     {
         $tokenRow = $this->findValidResetToken($token);
@@ -216,12 +220,21 @@ class AuthController extends BaseController
         return redirect()->to('/login')->with('success', lang('Auth.passwordResetSuccess'));
     }
 
+    /**
+     * Determine whether the provided reset token is currently usable.
+     *
+     * @param string $token Raw reset token.
+     * @return bool
+     */
     private function hasValidResetToken(string $token): bool
     {
         return $this->findValidResetToken($token) !== null;
     }
 
     /**
+     * Resolve the active reset-token row for a supplied raw token value.
+     *
+     * @param string $token Raw reset token.
      * @return array<string, mixed>|null
      */
     private function findValidResetToken(string $token): ?array

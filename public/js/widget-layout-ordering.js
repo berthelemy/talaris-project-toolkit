@@ -1,3 +1,14 @@
+/**
+ * Manage widget ordering interactions in the module management table.
+ *
+ * Supports keyboard/button ordering and drag-and-drop row repositioning.
+ * Requires data attributes:
+ * - data-widget-order-list
+ * - data-widget-row
+ * - data-widget-order-input
+ * - data-widget-position
+ * - data-widget-move
+ */
 (function () {
     'use strict';
 
@@ -13,10 +24,20 @@
 
     var dragSource = null;
 
+    /**
+     * Return all widget rows in current visual order.
+     *
+     * @returns {HTMLElement[]} Ordered row elements.
+     */
     function rows() {
         return Array.prototype.slice.call(tbody.querySelectorAll('[data-widget-row]'));
     }
 
+    /**
+     * Synchronize hidden order inputs and position badges after reordering.
+     *
+     * @returns {void}
+     */
     function refreshOrderInputs() {
         rows().forEach(function (row, index) {
             var position = index + 1;
@@ -33,6 +54,13 @@
         });
     }
 
+    /**
+     * Move a row one step up or down.
+     *
+     * @param {HTMLElement|null} row Row to move.
+     * @param {string|null} direction Expected values: up|down.
+     * @returns {void}
+     */
     function moveRow(row, direction) {
         if (!row) {
             return;

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * System module-management controller for enablement, ordering, and default widget layout administration.
+ */
+
 namespace App\Controllers;
 
 use App\Libraries\Auth\AuditLogger;
@@ -13,12 +17,12 @@ use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * ModuleManagementController component.
+ * Provide module administration actions scoped to authorized system users.
  */
 class ModuleManagementController extends BaseController
 {
     /**
-     * Index operation.
+     * Display module registry, lock telemetry, and default widget layout settings.
      *
      * @return string|RedirectResponse
      */
@@ -44,9 +48,9 @@ class ModuleManagementController extends BaseController
     }
 
     /**
-     * Toggle operation.
+     * Enable or disable a module by slug.
      *
-     * @param string $slug
+     * @param string $slug Module identifier.
      * @return RedirectResponse
      */
     public function toggle(string $slug): RedirectResponse
@@ -69,7 +73,9 @@ class ModuleManagementController extends BaseController
     }
 
     /**
-     * @param string $slug
+        * Update a module display ordering value.
+        *
+        * @param string $slug Module identifier.
      * @return RedirectResponse
      */
     public function updateOrdering(string $slug): RedirectResponse
@@ -97,7 +103,9 @@ class ModuleManagementController extends BaseController
     }
 
     /**
-     * @param string $slug
+        * Persist widget configuration settings for a module.
+        *
+        * @param string $slug Module identifier.
      * @return RedirectResponse
      */
     public function updateWidgetConfig(string $slug): RedirectResponse
@@ -126,6 +134,12 @@ class ModuleManagementController extends BaseController
         return redirect()->to('/modules')->with('success', lang('Module.configUpdatedSuccess'));
     }
 
+    /**
+     * Update a module's default widget layout for its declared scope type.
+     *
+     * @param string $slug Module identifier.
+     * @return RedirectResponse
+     */
     public function updateDefaultWidgetLayout(string $slug): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -164,6 +178,12 @@ class ModuleManagementController extends BaseController
         return redirect()->to('/modules')->with('success', lang('Module.defaultLayoutUpdatedSuccess'));
     }
 
+    /**
+     * Release an active module lock as an authorized administrator.
+     *
+     * @param int $lockId Lock identifier.
+     * @return RedirectResponse
+     */
     public function releaseLock(int $lockId): RedirectResponse
     {
         $actorId = $this->sessionUserId();
@@ -181,6 +201,12 @@ class ModuleManagementController extends BaseController
         return redirect()->to('/modules')->with($released ? 'success' : 'error', lang($released ? 'Module.lockReleaseSuccess' : 'Module.lockReleaseError'));
     }
 
+    /**
+     * Determine whether a user can manage modules at system scope.
+     *
+     * @param int $actorId User identifier.
+     * @return bool
+     */
     private function canManageModules(int $actorId): bool
     {
         $rbac = new RbacService();
@@ -189,6 +215,11 @@ class ModuleManagementController extends BaseController
             || $rbac->hasPermission($actorId, 'system.modules.add', 'system', null);
     }
 
+    /**
+     * Resolve and validate the current session user id.
+     *
+     * @return int|null
+     */
     private function sessionUserId(): ?int
     {
         $userId = session('user_id');
@@ -207,6 +238,8 @@ class ModuleManagementController extends BaseController
     }
 
     /**
+        * Count widget failures per module for the trailing 24-hour window.
+        *
      * @return array<string, int>
      */
     private function recentFailuresByModule(): array

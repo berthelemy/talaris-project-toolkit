@@ -14,13 +14,13 @@ fi
 is_in_scope() {
     local file="$1"
 
-    case "$file" in
-        app/*.php|app/**/*.php|public/js/*.js|public/js/**/*.js|public/css/*.css|public/css/**/*.css|app/Modules/*.js|app/Modules/**/*.js|app/Modules/*.css|app/Modules/**/*.css)
-            ;;
-        *)
-            return 1
-            ;;
-    esac
+    if [[ ! "$file" =~ ^app/.*\.php$ ]] \
+        && [[ ! "$file" =~ ^public/js/.*\.js$ ]] \
+        && [[ ! "$file" =~ ^public/css/.*\.css$ ]] \
+        && [[ ! "$file" =~ ^app/Modules/.*\.js$ ]] \
+        && [[ ! "$file" =~ ^app/Modules/.*\.css$ ]]; then
+        return 1
+    fi
 
     case "$file" in
         vendor/*|writable/*|node_modules/*|build/*|builds/*|*.min.js|*.min.css)
@@ -47,6 +47,8 @@ collect_files() {
 
     if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
         git diff --name-only HEAD~1...HEAD
+        git diff --name-only --cached
+        git diff --name-only
         return
     fi
 

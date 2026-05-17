@@ -185,6 +185,8 @@
   },
   "active": "9692571f037e79af",
   "lastOpenFiles": [
+    "requirements/README.md",
+    "requirements/CODE_DOCUMENTATION_STANDARDS.md",
     "00-kanban.base",
     "project-cards/Ensure that all php, css and javascript files include full documentation.md",
     "project-cards/Project navigation panel display.md",
@@ -213,7 +215,6 @@
     "project-cards/dependencies-module-full-refresh.md",
     "Project-reports/BOARD.md",
     "MODULE_INTERNAL_API.md",
-    "Development/MODULE_INTERNAL_API.md",
     "modules",
     "Project-reports",
     "Development",
