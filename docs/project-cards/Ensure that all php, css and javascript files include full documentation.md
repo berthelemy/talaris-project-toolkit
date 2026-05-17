@@ -1,4 +1,4 @@
 ---
-status: Done
+status: To define
 type: card
 ---

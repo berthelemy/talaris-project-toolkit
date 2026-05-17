@@ -11,13 +11,14 @@
             "id": "9692571f037e79af",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "00-kanban.base",
-                "viewName": "Kanban"
+                "file": "project-cards/Ensure that all php, css and javascript files include full documentation.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "columns",
-              "title": "00-kanban"
+              "icon": "lucide-file",
+              "title": "Ensure that all php, css and javascript files include full documentation"
             }
           }
         ]
@@ -184,13 +185,14 @@
   },
   "active": "9692571f037e79af",
   "lastOpenFiles": [
-    "project-cards/phase-12-cross-module-reports-and-email.md",
     "00-kanban.base",
+    "project-cards/Ensure that all php, css and javascript files include full documentation.md",
+    "project-cards/Project navigation panel display.md",
+    "project-cards/Ensure the model definitions are stored within the module directories and not shared.md",
+    "project-cards/phase-12-cross-module-reports-and-email.md",
     "project-cards/modal-body-scroll-style-standardization.md",
     "project-cards/Widget adding and editing interface.md",
     "project-cards/Remove the Raid Shared directory and ensure that each module is self-contained.md",
-    "project-cards/Ensure the model definitions are stored within the module directories and not shared.md",
-    "project-cards/Project navigation panel display.md",
     "Development/MODULE_FRAMEWORK.md",
     "project-cards/A meeting notes module.md",
     "project-cards/decisions-module-full-refresh.md",
@@ -212,7 +214,6 @@
     "Project-reports/BOARD.md",
     "MODULE_INTERNAL_API.md",
     "Development/MODULE_INTERNAL_API.md",
-    "handoffs/HANDOFF_PHASE10_LAYOUT_AND_SITE_SETTINGS.md",
     "modules",
     "Project-reports",
     "Development",
