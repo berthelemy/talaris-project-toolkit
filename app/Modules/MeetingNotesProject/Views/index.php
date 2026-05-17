@@ -1,70 +1,3 @@
-                    <div class="mt-3">
-                        <div class="small text-muted mb-1">Related risks</div>
-                        <?php $risks = (array) ($note['linked_risks'] ?? []); ?>
-                        <?php if ($risks === []): ?>
-                            <div class="text-muted small">No linked risk entries.</div>
-                        <?php else: ?>
-                            <ul class="list-group list-group-flush">
-                                <?php foreach ($risks as $risk): ?>
-                                    <li class="list-group-item px-0">
-                                        <a href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/modules/risk-register') ?>#entry-<?= (int) ($risk['id'] ?? 0) ?>"><?= esc((string) ($risk['title'] ?? ('Risk #' . (int) ($risk['id'] ?? 0)))) ?></a>
-                                        <span class="small text-muted">(<?= esc((string) ($risk['status'] ?? 'open')) ?>)</span>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="mt-3">
-                        <div class="small text-muted mb-1">Related assumptions</div>
-                        <?php $assumptions = (array) ($note['linked_assumptions'] ?? []); ?>
-                        <?php if ($assumptions === []): ?>
-                            <div class="text-muted small">No linked assumption entries.</div>
-                        <?php else: ?>
-                            <ul class="list-group list-group-flush">
-                                <?php foreach ($assumptions as $assumption): ?>
-                                    <li class="list-group-item px-0">
-                                        <a href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/modules/assumptions-register') ?>#entry-<?= (int) ($assumption['id'] ?? 0) ?>"><?= esc((string) ($assumption['title'] ?? ('Assumption #' . (int) ($assumption['id'] ?? 0)))) ?></a>
-                                        <span class="small text-muted">(<?= esc((string) ($assumption['status'] ?? 'open')) ?>)</span>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="mt-3">
-                        <div class="small text-muted mb-1">Related issues</div>
-                        <?php $issues = (array) ($note['linked_issues'] ?? []); ?>
-                        <?php if ($issues === []): ?>
-                            <div class="text-muted small">No linked issue entries.</div>
-                        <?php else: ?>
-                            <ul class="list-group list-group-flush">
-                                <?php foreach ($issues as $issue): ?>
-                                    <li class="list-group-item px-0">
-                                        <a href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/modules/issue-tracker') ?>#entry-<?= (int) ($issue['id'] ?? 0) ?>"><?= esc((string) ($issue['title'] ?? ('Issue #' . (int) ($issue['id'] ?? 0)))) ?></a>
-                                        <span class="small text-muted">(<?= esc((string) ($issue['status'] ?? 'open')) ?>)</span>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="mt-3">
-                        <div class="small text-muted mb-1">Related dependencies</div>
-                        <?php $dependencies = (array) ($note['linked_dependencies'] ?? []); ?>
-                        <?php if ($dependencies === []): ?>
-                            <div class="text-muted small">No linked dependency entries.</div>
-                        <?php else: ?>
-                            <ul class="list-group list-group-flush">
-                                <?php foreach ($dependencies as $dependency): ?>
-                                    <li class="list-group-item px-0">
-                                        <a href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/modules/dependencies-register') ?>#entry-<?= (int) ($dependency['id'] ?? 0) ?>"><?= esc((string) ($dependency['title'] ?? ('Dependency #' . (int) ($dependency['id'] ?? 0)))) ?></a>
-                                        <span class="small text-muted">(<?= esc((string) ($dependency['status'] ?? 'open')) ?>)</span>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php endif; ?>
-                    </div>
 <?php
 /**
  * @var array<string,mixed> $project
@@ -92,6 +25,22 @@ $active = 'projects';
     <?php if (session('success') !== null): ?>
         <div class="alert alert-success" role="alert"><?= esc((string) session('success')) ?></div>
     <?php endif; ?>
+
+    <div class="d-flex justify-content-end mb-2">
+        <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#project-side-panel" aria-expanded="true" aria-controls="project-side-panel">
+            <?= esc(lang('Domain.projectModulesLabel')) ?>
+        </button>
+    </div>
+
+    <div class="row g-3">
+        <aside class="col-12 col-lg-2 collapse show" id="project-side-panel">
+            <?= view('projects/_navigation_panel', [
+                'project' => $project,
+                'activeProjectNav' => 'module:meeting-notes',
+            ]) ?>
+        </aside>
+
+        <section class="col-12 col-lg-10">
 
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body d-flex justify-content-between align-items-center gap-2 flex-wrap">
@@ -714,4 +663,6 @@ $active = 'projects';
     <?php if (! $is_read_only): ?>
         <?php include __DIR__ . '/_add_modal.php'; ?>
     <?php endif; ?>
+        </section>
+    </div>
 <?= $this->endSection() ?>

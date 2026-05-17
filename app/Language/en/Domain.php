@@ -62,6 +62,7 @@ return [
     'projectsFilterNoProgramme' => 'No linked programme',
     'overviewLabel' => 'Overview',
     'projectModulesLabel' => 'Modules',
+    'projectModulesNone' => 'No modules available for this project.',
     'projectStatus_not_started' => 'Not started',
     'projectStatus_in_progress' => 'In progress',
     'projectStatus_on_track' => 'On track',

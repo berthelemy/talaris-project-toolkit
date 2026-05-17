@@ -46,6 +46,22 @@ $relatedModuleRouteSegments = [
         <div class="alert alert-success" role="alert"><?= esc((string) session('success')) ?></div>
     <?php endif; ?>
 
+    <div class="d-flex justify-content-end mb-2">
+        <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#project-side-panel" aria-expanded="true" aria-controls="project-side-panel">
+            <?= esc(lang('Domain.projectModulesLabel')) ?>
+        </button>
+    </div>
+
+    <div class="row g-3">
+        <aside class="col-12 col-lg-2 collapse show" id="project-side-panel">
+            <?= view('projects/_navigation_panel', [
+                'project' => $project,
+                'activeProjectNav' => 'module:' . (string) $moduleRouteSegment,
+            ]) ?>
+        </aside>
+
+        <section class="col-12 col-lg-10">
+
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body">
             <h2 class="h5 mb-2"><?= esc((string) ($project['name'] ?? '')) ?> - <?= esc((string) lang($moduleTitleKey)) ?></h2>
@@ -927,6 +943,8 @@ $relatedModuleRouteSegments = [
             })();
         </script>
     <?php endif; ?>
+        </section>
+    </div>
 <?= $this->endSection() ?>
 
 <?= $this->section('postMain') ?>

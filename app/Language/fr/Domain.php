@@ -62,6 +62,7 @@ return [
     'projectsFilterNoProgramme' => 'Aucun programme lie',
     'overviewLabel' => 'Vue d ensemble',
     'projectModulesLabel' => 'Modules',
+    'projectModulesNone' => 'Aucun module disponible pour ce projet.',
     'projectStatus_not_started' => 'Non demarre',
     'projectStatus_in_progress' => 'En cours',
     'projectStatus_on_track' => 'Sur la bonne voie',

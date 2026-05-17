@@ -12,22 +12,20 @@ $active = 'projects';
         <div class="alert alert-success" role="alert"><?= esc((string) session('success')) ?></div>
     <?php endif; ?>
 
+    <div class="d-flex justify-content-end mb-2">
+        <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#project-side-panel" aria-expanded="true" aria-controls="project-side-panel">
+            <?= esc(lang('Domain.projectModulesLabel')) ?>
+        </button>
+    </div>
+
     <div class="row g-3">
-        <aside class="col-12 col-lg-2">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h2 class="h6 mb-3"><?= esc((string) ($project['name'] ?? '')) ?></h2>
-                    <nav aria-label="<?= esc(lang('Domain.projectModulesLabel')) ?>">
-                        <ul class="nav nav-pills flex-column gap-1">
-                            <li class="nav-item"><a class="nav-link" href="<?= site_url('projects/' . (int) ($project['id'] ?? 0)) ?>"><?= esc(lang('Domain.overviewLabel')) ?></a></li>
-                            <li class="nav-item"><a class="nav-link active" href="<?= site_url('projects/' . (int) ($project['id'] ?? 0) . '/widgets/layout') ?>"><?= esc(lang('Module.projectLayoutManageWidgets')) ?></a></li>
-                            <?php foreach ((array) ($projectModules ?? []) as $module): ?>
-                                <li class="nav-item"><a class="nav-link" href="<?= esc((string) ($module['url'] ?? '#')) ?>"><?= esc((string) ($module['name'] ?? '')) ?></a></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+        <aside class="col-12 col-lg-2 collapse show" id="project-side-panel">
+            <?= view('projects/_navigation_panel', [
+                'project' => $project,
+                'projectModules' => (array) ($projectModules ?? []),
+                'canManageWidgetLayout' => true,
+                'activeProjectNav' => 'widget-layout',
+            ]) ?>
         </aside>
 
         <section class="col-12 col-lg-10">
