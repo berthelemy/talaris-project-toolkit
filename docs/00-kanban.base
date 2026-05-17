@@ -67,6 +67,7 @@ views:
         - Done
         - complete
         - done
+        - In Progress
     cardOrders:
       file.file: {}
       note.status: {}
