@@ -1,7 +1,7 @@
 ---
 title: Card - Ensure Full Documentation for PHP, CSS, and JavaScript Files
 type: card
-status: in progress
+status: Done
 updated: 2026-05-17
 ---
 # Card - Ensure Full Documentation for PHP, CSS, and JavaScript Files
@@ -86,3 +86,14 @@ Ensure all in-scope PHP, CSS, and JavaScript source files contain complete, cons
 - Initial remediation pass is completed for targeted high-priority areas.
 - PR review checklist and/or automated checks are in place for ongoing enforcement.
 - Validation evidence is attached (file audit sample, review checklist updates, and CI result summary).
+
+## Implementation Evidence
+- Standards published: `docs/requirements/CODE_DOCUMENTATION_STANDARDS.md` and indexed via `docs/requirements/README.md`.
+- Enforcement added: `scripts/check-documentation.sh`, CI integration in `.github/workflows/ci.yml`, and review checklist in `.github/pull_request_template.md`.
+- Initial remediation completed in high-priority areas:
+- `app/Controllers/AuthController.php`
+- `app/Controllers/ModuleManagementController.php`
+- `public/js/autosave.js`
+- `public/js/widget-layout-ordering.js`
+- `public/css/app-theme.css`
+- Validation run: `XDEBUG_MODE=off composer docs:check` and `XDEBUG_MODE=off composer lint`.
