@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/Home.php.
+ * Default home controller for framework starter routes.
  */
 
 namespace App\Controllers;

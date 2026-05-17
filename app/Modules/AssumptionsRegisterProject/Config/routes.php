@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/AssumptionsRegisterProject/Config/routes.php.
+ * Routing definitions for AssumptionsRegisterProject module endpoints.
  */
 
 declare(strict_types=1);

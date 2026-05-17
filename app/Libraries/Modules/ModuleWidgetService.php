@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Modules/ModuleWidgetService.php.
+ * Widget execution and composition service for module dashboard rendering.
  */
 
 namespace App\Libraries\Modules;

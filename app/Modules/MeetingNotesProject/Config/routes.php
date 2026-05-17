@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/MeetingNotesProject/Config/routes.php.
+ * Routing definitions for MeetingNotesProject module endpoints.
  */
 declare(strict_types=1);
 

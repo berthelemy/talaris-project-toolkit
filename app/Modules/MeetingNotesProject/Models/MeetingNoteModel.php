@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/MeetingNotesProject/Models/MeetingNoteModel.php.
+ * MeetingNotesProject module persistence model: MeetingNoteModel.
  */
 
 namespace App\Modules\MeetingNotesProject\Models;

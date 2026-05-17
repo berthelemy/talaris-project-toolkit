@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Modules/ModuleWidgetInterface.php.
+ * Contract for module widget providers and widget data payloads.
  */
 
 namespace App\Libraries\Modules;

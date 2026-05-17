@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/TasksRegisterProject/Controllers/TasksRegisterController.php.
+ * TasksRegisterProject module controller: TasksRegisterController.
  */
 
 namespace App\Modules\TasksRegisterProject\Controllers;

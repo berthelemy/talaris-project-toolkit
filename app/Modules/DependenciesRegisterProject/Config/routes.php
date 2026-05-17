@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/DependenciesRegisterProject/Config/routes.php.
+ * Routing definitions for DependenciesRegisterProject module endpoints.
  */
 
 declare(strict_types=1);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/RiskRegisterProject/Controllers/BaseProjectRaidController.php.
+ * RiskRegisterProject module controller: BaseProjectRaidController.
  */
 
 namespace App\Modules\RiskRegisterProject\Controllers;

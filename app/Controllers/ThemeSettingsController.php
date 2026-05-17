@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/ThemeSettingsController.php.
+ * Theme settings controller for branding and visual customization updates.
  */
 
 namespace App\Controllers;

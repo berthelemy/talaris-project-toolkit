@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/RiskRegisterProject/Widgets/ModuleWidget.php.
+ * RiskRegisterProject module widget provider for dashboard cards and summary metrics.
  */
 
 namespace App\Modules\RiskRegisterProject\Widgets;

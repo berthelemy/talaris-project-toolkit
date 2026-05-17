@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Auth/RbacService.php.
+ * Role-based access control service for permission checks across scopes.
  */
 
 namespace App\Libraries\Auth;

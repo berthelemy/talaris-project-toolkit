@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/UserManagementController.php.
+ * User and role administration controller for RBAC-aware account management.
  */
 
 namespace App\Controllers;

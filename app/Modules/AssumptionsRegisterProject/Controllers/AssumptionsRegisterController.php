@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/AssumptionsRegisterProject/Controllers/AssumptionsRegisterController.php.
+ * AssumptionsRegisterProject module controller: AssumptionsRegisterController.
  */
 
 namespace App\Modules\AssumptionsRegisterProject\Controllers;

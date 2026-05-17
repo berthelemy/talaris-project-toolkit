@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Modules/ModuleWidgetLayoutService.php.
+ * Widget layout preference service for scope-specific visibility and ordering.
  */
 
 namespace App\Libraries\Modules;

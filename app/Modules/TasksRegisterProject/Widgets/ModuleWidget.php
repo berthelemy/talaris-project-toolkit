@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/TasksRegisterProject/Widgets/ModuleWidget.php.
+ * TasksRegisterProject module widget provider for dashboard cards and summary metrics.
  */
 
 namespace App\Modules\TasksRegisterProject\Widgets;

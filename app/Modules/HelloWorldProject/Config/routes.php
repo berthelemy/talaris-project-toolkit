@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/HelloWorldProject/Config/routes.php.
+ * Routing definitions for HelloWorldProject module endpoints.
  */
 
 declare(strict_types=1);

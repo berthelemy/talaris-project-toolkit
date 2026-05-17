@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Auth/PasswordPolicyService.php.
+ * Password policy validation service enforcing configured complexity rules.
  */
 
 namespace App\Libraries\Auth;

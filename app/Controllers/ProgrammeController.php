@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/ProgrammeController.php.
+ * Programme management controller for programme CRUD and related views.
  */
 
 namespace App\Controllers;

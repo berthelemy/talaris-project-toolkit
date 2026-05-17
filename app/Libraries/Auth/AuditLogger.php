@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Auth/AuditLogger.php.
+ * Authentication audit logging service for security-relevant user events.
  */
 
 namespace App\Libraries\Auth;

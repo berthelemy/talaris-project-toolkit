@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/MeetingNotesProject/Controllers/MeetingNotesController.php.
+ * MeetingNotesProject module controller: MeetingNotesController.
  */
 
 namespace App\Modules\MeetingNotesProject\Controllers;

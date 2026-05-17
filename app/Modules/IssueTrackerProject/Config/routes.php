@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/IssueTrackerProject/Config/routes.php.
+ * Routing definitions for IssueTrackerProject module endpoints.
  */
 
 declare(strict_types=1);

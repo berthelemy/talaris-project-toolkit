@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Modules/ModuleApiAuthorizationService.php.
+ * Authorization guard service for internal module API operations.
  */
 
 namespace App\Libraries\Modules;

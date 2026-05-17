@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/HelloWorldProgramme/Models/HelloWorldEntryModel.php.
+ * HelloWorldProgramme module persistence model: HelloWorldEntryModel.
  */
 
 namespace App\Modules\HelloWorldProgramme\Models;

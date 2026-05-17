@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/IssueTrackerProject/Models/IssueTrackerRaidEntryModel.php.
+ * IssueTrackerProject module persistence model: IssueTrackerRaidEntryModel.
  */
 
 namespace App\Modules\IssueTrackerProject\Models;

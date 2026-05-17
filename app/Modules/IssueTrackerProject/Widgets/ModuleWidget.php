@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/IssueTrackerProject/Widgets/ModuleWidget.php.
+ * IssueTrackerProject module widget provider for dashboard cards and summary metrics.
  */
 
 namespace App\Modules\IssueTrackerProject\Widgets;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Modules/ModuleLockService.php.
+ * Module edit-lock service coordinating concurrent editing safety.
  */
 
 namespace App\Libraries\Modules;

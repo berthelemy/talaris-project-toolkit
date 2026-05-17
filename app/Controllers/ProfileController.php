@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/ProfileController.php.
+ * Authenticated profile management controller for account settings.
  */
 
 namespace App\Controllers;

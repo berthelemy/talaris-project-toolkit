@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/IssueTrackerProject/Controllers/BaseProjectRaidController.php.
+ * IssueTrackerProject module controller: BaseProjectRaidController.
  */
 
 namespace App\Modules\IssueTrackerProject\Controllers;

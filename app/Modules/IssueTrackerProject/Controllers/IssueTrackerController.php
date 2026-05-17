@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/IssueTrackerProject/Controllers/IssueTrackerController.php.
+ * IssueTrackerProject module controller: IssueTrackerController.
  */
 
 namespace App\Modules\IssueTrackerProject\Controllers;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Modules/ModuleRegistryService.php.
+ * Module registry orchestration service for lifecycle and availability state.
  */
 
 namespace App\Libraries\Modules;

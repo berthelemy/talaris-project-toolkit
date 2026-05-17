@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/MeetingNotesProject/Widgets/ModuleWidget.php.
+ * MeetingNotesProject module widget provider for dashboard cards and summary metrics.
  */
 
 namespace App\Modules\MeetingNotesProject\Widgets;

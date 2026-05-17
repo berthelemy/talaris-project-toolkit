@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Modules/ModuleMetadataReader.php.
+ * Module metadata reader for manifest and capability discovery.
  */
 
 namespace App\Libraries\Modules;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/TasksRegisterProject/Config/routes.php.
+ * Routing definitions for TasksRegisterProject module endpoints.
  */
 
 declare(strict_types=1);

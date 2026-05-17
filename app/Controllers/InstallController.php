@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/InstallController.php.
+ * Installation and bootstrap controller for initial administrator setup.
  */
 
 namespace App\Controllers;

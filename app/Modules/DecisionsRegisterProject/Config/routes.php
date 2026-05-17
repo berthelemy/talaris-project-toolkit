@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/DecisionsRegisterProject/Config/routes.php.
+ * Routing definitions for DecisionsRegisterProject module endpoints.
  */
 
 declare(strict_types=1);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Modules/ModuleInternalApiService.php.
+ * Module internal API dispatcher for cross-module integrations.
  */
 
 namespace App\Libraries\Modules;

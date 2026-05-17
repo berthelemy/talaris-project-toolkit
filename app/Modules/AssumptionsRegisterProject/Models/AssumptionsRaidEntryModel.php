@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/AssumptionsRegisterProject/Models/AssumptionsRaidEntryModel.php.
+ * AssumptionsRegisterProject module persistence model: AssumptionsRaidEntryModel.
  */
 
 namespace App\Modules\AssumptionsRegisterProject\Models;

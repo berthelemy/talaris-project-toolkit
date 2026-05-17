@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/HelloWorldProgramme/Config/routes.php.
+ * Routing definitions for HelloWorldProgramme module endpoints.
  */
 
 declare(strict_types=1);

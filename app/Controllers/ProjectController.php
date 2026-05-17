@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/ProjectController.php.
+ * Project management controller for project CRUD and project-context operations.
  */
 
 namespace App\Controllers;

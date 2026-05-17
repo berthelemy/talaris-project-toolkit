@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/DecisionsRegisterProject/Controllers/BaseProjectRaidController.php.
+ * DecisionsRegisterProject module controller: BaseProjectRaidController.
  */
 
 namespace App\Modules\DecisionsRegisterProject\Controllers;

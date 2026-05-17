@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/ImpersonationController.php.
+ * Administrative user impersonation controller with audit-aware session transitions.
  */
 
 namespace App\Controllers;

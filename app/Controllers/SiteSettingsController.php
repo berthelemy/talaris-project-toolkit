@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/SiteSettingsController.php.
+ * Site settings administration controller for application-wide configuration.
  */
 
 namespace App\Controllers;

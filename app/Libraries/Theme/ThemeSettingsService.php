@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Theme/ThemeSettingsService.php.
+ * Theme settings service for persisted branding and appearance configuration.
  */
 
 namespace App\Libraries\Theme;

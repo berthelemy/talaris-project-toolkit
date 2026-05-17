@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/TasksRegisterProject/Models/TasksRaidEntryModel.php.
+ * TasksRegisterProject module persistence model: TasksRaidEntryModel.
  */
 
 namespace App\Modules\TasksRegisterProject\Models;

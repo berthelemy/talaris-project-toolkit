@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Modules/HelloWorldModuleApi.php.
+ * Internal API adapter for Hello World module interactions.
  */
 
 namespace App\Libraries\Modules;

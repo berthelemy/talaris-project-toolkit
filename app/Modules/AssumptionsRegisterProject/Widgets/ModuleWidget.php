@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/AssumptionsRegisterProject/Widgets/ModuleWidget.php.
+ * AssumptionsRegisterProject module widget provider for dashboard cards and summary metrics.
  */
 
 namespace App\Modules\AssumptionsRegisterProject\Widgets;

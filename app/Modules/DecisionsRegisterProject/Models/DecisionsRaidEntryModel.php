@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/DecisionsRegisterProject/Models/DecisionsRaidEntryModel.php.
+ * DecisionsRegisterProject module persistence model: DecisionsRaidEntryModel.
  */
 
 namespace App\Modules\DecisionsRegisterProject\Models;

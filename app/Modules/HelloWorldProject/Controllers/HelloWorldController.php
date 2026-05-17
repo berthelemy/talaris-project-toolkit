@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/HelloWorldProject/Controllers/HelloWorldController.php.
+ * HelloWorldProject module controller: HelloWorldController.
  */
 
 namespace App\Modules\HelloWorldProject\Controllers;

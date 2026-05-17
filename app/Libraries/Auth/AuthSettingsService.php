@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Auth/AuthSettingsService.php.
+ * Authentication settings service for configurable password and session policies.
  */
 
 namespace App\Libraries\Auth;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Modules/ModuleDependencyResolver.php.
+ * Dependency resolution service for module enablement and ordering constraints.
  */
 
 namespace App\Libraries\Modules;

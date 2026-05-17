@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/RiskRegisterProject/Models/RiskRaidEntryModel.php.
+ * RiskRegisterProject module persistence model: RiskRaidEntryModel.
  */
 
 namespace App\Modules\RiskRegisterProject\Models;

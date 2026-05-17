@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/LanguageController.php.
+ * Locale selection controller for language preference switching.
  */
 
 namespace App\Controllers;

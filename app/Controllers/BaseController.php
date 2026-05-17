@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/BaseController.php.
+ * Base controller utilities shared by HTTP controllers.
  */
 
 namespace App\Controllers;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/RiskRegisterProject/Config/routes.php.
+ * Routing definitions for RiskRegisterProject module endpoints.
  */
 
 declare(strict_types=1);

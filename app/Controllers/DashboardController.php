@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Controllers/DashboardController.php.
+ * Dashboard controller for system, programme, and project overview pages.
  */
 
 namespace App\Controllers;

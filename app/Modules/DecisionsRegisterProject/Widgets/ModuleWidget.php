@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/DecisionsRegisterProject/Widgets/ModuleWidget.php.
+ * DecisionsRegisterProject module widget provider for dashboard cards and summary metrics.
  */
 
 namespace App\Modules\DecisionsRegisterProject\Widgets;

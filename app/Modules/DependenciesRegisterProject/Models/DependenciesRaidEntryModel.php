@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/DependenciesRegisterProject/Models/DependenciesRaidEntryModel.php.
+ * DependenciesRegisterProject module persistence model: DependenciesRaidEntryModel.
  */
 
 namespace App\Modules\DependenciesRegisterProject\Models;

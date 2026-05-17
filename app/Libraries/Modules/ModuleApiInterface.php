@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Libraries/Modules/ModuleApiInterface.php.
+ * Contract for internal module APIs exposed to other modules.
  */
 
 namespace App\Libraries\Modules;

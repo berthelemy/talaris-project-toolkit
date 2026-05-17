@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/HelloWorldProgramme/Widgets/ModuleWidget.php.
+ * HelloWorldProgramme module widget provider for dashboard cards and summary metrics.
  */
 
 namespace App\Modules\HelloWorldProgramme\Widgets;

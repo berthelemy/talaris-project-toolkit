@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/DependenciesRegisterProject/Widgets/ModuleWidget.php.
+ * DependenciesRegisterProject module widget provider for dashboard cards and summary metrics.
  */
 
 namespace App\Modules\DependenciesRegisterProject\Widgets;
