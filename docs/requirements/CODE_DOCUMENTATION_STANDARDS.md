@@ -24,7 +24,14 @@ Does not apply to:
 - Documentation must describe intent and behavior, not restate obvious syntax.
 - Documentation must remain synchronized with behavior when code changes.
 - New and modified in-scope files must comply before merge.
+- Placeholder comments (for example "File documentation for ...") are non-compliant and must be replaced with domain-specific descriptions.
 - If a documented rule cannot reasonably be applied, the pull request must include a short rationale.
+
+## New File Policy
+- Every new in-scope file must include compliant file header documentation in the initial pull request.
+- New PHP files must include class/type and public/protected method PHPDoc where applicable.
+- New JavaScript files must include JSDoc for exported/public and non-trivial internal functions.
+- New CSS files must include scope and section comments for major style groups.
 
 ## PHP Standards
 ### File Header
@@ -166,7 +173,9 @@ Document styles that directly support accessibility behavior, such as focus visi
 ## Review and CI Enforcement
 - Pull requests must confirm in-scope file documentation completeness.
 - Automated checks should validate baseline file-header and docblock/JSDoc presence for changed files.
+- Automated changed-file checks reject placeholder headers (for example "File documentation for ...") and require domain-specific descriptions.
 - Reviewers should reject stale, misleading, or placeholder documentation.
+- Full-repository strict placeholder audits may be run during hardening passes.
 
 ## Incremental Adoption Plan
 1. Enforce for all newly changed in-scope files immediately.

@@ -11,6 +11,8 @@ if [[ "${1:-}" == "--all" ]]; then
     MODE="all"
 fi
 
+STRICT_PLACEHOLDER_CHECK="${DOCS_STRICT_PLACEHOLDER:-0}"
+
 is_in_scope() {
     local file="$1"
 
@@ -73,6 +75,19 @@ has_jsdoc_or_phpdoc() {
     grep -Eq '^\s*/\*\*' "$file"
 }
 
+has_placeholder_header_text() {
+    local file="$1"
+    grep -Eq 'File documentation for .*\.' "$file"
+}
+
+should_enforce_placeholder_check() {
+    if [[ "$MODE" == "changed" ]]; then
+        return 0
+    fi
+
+    [[ "$STRICT_PLACEHOLDER_CHECK" == "1" ]]
+}
+
 FAILURES=()
 CHECKED=0
 
@@ -93,6 +108,11 @@ while IFS= read -r file; do
                 continue
             fi
 
+            if should_enforce_placeholder_check && has_placeholder_header_text "$file"; then
+                FAILURES+=("$file: file header is placeholder text; replace with domain-specific description")
+                continue
+            fi
+
             if grep -Eq '^\s*(public|protected) function ' "$file" && ! has_jsdoc_or_phpdoc "$file"; then
                 FAILURES+=("$file: missing PHPDoc blocks for callable members")
             fi
@@ -103,6 +123,11 @@ while IFS= read -r file; do
                 continue
             fi
 
+            if should_enforce_placeholder_check && has_placeholder_header_text "$file"; then
+                FAILURES+=("$file: file header is placeholder text; replace with domain-specific description")
+                continue
+            fi
+
             if grep -Eq '^\s*(function|async function|const\s+\w+\s*=\s*\(|class\s+\w+)' "$file" && ! has_jsdoc_or_phpdoc "$file"; then
                 FAILURES+=("$file: missing JSDoc blocks for functions/classes")
             fi
@@ -110,6 +135,11 @@ while IFS= read -r file; do
         *.css)
             if ! has_file_header_comment "$file"; then
                 FAILURES+=("$file: missing stylesheet scope comment header")
+                continue
+            fi
+
+            if should_enforce_placeholder_check && has_placeholder_header_text "$file"; then
+                FAILURES+=("$file: file header is placeholder text; replace with domain-specific description")
             fi
             ;;
     esac
