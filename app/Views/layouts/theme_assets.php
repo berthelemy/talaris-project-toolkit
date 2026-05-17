@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Views/layouts/theme_assets.php.
+ */
+
 use App\Libraries\Theme\ThemeSettingsService;
 
 $theme = (new ThemeSettingsService())->get();

@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Views/layouts/app_header.php.
+ */
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Theme\ThemeSettingsService;
 

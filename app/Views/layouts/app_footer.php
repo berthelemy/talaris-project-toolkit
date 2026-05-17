@@ -1,3 +1,9 @@
+<?php
+
+/**
+ * File documentation for app/Views/layouts/app_footer.php.
+ */
+?>
 <footer class="border-top bg-white mt-4">
     <div class="container py-3 text-center small text-muted">
         Powered by <a href="https://talaris.net" target="_blank" rel="noopener">Talaris</a>

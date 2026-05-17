@@ -1,3 +1,9 @@
+<?php
+
+/**
+ * File documentation for app/Views/install/admin.php.
+ */
+?>
 <?= $this->extend('layouts/auth') ?>
 
 <?= $this->section('content') ?>

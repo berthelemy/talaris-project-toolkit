@@ -1,3 +1,9 @@
+<?php
+
+/**
+ * File documentation for app/Views/layouts/auth.php.
+ */
+?>
 <!doctype html>
 <?php $locale = (string) service('request')->getLocale(); ?>
 <html lang="<?= esc($locale) ?>">

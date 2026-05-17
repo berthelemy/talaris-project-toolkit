@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Views/projects/index.php.
+ */
 $pageTitle = (string) lang('Domain.projectsTitle');
 $active = 'projects';
 ?>

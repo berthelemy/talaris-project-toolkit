@@ -1,3 +1,9 @@
+<?php
+
+/**
+ * File documentation for app/Views/auth/forgot_password.php.
+ */
+?>
 <?= $this->extend('layouts/auth') ?>
 
 <?= $this->section('content') ?>

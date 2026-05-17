@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Views/projects/widget_layout_edit.php.
+ */
 $pageTitle = (string) lang('Module.projectLayoutPageTitle');
 $active = 'projects';
 ?>

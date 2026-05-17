@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Views/errors/cli/error_exception.php.
+ */
+
 use CodeIgniter\CLI\CLI;
 
 // The main Exception

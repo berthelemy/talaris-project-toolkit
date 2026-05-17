@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Views/theme/edit.php.
+ */
 $pageTitle = (string) lang('Theme.pageTitle');
 $active = 'theme';
 ?>

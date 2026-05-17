@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Views/errors/html/error_exception.php.
+ */
 use CodeIgniter\HTTP\Header;
 use CodeIgniter\CodeIgniter;
 

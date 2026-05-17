@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Views/modules/index.php.
+ */
 $pageTitle = (string) lang('Module.managementTitle');
 $active = 'modules';
 ?>

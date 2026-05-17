@@ -1,3 +1,9 @@
+<?php
+
+/**
+ * File documentation for app/Views/auth/reset_password.php.
+ */
+?>
 <?= $this->extend('layouts/auth') ?>
 
 <?= $this->section('content') ?>

@@ -1,3 +1,9 @@
+<?php
+
+/**
+ * File documentation for app/Views/errors/html/error_404.php.
+ */
+?>
 <!DOCTYPE html>
 <?php $errorMessage = (string) ($message ?? ''); ?>
 <?php $locale = (string) service('request')->getLocale(); ?>

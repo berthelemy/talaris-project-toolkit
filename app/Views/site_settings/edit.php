@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Views/site_settings/edit.php.
+ */
 $pageTitle = (string) lang('SiteSettings.pageTitle');
 $active = 'site_settings';
 $settings = (array) ($settings ?? []);

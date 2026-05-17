@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Views/auth/profile.php.
+ */
 $pageTitle = (string) lang('Auth.profileTitle');
 $active = 'profile';
 ?>

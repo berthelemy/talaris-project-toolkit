@@ -1,3 +1,9 @@
+<?php
+
+/**
+ * File documentation for app/Views/welcome_message.php.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

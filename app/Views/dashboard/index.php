@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Views/dashboard/index.php.
+ */
 $pageTitle = (string) lang('Auth.dashboardTitle');
 $active = 'dashboard';
 ?>
