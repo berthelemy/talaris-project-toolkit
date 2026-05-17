@@ -3,7 +3,7 @@
 namespace App\Modules\IssueTrackerProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
-use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
+use App\Modules\IssueTrackerProject\Models\IssueTrackerRaidEntryModel;
 
 /**
  * Provides Issue Tracker dashboard widget definitions and data.
@@ -92,7 +92,7 @@ class ModuleWidget implements ModuleWidgetInterface
             'closed' => 0,
         ];
 
-        $rows = (new ModuleRaidEntryModel())
+        $rows = (new IssueTrackerRaidEntryModel())
             ->select('module_raid_entries.status, COUNT(*) AS total')
             ->where('module_raid_entries.module_slug', 'issue_tracker_project')
             ->where('module_raid_entries.scope_type', 'project')
@@ -124,7 +124,7 @@ class ModuleWidget implements ModuleWidgetInterface
             'critical' => 0,
         ];
 
-        $rows = (new ModuleRaidEntryModel())
+        $rows = (new IssueTrackerRaidEntryModel())
             ->select('module_raid_entries.priority, COUNT(*) AS total')
             ->where('module_raid_entries.module_slug', 'issue_tracker_project')
             ->where('module_raid_entries.scope_type', 'project')
@@ -150,7 +150,7 @@ class ModuleWidget implements ModuleWidgetInterface
      */
     private function highPriorityData(int $scopeId, int $maxEntries): array
     {
-        $entries = (new ModuleRaidEntryModel())
+        $entries = (new IssueTrackerRaidEntryModel())
             ->where('module_slug', 'issue_tracker_project')
             ->where('scope_type', 'project')
             ->where('scope_id', $scopeId)
@@ -173,7 +173,7 @@ class ModuleWidget implements ModuleWidgetInterface
     {
         $today = date('Y-m-d');
 
-        $entries = (new ModuleRaidEntryModel())
+        $entries = (new IssueTrackerRaidEntryModel())
             ->where('module_slug', 'issue_tracker_project')
             ->where('scope_type', 'project')
             ->where('scope_id', $scopeId)

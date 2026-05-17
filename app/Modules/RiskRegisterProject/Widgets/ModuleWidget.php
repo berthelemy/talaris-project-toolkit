@@ -3,7 +3,7 @@
 namespace App\Modules\RiskRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
-use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
+use App\Modules\RiskRegisterProject\Models\RiskRaidEntryModel;
 use App\Models\UserModel;
 
 /**
@@ -84,7 +84,7 @@ class ModuleWidget implements ModuleWidgetInterface
             'critical' => 0,
         ];
 
-        $countRows = (new ModuleRaidEntryModel())
+        $countRows = (new RiskRaidEntryModel())
             ->select('module_raid_entries.priority, COUNT(*) AS total')
             ->where('module_raid_entries.module_slug', 'risk_register_project')
             ->where('module_raid_entries.scope_type', 'project')
@@ -110,7 +110,7 @@ class ModuleWidget implements ModuleWidgetInterface
      */
     private function highPriorityData(int $scopeId, int $maxEntries): array
     {
-        $entries = (new ModuleRaidEntryModel())
+        $entries = (new RiskRaidEntryModel())
             ->select('module_raid_entries.*, users.username as owner_username')
             ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
             ->where('module_raid_entries.module_slug', 'risk_register_project')

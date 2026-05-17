@@ -10,6 +10,7 @@ Tracks project tasks, ownership, progress, and delivery commitments with lifecyc
 ## Main Components
 - `Config/routes.php`: module route registrations
 - `Controllers/TasksRegisterController.php`: module entry points
+- `Models/TasksRaidEntryModel.php`: module-local RAID entry persistence
 - `Widgets/ModuleWidget.php`: dashboard widgets
 - `Views/`: register page and widget templates
 

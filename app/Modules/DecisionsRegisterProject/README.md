@@ -10,6 +10,7 @@ Tracks project decisions, decision metadata, and decision history through RAID-s
 ## Main Components
 - `Config/routes.php`: module route registrations
 - `Controllers/DecisionsRegisterController.php`: module entry points
+- `Models/DecisionsRaidEntryModel.php`: module-local RAID entry persistence
 - `Widgets/ModuleWidget.php`: dashboard widgets
 - `Views/`: register page and widget templates
 

@@ -3,7 +3,7 @@
 namespace App\Modules\DecisionsRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
-use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
+use App\Modules\DecisionsRegisterProject\Models\DecisionsRaidEntryModel;
 
 /**
  * Provides Decisions Register dashboard widget definitions and data.
@@ -92,7 +92,7 @@ class ModuleWidget implements ModuleWidgetInterface
             'closed' => 0,
         ];
 
-        $countRows = (new ModuleRaidEntryModel())
+        $countRows = (new DecisionsRaidEntryModel())
             ->select('module_raid_entries.status, COUNT(*) AS total')
             ->where('module_raid_entries.module_slug', 'decisions_register_project')
             ->where('module_raid_entries.scope_type', 'project')
@@ -117,7 +117,7 @@ class ModuleWidget implements ModuleWidgetInterface
      */
     private function pendingImplementationData(int $scopeId, int $maxEntries): array
     {
-        $entries = (new ModuleRaidEntryModel())
+        $entries = (new DecisionsRaidEntryModel())
             ->select('module_raid_entries.*, made_by.username as made_by_username')
             ->join('users as made_by', 'made_by.id = module_raid_entries.made_by_user_id', 'left')
             ->where('module_raid_entries.module_slug', 'decisions_register_project')
@@ -140,7 +140,7 @@ class ModuleWidget implements ModuleWidgetInterface
      */
     private function recentKeyDecisionsData(int $scopeId, int $maxEntries): array
     {
-        $entries = (new ModuleRaidEntryModel())
+        $entries = (new DecisionsRaidEntryModel())
             ->select('module_raid_entries.*, made_by.username as made_by_username')
             ->join('users as made_by', 'made_by.id = module_raid_entries.made_by_user_id', 'left')
             ->where('module_raid_entries.module_slug', 'decisions_register_project')

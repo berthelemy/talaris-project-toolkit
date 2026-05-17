@@ -3,7 +3,7 @@
 namespace App\Modules\TasksRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
-use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
+use App\Modules\TasksRegisterProject\Models\TasksRaidEntryModel;
 
 /**
  * Provides Tasks Register dashboard widget definitions and data.
@@ -94,7 +94,7 @@ class ModuleWidget implements ModuleWidgetInterface
             'closed' => 0,
         ];
 
-        $rows = (new ModuleRaidEntryModel())
+        $rows = (new TasksRaidEntryModel())
             ->select('module_raid_entries.status, COUNT(*) AS total')
             ->where('module_raid_entries.module_slug', 'tasks_register_project')
             ->where('module_raid_entries.scope_type', 'project')
@@ -126,7 +126,7 @@ class ModuleWidget implements ModuleWidgetInterface
             'critical' => 0,
         ];
 
-        $rows = (new ModuleRaidEntryModel())
+        $rows = (new TasksRaidEntryModel())
             ->select('module_raid_entries.priority, COUNT(*) AS total')
             ->where('module_raid_entries.module_slug', 'tasks_register_project')
             ->where('module_raid_entries.scope_type', 'project')
@@ -158,7 +158,7 @@ class ModuleWidget implements ModuleWidgetInterface
             return ['entries' => [], 'entry_count' => 0];
         }
 
-        $entries = (new ModuleRaidEntryModel())
+        $entries = (new TasksRaidEntryModel())
             ->where('module_slug', 'tasks_register_project')
             ->where('scope_type', 'project')
             ->where('scope_id', $scopeId)
@@ -182,7 +182,7 @@ class ModuleWidget implements ModuleWidgetInterface
     {
         $today = date('Y-m-d');
 
-        $entries = (new ModuleRaidEntryModel())
+        $entries = (new TasksRaidEntryModel())
             ->where('module_slug', 'tasks_register_project')
             ->where('scope_type', 'project')
             ->where('scope_id', $scopeId)

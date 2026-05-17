@@ -10,6 +10,7 @@ Tracks project issues, reporting details, ownership, status, and mitigation prog
 ## Main Components
 - `Config/routes.php`: module route registrations
 - `Controllers/IssueTrackerController.php`: module entry points
+- `Models/IssueTrackerRaidEntryModel.php`: module-local RAID entry persistence
 - `Widgets/ModuleWidget.php`: dashboard widgets
 - `Views/`: register page and widget templates
 

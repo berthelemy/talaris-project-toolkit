@@ -3,7 +3,7 @@
 namespace App\Modules\AssumptionsRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
-use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
+use App\Modules\AssumptionsRegisterProject\Models\AssumptionsRaidEntryModel;
 
 /**
  * Provides Assumptions Register dashboard widget definitions and data.
@@ -82,7 +82,7 @@ class ModuleWidget implements ModuleWidgetInterface
             'high' => 0,
         ];
 
-        $countRows = (new ModuleRaidEntryModel())
+        $countRows = (new AssumptionsRaidEntryModel())
             ->select('module_raid_entries.impact_level, COUNT(*) AS total')
             ->where('module_raid_entries.module_slug', 'assumptions_register_project')
             ->where('module_raid_entries.scope_type', 'project')
@@ -108,7 +108,7 @@ class ModuleWidget implements ModuleWidgetInterface
      */
     private function highPriorityData(int $scopeId, int $maxEntries): array
     {
-        $entries = (new ModuleRaidEntryModel())
+        $entries = (new AssumptionsRaidEntryModel())
             ->select('module_raid_entries.*, users.username as owner_username')
             ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
             ->where('module_raid_entries.module_slug', 'assumptions_register_project')

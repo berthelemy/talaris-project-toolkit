@@ -5,7 +5,7 @@ namespace App\Modules\MeetingNotesProject\Widgets;
 use App\Libraries\Modules\ModuleWidgetInterface;
 use App\Libraries\Modules\ModuleRegistryService;
 use App\Modules\MeetingNotesProject\Models\MeetingNoteModel;
-use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
+use App\Modules\MeetingNotesProject\Models\MeetingNotesRaidEntryModel;
 use App\Models\UserModel;
 
 /**
@@ -173,7 +173,7 @@ class ModuleWidget implements ModuleWidgetInterface
      */
     private function openActions(int $scopeId, int $maxEntries): array
     {
-        return (new ModuleRaidEntryModel())
+        return (new MeetingNotesRaidEntryModel())
             ->select('module_raid_entries.*, module_meeting_notes.title AS meeting_title, users.username AS owner_username')
             ->join('module_meeting_notes', 'module_meeting_notes.id = module_raid_entries.related_module_entry_id', 'left')
             ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')

@@ -7,7 +7,7 @@ use App\Libraries\Auth\AuditLogger;
 use App\Libraries\Modules\ModuleApiAuthorizationService;
 use App\Libraries\Modules\ModuleRegistryService;
 use App\Libraries\Modules\ModuleWidgetService;
-use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
+use App\Modules\IssueTrackerProject\Models\IssueTrackerRaidEntryModel;
 use App\Models\ProjectModel;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -51,7 +51,7 @@ abstract class BaseProjectRaidController extends BaseController
             return redirect()->to('/projects/' . $projectId)->with('error', lang('Module.disabledForScope'));
         }
 
-        $entryModel = new ModuleRaidEntryModel();
+        $entryModel = new IssueTrackerRaidEntryModel();
         $entries = $this->queryEntries($entryModel, $projectId);
         $isReadOnly = ! (new ModuleApiAuthorizationService())->canWrite($actorId, 'project', $projectId);
 
@@ -138,7 +138,7 @@ abstract class BaseProjectRaidController extends BaseController
 
         $validationActions = $this->nullableString((string) ($this->request->getPost('validation_actions') ?: $this->request->getPost('mitigation_actions')));
 
-        $entryModel = new ModuleRaidEntryModel();
+        $entryModel = new IssueTrackerRaidEntryModel();
         $entryId = $entryModel->insert([
             'module_slug' => $this->moduleSlug(),
             'scope_type' => 'project',
@@ -211,7 +211,7 @@ abstract class BaseProjectRaidController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $entryModel = new ModuleRaidEntryModel();
+        $entryModel = new IssueTrackerRaidEntryModel();
         $entry = $entryModel->find($entryId);
 
         if (! is_array($entry) || ! $this->matchesModuleScope($entry, $projectId)) {
@@ -306,7 +306,7 @@ abstract class BaseProjectRaidController extends BaseController
             return $this->redirectModule($projectId)->with('error', lang('Domain.notAuthorized'));
         }
 
-        $entryModel = new ModuleRaidEntryModel();
+        $entryModel = new IssueTrackerRaidEntryModel();
         $entry = $entryModel->find($entryId);
 
         if (! is_array($entry) || ! $this->matchesModuleScope($entry, $projectId)) {
@@ -339,7 +339,7 @@ abstract class BaseProjectRaidController extends BaseController
             return $this->redirectModule($projectId)->with('error', lang('Domain.notAuthorized'));
         }
 
-        $entryModel = new ModuleRaidEntryModel();
+        $entryModel = new IssueTrackerRaidEntryModel();
         $entry = $entryModel->find($entryId);
 
         if (! is_array($entry) || ! $this->matchesModuleScope($entry, $projectId)) {
@@ -363,7 +363,7 @@ abstract class BaseProjectRaidController extends BaseController
     /**
      * @return list<array<string, mixed>>
      */
-    private function queryEntries(ModuleRaidEntryModel $entryModel, int $projectId): array
+    private function queryEntries(IssueTrackerRaidEntryModel $entryModel, int $projectId): array
     {
         $builder = $entryModel
             ->select('module_raid_entries.*, users.username as owner_username, made_by.username as made_by_username, creators.username as created_by_username')

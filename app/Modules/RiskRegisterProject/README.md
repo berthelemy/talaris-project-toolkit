@@ -10,6 +10,7 @@ Tracks project risks, priorities, ownership, and mitigation actions with RAID li
 ## Main Components
 - `Config/routes.php`: module route registrations
 - `Controllers/RiskRegisterController.php`: module entry points
+- `Models/RiskRaidEntryModel.php`: module-local RAID entry persistence
 - `Widgets/ModuleWidget.php`: dashboard widgets
 - `Views/`: register page and widget templates
 

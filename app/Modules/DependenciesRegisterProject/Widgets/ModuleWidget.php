@@ -3,7 +3,7 @@
 namespace App\Modules\DependenciesRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;
-use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
+use App\Modules\DependenciesRegisterProject\Models\DependenciesRaidEntryModel;
 
 /**
  * Provides Dependencies Register dashboard widget definitions and data.
@@ -94,7 +94,7 @@ class ModuleWidget implements ModuleWidgetInterface
             'closed' => 0,
         ];
 
-        $rows = (new ModuleRaidEntryModel())
+        $rows = (new DependenciesRaidEntryModel())
             ->select('module_raid_entries.status, COUNT(*) AS total')
             ->where('module_raid_entries.module_slug', 'dependencies_register_project')
             ->where('module_raid_entries.scope_type', 'project')
@@ -125,7 +125,7 @@ class ModuleWidget implements ModuleWidgetInterface
             'high' => 0,
         ];
 
-        $rows = (new ModuleRaidEntryModel())
+        $rows = (new DependenciesRaidEntryModel())
             ->select('module_raid_entries.impact_level, COUNT(*) AS total')
             ->where('module_raid_entries.module_slug', 'dependencies_register_project')
             ->where('module_raid_entries.scope_type', 'project')
@@ -150,7 +150,7 @@ class ModuleWidget implements ModuleWidgetInterface
      */
     private function atRiskData(int $scopeId, int $maxEntries): array
     {
-        $entries = (new ModuleRaidEntryModel())
+        $entries = (new DependenciesRaidEntryModel())
             ->select('module_raid_entries.*, users.username as owner_username')
             ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
             ->where('module_raid_entries.module_slug', 'dependencies_register_project')
@@ -177,7 +177,7 @@ class ModuleWidget implements ModuleWidgetInterface
     {
         $today = date('Y-m-d');
 
-        $entries = (new ModuleRaidEntryModel())
+        $entries = (new DependenciesRaidEntryModel())
             ->select('module_raid_entries.*, users.username as owner_username')
             ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
             ->where('module_raid_entries.module_slug', 'dependencies_register_project')

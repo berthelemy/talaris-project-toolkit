@@ -10,6 +10,7 @@ Tracks project dependencies, impact level, ownership, and follow-up actions in R
 ## Main Components
 - `Config/routes.php`: module route registrations
 - `Controllers/DependenciesRegisterController.php`: module entry points
+- `Models/DependenciesRaidEntryModel.php`: module-local RAID entry persistence
 - `Widgets/ModuleWidget.php`: dashboard widgets
 - `Views/`: register page and widget templates
 

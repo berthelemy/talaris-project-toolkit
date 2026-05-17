@@ -10,6 +10,7 @@ Tracks project assumptions as RAID entries and supports inline updates, closure,
 ## Main Components
 - `Config/routes.php`: module route registrations
 - `Controllers/AssumptionsRegisterController.php`: module entry points
+- `Models/AssumptionsRaidEntryModel.php`: module-local RAID entry persistence
 - `Widgets/ModuleWidget.php`: dashboard widgets
 - `Views/`: register page and widget templates
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\RaidShared\Models;
+namespace App\Modules\DependenciesRegisterProject\Models;
 
 use CodeIgniter\Model;
 
 /**
- * Shared persistence model for RAID-style module entries.
+ * Dependencies Register RAID entry persistence model.
  */
-class ModuleRaidEntryModel extends Model
+class DependenciesRaidEntryModel extends Model
 {
     protected $table            = 'module_raid_entries';
     protected $primaryKey       = 'id';
@@ -26,36 +26,14 @@ class ModuleRaidEntryModel extends Model
         'priority',
         'impact',
         'likelihood',
-        'impact_if_not_valid',
         'impact_level',
-        'date_reported',
-        'reporter_user_id',
         'lessons_learned',
         'target_date',
         'review_date',
-        'decision_date',
-        'made_by_user_id',
-        'decision_category',
-        'decision_rationale',
-        'alternatives_considered',
-        'chosen_option',
-        'approver_user_id',
-        'implementation_actions',
-        'superseded_by_entry_id',
         'dependency_type',
         'related_work_package',
         'depends_on',
         'escalation_required',
-        'task_category',
-        'related_objective',
-        'related_module_entry_id',
-        'collaborators',
-        'percent_complete',
-        'planned_start_date',
-        'due_date',
-        'completed_date',
-        'blocked_reason',
-        'next_action',
         'closed_at',
         'created_by_user_id',
         'updated_by_user_id',
@@ -64,12 +42,7 @@ class ModuleRaidEntryModel extends Model
     protected array $casts = [
         'scope_id' => 'integer',
         'owner_user_id' => 'integer',
-        'made_by_user_id' => '?integer',
-        'approver_user_id' => '?integer',
-        'superseded_by_entry_id' => '?integer',
         'escalation_required' => 'integer',
-        'related_module_entry_id' => '?integer',
-        'percent_complete' => '?integer',
         'created_by_user_id' => 'integer',
         'updated_by_user_id' => '?integer',
     ];

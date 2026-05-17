@@ -88,7 +88,7 @@ XDEBUG_MODE=off composer ci
 - RAID shared implementation:
   - `app/Database/Migrations/2026-05-11-080000_CreateModuleRaidEntriesTable.php`
   - `app/Models/ModuleRaidEntryModel.php`
-  - `app/Modules/RaidShared/Controllers/BaseProjectRaidController.php`
+  - `app/Modules/RiskRegisterProject/Controllers/BaseProjectRaidController.php`
   - `app/Views/modules/raid_project.php`
 - RAID module registry wiring:
   - `app/Database/Migrations/2026-05-11-081000_RegisterPhase9RaidModules.php`

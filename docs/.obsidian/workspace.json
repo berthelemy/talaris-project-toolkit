@@ -11,13 +11,14 @@
             "id": "9692571f037e79af",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "00-kanban.base",
-                "viewName": "Kanban"
+                "file": "project-cards/Remove the Raid Shared directory and ensure that each module is self-contained.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "columns",
-              "title": "00-kanban"
+              "icon": "lucide-file",
+              "title": "Remove the Raid Shared directory and ensure that each module is self-contained"
             }
           }
         ]
@@ -182,11 +183,12 @@
       "bases:Create new base": false
     }
   },
-  "active": "c1917ee34af04785",
+  "active": "9692571f037e79af",
   "lastOpenFiles": [
+    "00-kanban.base",
+    "project-cards/Remove the Raid Shared directory and ensure that each module is self-contained.md",
     "project-cards/Ensure the model definitions are stored within the module directories and not shared.md",
     "project-cards/Project navigation panel display.md",
-    "00-kanban.base",
     "Development/MODULE_FRAMEWORK.md",
     "project-cards/modal-body-scroll-style-standardization.md",
     "project-cards/A meeting notes module.md",
@@ -212,8 +214,6 @@
     "MODULE_INTERNAL_API.md",
     "Development/MODULE_INTERNAL_API.md",
     "handoffs/HANDOFF_PHASE10_LAYOUT_AND_SITE_SETTINGS.md",
-    "handoffs/HANDOFF_PHASE5.md",
-    "Development/INSTALLATION.md",
     "modules",
     "Project-reports",
     "Development",

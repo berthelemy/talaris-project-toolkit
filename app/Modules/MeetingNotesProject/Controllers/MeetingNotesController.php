@@ -10,7 +10,7 @@ use App\Libraries\Modules\ModuleWidgetService;
 use App\Models\ProjectModel;
 use App\Models\UserModel;
 use App\Modules\MeetingNotesProject\Models\MeetingNoteModel;
-use App\Modules\RaidShared\Models\ModuleRaidEntryModel;
+use App\Modules\MeetingNotesProject\Models\MeetingNotesRaidEntryModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
@@ -45,7 +45,7 @@ class MeetingNotesController extends BaseController
         $status = trim((string) ($this->request->getPost('status') ?: 'open'));
         $priority = trim((string) ($this->request->getPost('priority') ?: 'medium'));
 
-        (new ModuleRaidEntryModel())->insert([
+        (new MeetingNotesRaidEntryModel())->insert([
             'module_slug' => 'risk_register_project',
             'scope_type' => 'project',
             'scope_id' => $projectId,
@@ -90,7 +90,7 @@ class MeetingNotesController extends BaseController
         $status = trim((string) ($this->request->getPost('status') ?: 'open'));
         $priority = trim((string) ($this->request->getPost('priority') ?: 'medium'));
 
-        (new ModuleRaidEntryModel())->insert([
+        (new MeetingNotesRaidEntryModel())->insert([
             'module_slug' => 'assumptions_register_project',
             'scope_type' => 'project',
             'scope_id' => $projectId,
@@ -135,7 +135,7 @@ class MeetingNotesController extends BaseController
         $status = trim((string) ($this->request->getPost('status') ?: 'open'));
         $priority = trim((string) ($this->request->getPost('priority') ?: 'medium'));
 
-        (new ModuleRaidEntryModel())->insert([
+        (new MeetingNotesRaidEntryModel())->insert([
             'module_slug' => 'issue_tracker_project',
             'scope_type' => 'project',
             'scope_id' => $projectId,
@@ -180,7 +180,7 @@ class MeetingNotesController extends BaseController
         $status = trim((string) ($this->request->getPost('status') ?: 'open'));
         $priority = trim((string) ($this->request->getPost('priority') ?: 'medium'));
 
-        (new ModuleRaidEntryModel())->insert([
+        (new MeetingNotesRaidEntryModel())->insert([
             'module_slug' => 'dependencies_register_project',
             'scope_type' => 'project',
             'scope_id' => $projectId,
@@ -381,7 +381,7 @@ class MeetingNotesController extends BaseController
             $title = mb_substr($description, 0, 200);
         }
 
-        (new ModuleRaidEntryModel())->insert([
+        (new MeetingNotesRaidEntryModel())->insert([
             'module_slug' => 'decisions_register_project',
             'scope_type' => 'project',
             'scope_id' => $projectId,
@@ -439,7 +439,7 @@ class MeetingNotesController extends BaseController
             $priority = 'medium';
         }
 
-        (new ModuleRaidEntryModel())->insert([
+        (new MeetingNotesRaidEntryModel())->insert([
             'module_slug' => 'tasks_register_project',
             'scope_type' => 'project',
             'scope_id' => $projectId,
@@ -526,7 +526,7 @@ class MeetingNotesController extends BaseController
 
         $noteIds = array_map(static fn (array $note): int => (int) ($note['id'] ?? 0), $notes);
         $tasksByNote = [];
-        $tasks = (new ModuleRaidEntryModel())
+        $tasks = (new MeetingNotesRaidEntryModel())
             ->select('module_raid_entries.*, users.username AS owner_username')
             ->join('users', 'users.id = module_raid_entries.owner_user_id', 'left')
             ->where('module_raid_entries.module_slug', 'tasks_register_project')
@@ -546,7 +546,7 @@ class MeetingNotesController extends BaseController
             $note['actions'] = $tasksByNote[$id] ?? [];
 
             $decisionLinkTag = $this->decisionLinkTag($id);
-            $note['linked_decisions'] = (new ModuleRaidEntryModel())
+            $note['linked_decisions'] = (new MeetingNotesRaidEntryModel())
                 ->select('id, title, status')
                 ->where('module_slug', 'decisions_register_project')
                 ->where('scope_type', 'project')
@@ -556,7 +556,7 @@ class MeetingNotesController extends BaseController
                 ->findAll();
 
             // Related risks
-            $note['linked_risks'] = (new ModuleRaidEntryModel())
+            $note['linked_risks'] = (new MeetingNotesRaidEntryModel())
                 ->select('id, title, status')
                 ->where('module_slug', 'risk_register_project')
                 ->where('scope_type', 'project')
@@ -566,7 +566,7 @@ class MeetingNotesController extends BaseController
                 ->findAll();
 
             // Related assumptions
-            $note['linked_assumptions'] = (new ModuleRaidEntryModel())
+            $note['linked_assumptions'] = (new MeetingNotesRaidEntryModel())
                 ->select('id, title, status')
                 ->where('module_slug', 'assumptions_register_project')
                 ->where('scope_type', 'project')
@@ -576,7 +576,7 @@ class MeetingNotesController extends BaseController
                 ->findAll();
 
             // Related issues
-            $note['linked_issues'] = (new ModuleRaidEntryModel())
+            $note['linked_issues'] = (new MeetingNotesRaidEntryModel())
                 ->select('id, title, status')
                 ->where('module_slug', 'issue_tracker_project')
                 ->where('scope_type', 'project')
@@ -586,7 +586,7 @@ class MeetingNotesController extends BaseController
                 ->findAll();
 
             // Related dependencies
-            $note['linked_dependencies'] = (new ModuleRaidEntryModel())
+            $note['linked_dependencies'] = (new MeetingNotesRaidEntryModel())
                 ->select('id, title, status')
                 ->where('module_slug', 'dependencies_register_project')
                 ->where('scope_type', 'project')

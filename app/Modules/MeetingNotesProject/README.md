@@ -10,6 +10,7 @@ Capture structured meeting notes, decisions, and action items at project scope w
 ## Main Components
 - `Config/routes.php`: module route registrations
 - `Controllers/MeetingNotesController.php`: CRUD and action/task linking workflows
+- `Models/MeetingNotesRaidEntryModel.php`: local RAID entry persistence used for related RAID/task linking
 - `Widgets/ModuleWidget.php`: dashboard widgets for overview, open actions, and follow-ups
 - `Views/`: module page and widget templates
 

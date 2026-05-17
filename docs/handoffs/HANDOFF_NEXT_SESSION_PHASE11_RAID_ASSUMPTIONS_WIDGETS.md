@@ -36,7 +36,7 @@ This session completed a broad Phase 11 follow-up set to align RAID modules on a
 
 ## Files Changed (high level)
 - `app/Views/modules/raid_project.php`
-- `app/Modules/RaidShared/Controllers/BaseProjectRaidController.php`
+- `app/Modules/AssumptionsRegisterProject/Controllers/BaseProjectRaidController.php`
 - `app/Models/ModuleRaidEntryModel.php`
 - `app/Libraries/Modules/ModuleWidgetService.php`
 - `app/Libraries/Modules/ModuleWidgetLayoutService.php`
