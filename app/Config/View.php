@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/View.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Config\View as BaseView;

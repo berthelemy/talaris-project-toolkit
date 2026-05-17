@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/DocTypes.php.
+ */
+
 namespace Config;
 
 /**

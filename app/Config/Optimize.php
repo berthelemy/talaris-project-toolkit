@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Optimize.php.
+ */
+
 namespace Config;
 
 /**

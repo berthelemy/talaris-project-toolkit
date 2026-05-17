@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Modules.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Modules\Modules as BaseModules;

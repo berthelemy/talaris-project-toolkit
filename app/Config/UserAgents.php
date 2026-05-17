@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/UserAgents.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;

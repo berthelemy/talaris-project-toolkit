@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Logger.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;

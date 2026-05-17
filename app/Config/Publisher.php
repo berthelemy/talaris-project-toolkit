@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Publisher.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Config\Publisher as BasePublisher;

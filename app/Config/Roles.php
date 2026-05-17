@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Roles.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;

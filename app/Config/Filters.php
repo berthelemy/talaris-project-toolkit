@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Filters.php.
+ */
+
 namespace Config;
 
 use App\Filters\AuthenticationFilter;

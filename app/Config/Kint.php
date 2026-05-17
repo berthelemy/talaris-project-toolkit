@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Kint.php.
+ */
+
 namespace Config;
 
 use Kint\Parser\ConstructablePluginInterface;

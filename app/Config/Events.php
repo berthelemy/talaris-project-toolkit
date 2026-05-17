@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Events.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Events\Events;

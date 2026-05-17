@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Cache.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Cache\CacheInterface;

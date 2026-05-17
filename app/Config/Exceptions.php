@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Exceptions.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;

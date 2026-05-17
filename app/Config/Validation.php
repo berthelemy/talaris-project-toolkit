@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Validation.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;

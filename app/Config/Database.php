@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Database.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Database\Config;

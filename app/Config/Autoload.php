@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Autoload.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Config\AutoloadConfig;

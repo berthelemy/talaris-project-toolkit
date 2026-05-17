@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/WorkerMode.php.
+ */
+
 namespace Config;
 
 /**

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/Services.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Config\BaseService;

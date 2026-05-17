@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Config/ForeignCharacters.php.
+ */
+
 namespace Config;
 
 use CodeIgniter\Config\ForeignCharacters as BaseForeignCharacters;
