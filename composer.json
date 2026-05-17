@@ -39,9 +39,12 @@
         "sort-packages": true
     },
     "scripts": {
+        "docs:check": "bash scripts/check-documentation.sh",
+        "docs:check:all": "bash scripts/check-documentation.sh --all",
         "test": "XDEBUG_MODE=coverage phpunit",
         "lint": "XDEBUG_MODE=off find app tests -type f -name '*.php' -print0 | xargs -0 -n1 php -d xdebug.mode=off -l > /dev/null",
         "ci": [
+            "@docs:check",
             "@lint",
             "@test"
         ]
