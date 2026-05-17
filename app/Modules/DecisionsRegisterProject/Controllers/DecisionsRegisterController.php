@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/DecisionsRegisterProject/Controllers/DecisionsRegisterController.php.
+ */
+
 namespace App\Modules\DecisionsRegisterProject\Controllers;
 
 

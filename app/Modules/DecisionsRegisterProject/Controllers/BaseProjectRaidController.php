@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/DecisionsRegisterProject/Controllers/BaseProjectRaidController.php.
+ */
+
 namespace App\Modules\DecisionsRegisterProject\Controllers;
 
 use App\Controllers\BaseController;

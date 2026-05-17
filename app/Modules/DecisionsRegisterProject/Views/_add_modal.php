@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Modules/DecisionsRegisterProject/Views/_add_modal.php.
+ */
 if (defined('DECISIONS_WIDGET_ADD_MODAL_RENDERED')) {
     return;
 }

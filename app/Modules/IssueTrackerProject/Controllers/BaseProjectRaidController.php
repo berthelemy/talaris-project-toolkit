@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/IssueTrackerProject/Controllers/BaseProjectRaidController.php.
+ */
+
 namespace App\Modules\IssueTrackerProject\Controllers;
 
 use App\Controllers\BaseController;

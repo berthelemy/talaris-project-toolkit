@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/TasksRegisterProject/Models/TasksRaidEntryModel.php.
+ */
+
 namespace App\Modules\TasksRegisterProject\Models;
 
 use CodeIgniter\Model;

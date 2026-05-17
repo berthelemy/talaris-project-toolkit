@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/DependenciesRegisterProject/Widgets/ModuleWidget.php.
+ */
+
 namespace App\Modules\DependenciesRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;

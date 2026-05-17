@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/RiskRegisterProject/Controllers/RiskRegisterController.php.
+ */
+
 namespace App\Modules\RiskRegisterProject\Controllers;
 
 

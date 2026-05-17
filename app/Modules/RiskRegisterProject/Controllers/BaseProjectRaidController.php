@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/RiskRegisterProject/Controllers/BaseProjectRaidController.php.
+ */
+
 namespace App\Modules\RiskRegisterProject\Controllers;
 
 use App\Controllers\BaseController;

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/IssueTrackerProject/Tests/System/IssueTrackerProjectSystemTest.php.
+ */
+
 namespace App\Modules\IssueTrackerProject\Tests\System;
 
 use App\Libraries\Auth\RbacService;

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/MeetingNotesProject/Controllers/MeetingNotesController.php.
+ */
+
 namespace App\Modules\MeetingNotesProject\Controllers;
 
 use App\Controllers\BaseController;

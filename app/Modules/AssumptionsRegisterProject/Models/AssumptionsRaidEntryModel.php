@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/AssumptionsRegisterProject/Models/AssumptionsRaidEntryModel.php.
+ */
+
 namespace App\Modules\AssumptionsRegisterProject\Models;
 
 use CodeIgniter\Model;

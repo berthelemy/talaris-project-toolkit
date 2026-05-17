@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/HelloWorldProgramme/Controllers/HelloWorldController.php.
+ */
+
 namespace App\Modules\HelloWorldProgramme\Controllers;
 
 use App\Controllers\BaseController;

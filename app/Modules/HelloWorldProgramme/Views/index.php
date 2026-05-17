@@ -1,3 +1,9 @@
+<?php
+
+/**
+ * File documentation for app/Modules/HelloWorldProgramme/Views/index.php.
+ */
+?>
 <!doctype html>
 <?php $locale = (string) service('request')->getLocale(); ?>
 <html lang="<?= esc($locale) ?>">

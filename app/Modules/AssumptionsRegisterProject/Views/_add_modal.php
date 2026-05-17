@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Modules/AssumptionsRegisterProject/Views/_add_modal.php.
+ */
 if (defined('ASSUMPTIONS_WIDGET_ADD_MODAL_RENDERED')) {
     return;
 }

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/DecisionsRegisterProject/Models/DecisionsRaidEntryModel.php.
+ */
+
 namespace App\Modules\DecisionsRegisterProject\Models;
 
 use CodeIgniter\Model;

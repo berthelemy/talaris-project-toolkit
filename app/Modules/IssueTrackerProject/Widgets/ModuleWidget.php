@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/IssueTrackerProject/Widgets/ModuleWidget.php.
+ */
+
 namespace App\Modules\IssueTrackerProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;

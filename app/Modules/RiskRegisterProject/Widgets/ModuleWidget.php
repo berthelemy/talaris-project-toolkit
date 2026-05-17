@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/RiskRegisterProject/Widgets/ModuleWidget.php.
+ */
+
 namespace App\Modules\RiskRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;

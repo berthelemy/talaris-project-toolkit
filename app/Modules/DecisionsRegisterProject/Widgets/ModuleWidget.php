@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/DecisionsRegisterProject/Widgets/ModuleWidget.php.
+ */
+
 namespace App\Modules\DecisionsRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;

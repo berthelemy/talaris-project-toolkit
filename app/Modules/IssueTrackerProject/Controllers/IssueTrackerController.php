@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/IssueTrackerProject/Controllers/IssueTrackerController.php.
+ */
+
 namespace App\Modules\IssueTrackerProject\Controllers;
 
 

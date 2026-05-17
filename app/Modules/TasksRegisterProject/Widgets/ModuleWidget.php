@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/TasksRegisterProject/Widgets/ModuleWidget.php.
+ */
+
 namespace App\Modules\TasksRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;

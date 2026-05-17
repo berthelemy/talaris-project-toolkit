@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/DecisionsRegisterProject/Tests/System/DecisionsRegisterProjectSystemTest.php.
+ */
+
 namespace App\Modules\DecisionsRegisterProject\Tests\System;
 
 use App\Libraries\Auth\RbacService;

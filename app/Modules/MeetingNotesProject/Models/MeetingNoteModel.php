@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/MeetingNotesProject/Models/MeetingNoteModel.php.
+ */
+
 namespace App\Modules\MeetingNotesProject\Models;
 
 use CodeIgniter\Model;

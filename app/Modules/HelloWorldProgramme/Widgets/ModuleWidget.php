@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/HelloWorldProgramme/Widgets/ModuleWidget.php.
+ */
+
 namespace App\Modules\HelloWorldProgramme\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/MeetingNotesProject/Models/MeetingNotesRaidEntryModel.php.
+ */
+
 namespace App\Modules\MeetingNotesProject\Models;
 
 use CodeIgniter\Model;

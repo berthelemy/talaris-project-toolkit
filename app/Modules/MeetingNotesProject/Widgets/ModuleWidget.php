@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/MeetingNotesProject/Widgets/ModuleWidget.php.
+ */
+
 namespace App\Modules\MeetingNotesProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;

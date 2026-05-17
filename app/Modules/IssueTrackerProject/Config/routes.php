@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/IssueTrackerProject/Config/routes.php.
+ */
+
 declare(strict_types=1);
 
 namespace App\Modules\IssueTrackerProject\Config;

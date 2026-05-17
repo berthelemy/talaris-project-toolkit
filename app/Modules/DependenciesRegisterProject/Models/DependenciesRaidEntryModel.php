@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/DependenciesRegisterProject/Models/DependenciesRaidEntryModel.php.
+ */
+
 namespace App\Modules\DependenciesRegisterProject\Models;
 
 use CodeIgniter\Model;

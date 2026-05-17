@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Modules/TasksRegisterProject/Views/_add_modal.php.
+ */
 if (defined('TASKS_WIDGET_ADD_MODAL_RENDERED')) {
     return;
 }

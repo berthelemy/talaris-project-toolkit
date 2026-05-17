@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/HelloWorldProject/Models/HelloWorldEntryModel.php.
+ */
+
 namespace App\Modules\HelloWorldProject\Models;
 
 use CodeIgniter\Model;

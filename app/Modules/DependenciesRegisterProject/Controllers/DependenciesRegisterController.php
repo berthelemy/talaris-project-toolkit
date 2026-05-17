@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/DependenciesRegisterProject/Controllers/DependenciesRegisterController.php.
+ */
+
 namespace App\Modules\DependenciesRegisterProject\Controllers;
 
 

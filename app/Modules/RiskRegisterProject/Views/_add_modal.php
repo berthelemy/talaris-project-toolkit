@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Modules/RiskRegisterProject/Views/_add_modal.php.
+ */
 if (defined('RISK_WIDGET_ADD_MODAL_RENDERED')) {
     return;
 }

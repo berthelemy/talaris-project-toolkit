@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/AssumptionsRegisterProject/Widgets/ModuleWidget.php.
+ */
+
 namespace App\Modules\AssumptionsRegisterProject\Widgets;
 
 use App\Libraries\Modules\ModuleWidgetInterface;

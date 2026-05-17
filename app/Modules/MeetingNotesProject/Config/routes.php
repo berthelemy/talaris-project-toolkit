@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Modules/MeetingNotesProject/Config/routes.php.
+ */
 declare(strict_types=1);
 
 namespace App\Modules\MeetingNotesProject\Config;

@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Modules/DependenciesRegisterProject/Views/_add_modal.php.
+ */
 if (defined('DEPENDENCIES_WIDGET_ADD_MODAL_RENDERED')) {
     return;
 }

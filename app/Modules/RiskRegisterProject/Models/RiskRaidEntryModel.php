@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/RiskRegisterProject/Models/RiskRaidEntryModel.php.
+ */
+
 namespace App\Modules\RiskRegisterProject\Models;
 
 use CodeIgniter\Model;

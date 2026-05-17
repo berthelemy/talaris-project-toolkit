@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/IssueTrackerProject/Models/IssueTrackerRaidEntryModel.php.
+ */
+
 namespace App\Modules\IssueTrackerProject\Models;
 
 use CodeIgniter\Model;

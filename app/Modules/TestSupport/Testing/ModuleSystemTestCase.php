@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/TestSupport/Testing/ModuleSystemTestCase.php.
+ */
+
 namespace App\Modules\TestSupport\Testing;
 
 use App\Models\ProjectModel;

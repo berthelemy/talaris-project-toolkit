@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * File documentation for app/Modules/HelloWorldProgramme/Config/routes.php.
+ */
+
 declare(strict_types=1);
 
 namespace App\Modules\HelloWorldProgramme\Config;

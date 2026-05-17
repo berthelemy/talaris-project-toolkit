@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * File documentation for app/Modules/IssueTrackerProject/Views/_add_modal.php.
+ */
 if (defined('ISSUE_WIDGET_ADD_MODAL_RENDERED')) {
     return;
 }
