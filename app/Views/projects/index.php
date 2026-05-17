@@ -103,7 +103,7 @@ $active = 'projects';
                             </p>
                             <div class="small text-muted d-flex justify-content-between align-items-center">
                                 <span><?= esc(lang('Domain.projectCreatedAt')) ?>: <?= esc((string) ($project['created_at'] ?? '')) ?></span>
-                                <a href="<?= site_url('projects/' . $projectId . '/edit') ?>" class="btn btn-outline-primary btn-sm position-relative" style="z-index:2;"><?= esc(lang('Domain.projectEditTitle')) ?></a>
+                                <a href="<?= site_url('projects/' . $projectId . '/edit') ?>" class="btn btn-outline-primary btn-sm position-relative app-z-index-2"><?= esc(lang('Domain.projectEditTitle')) ?></a>
                             </div>
                         </div>
                     </div>

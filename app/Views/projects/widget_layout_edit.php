@@ -43,7 +43,7 @@ $active = 'projects';
                             <table class="table table-sm align-middle" data-widget-order-list aria-describedby="widget-layout-order-help">
                                 <thead>
                                     <tr>
-                                        <th class="text-nowrap" style="width: 124px;"><?= esc(lang('Module.projectLayoutOrder')) ?></th>
+                                        <th class="text-nowrap app-widget-order-col"><?= esc(lang('Module.projectLayoutOrder')) ?></th>
                                         <th><?= esc(lang('Module.columnName')) ?></th>
                                         <th><?= esc(lang('Module.projectLayoutVisible')) ?></th>
                                     </tr>

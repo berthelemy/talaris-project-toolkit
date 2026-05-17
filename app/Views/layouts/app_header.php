@@ -29,7 +29,7 @@ if (is_int($userId) || ctype_digit((string) $userId)) {
     <nav class="container navbar navbar-expand-lg py-2" aria-label="Main">
         <a class="navbar-brand d-flex align-items-center gap-2" href="<?= site_url('dashboard') ?>">
             <?php if ($logoPath !== ''): ?>
-                <img src="<?= esc(base_url($logoPath)) ?>" alt="<?= esc(lang('Theme.logoAlt')) ?>" style="height:34px; width:auto;">
+                <img class="app-header-logo" src="<?= esc(base_url($logoPath)) ?>" alt="<?= esc(lang('Theme.logoAlt')) ?>">
             <?php endif; ?>
             <span class="fw-semibold"><?= esc($siteTitle) ?></span>
         </a>

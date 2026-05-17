@@ -62,7 +62,7 @@ $active = 'programmes';
                             <p class="text-muted mb-3"><?= esc((string) ($programme['description'] ?? '')) ?></p>
                             <div class="small text-muted d-flex justify-content-between align-items-center">
                                 <span><?= esc(lang('Domain.programmeCreatedAt')) ?>: <?= esc((string) ($programme['created_at'] ?? '')) ?></span>
-                                <a href="<?= site_url('programmes/' . (int) ($programme['id'] ?? 0) . '/edit') ?>" class="btn btn-outline-primary btn-sm position-relative" style="z-index:2;"><?= esc(lang('Domain.programmeEditTitle')) ?></a>
+                                <a href="<?= site_url('programmes/' . (int) ($programme['id'] ?? 0) . '/edit') ?>" class="btn btn-outline-primary btn-sm position-relative app-z-index-2"><?= esc(lang('Domain.programmeEditTitle')) ?></a>
                             </div>
                         </div>
                     </div>

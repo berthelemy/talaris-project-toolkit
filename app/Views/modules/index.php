@@ -80,19 +80,19 @@ $active = 'modules';
                                         </form>
                                         <form method="post" action="<?= site_url('modules/' . rawurlencode($moduleSlug) . '/ordering') ?>" class="d-inline-flex align-items-center gap-1 ms-1">
                                             <?= csrf_field() ?>
-                                            <input class="form-control form-control-sm" style="width: 72px;" name="display_order" type="number" min="0" value="<?= esc((string) ((int) ($module['display_order'] ?? 0))) ?>">
+                                            <input class="form-control form-control-sm app-input-width-72" name="display_order" type="number" min="0" value="<?= esc((string) ((int) ($module['display_order'] ?? 0))) ?>">
                                             <button class="btn btn-sm btn-outline-primary" type="submit"><?= esc(lang('Module.updateOrderButton')) ?></button>
                                         </form>
                                         <form method="post" action="<?= site_url('modules/' . rawurlencode($moduleSlug) . '/widget-config') ?>" class="d-inline-flex align-items-center gap-1 ms-1">
                                             <?= csrf_field() ?>
-                                            <input class="form-control form-control-sm" style="width: 72px;" name="max_entries" type="number" min="1" max="25" value="<?= esc((string) $maxEntries) ?>">
+                                            <input class="form-control form-control-sm app-input-width-72" name="max_entries" type="number" min="1" max="25" value="<?= esc((string) $maxEntries) ?>">
                                             <button class="btn btn-sm btn-outline-secondary" type="submit"><?= esc(lang('Module.updateConfigButton')) ?></button>
                                         </form>
                                         <form method="post" action="<?= site_url('modules/' . rawurlencode($moduleSlug) . '/widget-layout-default') ?>" class="d-inline-flex align-items-center gap-1 ms-1">
                                             <?= csrf_field() ?>
                                             <input type="hidden" name="is_visible" value="0">
                                             <input class="form-check-input" name="is_visible" value="1" type="checkbox" aria-label="<?= esc(lang('Module.defaultVisibleLabel')) ?>" <?= $defaultVisible ? 'checked' : '' ?>>
-                                            <input class="form-control form-control-sm" style="width: 72px;" name="display_order" type="number" min="0" value="<?= esc((string) ((int) $defaultOrder)) ?>" aria-label="<?= esc(lang('Module.defaultOrderLabel')) ?>">
+                                            <input class="form-control form-control-sm app-input-width-72" name="display_order" type="number" min="0" value="<?= esc((string) ((int) $defaultOrder)) ?>" aria-label="<?= esc(lang('Module.defaultOrderLabel')) ?>">
                                             <button class="btn btn-sm btn-outline-dark" type="submit"><?= esc(lang('Module.updateDefaultLayoutButton')) ?></button>
                                         </form>
                                     </td>

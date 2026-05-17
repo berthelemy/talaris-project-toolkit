@@ -45,7 +45,7 @@ $active = 'profile';
                             <label for="avatar" class="form-label"><?= esc(lang('Auth.profileAvatarPath')) ?></label>
                             <?php if (! empty($user['avatar_path'])): ?>
                                 <div class="mb-2">
-                                    <img src="<?= esc(base_url('uploads/avatars/' . basename((string) $user['avatar_path']))) ?>" alt="<?= esc(lang('Auth.profileAvatarAlt')) ?>" class="rounded-circle" width="64" height="64" style="object-fit:cover;">
+                                    <img src="<?= esc(base_url('uploads/avatars/' . basename((string) $user['avatar_path']))) ?>" alt="<?= esc(lang('Auth.profileAvatarAlt')) ?>" class="rounded-circle app-avatar-image-cover" width="64" height="64">
                                 </div>
                             <?php endif; ?>
                             <input id="avatar" name="avatar" type="file" class="form-control" accept="image/jpeg,image/png,image/gif,image/webp">

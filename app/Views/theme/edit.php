@@ -71,7 +71,7 @@ $active = 'theme';
                     <label for="logo" class="form-label"><?= esc(lang('Theme.logoLabel')) ?></label>
                     <?php if (! empty($settings['logo_path'])): ?>
                         <div class="mb-2">
-                            <img src="<?= esc(base_url((string) $settings['logo_path'])) ?>" alt="<?= esc(lang('Theme.logoAlt')) ?>" style="max-height:64px; width:auto;">
+                            <img class="app-theme-logo-preview" src="<?= esc(base_url((string) $settings['logo_path'])) ?>" alt="<?= esc(lang('Theme.logoAlt')) ?>">
                         </div>
                         <div class="form-check mb-2">
                             <input class="form-check-input" type="checkbox" value="1" id="remove_logo" name="remove_logo">
