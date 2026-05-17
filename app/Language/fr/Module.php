@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Language/fr/Module.php.
+ * French localization strings for Module.
  */
 
 return [

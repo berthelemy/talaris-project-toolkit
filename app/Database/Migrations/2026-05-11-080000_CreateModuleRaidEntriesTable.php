@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-11-080000_CreateModuleRaidEntriesTable.php.
+ * Database migration: Create Module Raid Entries Table.
  */
 
 namespace App\Database\Migrations;

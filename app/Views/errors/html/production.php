@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/errors/html/production.php.
+ * HTML error view template: production.
  */
 ?>
 <!doctype html>

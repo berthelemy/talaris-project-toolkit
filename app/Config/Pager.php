@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Pager.php.
+ * Application configuration for Pager.
  */
 
 namespace Config;

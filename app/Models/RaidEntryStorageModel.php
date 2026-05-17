@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/RaidEntryStorageModel.php.
+ * Persistence model for Raid Entry Storage Model.
  */
 
 namespace App\Models;

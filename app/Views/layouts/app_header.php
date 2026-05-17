@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/layouts/app_header.php.
+ * Shared layout partial: app header.
  */
 use App\Libraries\Auth\RbacService;
 use App\Libraries\Theme\ThemeSettingsService;

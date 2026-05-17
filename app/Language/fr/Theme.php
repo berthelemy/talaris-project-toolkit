@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Language/fr/Theme.php.
+ * French localization strings for Theme.
  */
 
 return [

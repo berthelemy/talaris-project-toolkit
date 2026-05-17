@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-10-120000_AddRbacAndUserProfileSchema.php.
+ * Database migration: Add Rbac And User Profile Schema.
  */
 
 namespace App\Database\Migrations;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/ModuleWidgetLayoutPreferenceModel.php.
+ * Persistence model for Module Widget Layout Preference Model.
  */
 
 namespace App\Models;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/ModuleRegistryModel.php.
+ * Persistence model for Module Registry Model.
  */
 
 namespace App\Models;

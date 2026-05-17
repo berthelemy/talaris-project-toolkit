@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/PasswordResetTokenModel.php.
+ * Persistence model for Password Reset Token Model.
  */
 
 namespace App\Models;

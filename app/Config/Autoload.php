@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Autoload.php.
+ * Application configuration for Autoload.
  */
 
 namespace Config;

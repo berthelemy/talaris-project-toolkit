@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Language/en/Theme.php.
+ * English localization strings for Theme.
  */
 
 return [

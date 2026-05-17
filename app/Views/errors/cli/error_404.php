@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/errors/cli/error_404.php.
+ * CLI error view template: error 404.
  */
 
 use CodeIgniter\CLI\CLI;

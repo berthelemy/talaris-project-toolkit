@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-10-210000_EnhanceModuleFrameworkPhase6.php.
+ * Database migration: Enhance Module Framework Phase6.
  */
 
 namespace App\Database\Migrations;

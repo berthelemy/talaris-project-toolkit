@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/layouts/datatable_assets.php.
+ * Shared layout partial: datatable assets.
  */
 ?>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">

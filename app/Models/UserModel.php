@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/UserModel.php.
+ * Persistence model for User Model.
  */
 
 namespace App\Models;

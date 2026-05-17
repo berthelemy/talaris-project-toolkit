@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Hostnames.php.
+ * Application configuration for Hostnames.
  */
 
 namespace Config;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Migrations.php.
+ * Application configuration for Migrations.
  */
 
 namespace Config;

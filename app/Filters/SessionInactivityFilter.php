@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Filters/SessionInactivityFilter.php.
+ * HTTP filter for Session Inactivity Filter request handling.
  */
 
 namespace App\Filters;

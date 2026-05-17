@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Cors.php.
+ * Application configuration for Cors.
  */
 
 namespace Config;

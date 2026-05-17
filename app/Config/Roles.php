@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Roles.php.
+ * Application configuration for Roles.
  */
 
 namespace Config;

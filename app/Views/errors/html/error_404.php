@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/errors/html/error_404.php.
+ * HTML error view template: error 404.
  */
 ?>
 <!DOCTYPE html>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-10-160000_CreateModuleFrameworkTables.php.
+ * Database migration: Create Module Framework Tables.
  */
 
 namespace App\Database\Migrations;

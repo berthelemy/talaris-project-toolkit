@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Feature.php.
+ * Application configuration for Feature.
  */
 
 namespace Config;

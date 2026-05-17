@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/auth/forgot_password.php.
+ * Authentication view template: forgot password.
  */
 ?>
 <?= $this->extend('layouts/auth') ?>

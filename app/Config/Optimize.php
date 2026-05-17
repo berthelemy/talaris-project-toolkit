@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Optimize.php.
+ * Application configuration for Optimize.
  */
 
 namespace Config;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-11-110000_AddIssuesReporterAndAssumptionDependencyImpactFields.php.
+ * Database migration: Add Issues Reporter And Assumption Dependency Impact Fields.
  */
 
 namespace App\Database\Migrations;

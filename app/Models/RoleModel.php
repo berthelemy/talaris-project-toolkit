@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/RoleModel.php.
+ * Persistence model for Role Model.
  */
 
 namespace App\Models;

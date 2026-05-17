@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/UserAgents.php.
+ * Application configuration for UserAgents.
  */
 
 namespace Config;

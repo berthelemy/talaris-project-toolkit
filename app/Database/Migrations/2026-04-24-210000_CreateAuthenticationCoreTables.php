@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-04-24-210000_CreateAuthenticationCoreTables.php.
+ * Database migration: Create Authentication Core Tables.
  */
 
 namespace App\Database\Migrations;

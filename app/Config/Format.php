@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Format.php.
+ * Application configuration for Format.
  */
 
 namespace Config;

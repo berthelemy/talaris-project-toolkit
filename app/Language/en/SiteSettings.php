@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Language/en/SiteSettings.php.
+ * English localization strings for Site Settings.
  */
 
 return [

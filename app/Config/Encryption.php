@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Encryption.php.
+ * Application configuration for Encryption.
  */
 
 namespace Config;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/TasksRegisterProject/Tests/System/TasksRegisterProjectSystemTest.php.
+ * System test suite for TasksRegisterProject module.
  */
 
 namespace App\Modules\TasksRegisterProject\Tests\System;

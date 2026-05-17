@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-11-100000_EnhanceRaidEntriesAndAddDecisionsModule.php.
+ * Database migration: Enhance Raid Entries And Add Decisions Module.
  */
 
 namespace App\Database\Migrations;

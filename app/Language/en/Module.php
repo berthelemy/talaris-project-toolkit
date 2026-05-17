@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Language/en/Module.php.
+ * English localization strings for Module.
  */
 
 return [

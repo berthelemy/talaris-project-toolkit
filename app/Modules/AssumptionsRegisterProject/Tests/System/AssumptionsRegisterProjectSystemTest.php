@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/AssumptionsRegisterProject/Tests/System/AssumptionsRegisterProjectSystemTest.php.
+ * System test suite for AssumptionsRegisterProject module.
  */
 
 namespace App\Modules\AssumptionsRegisterProject\Tests\System;

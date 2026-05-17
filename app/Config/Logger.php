@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Logger.php.
+ * Application configuration for Logger.
  */
 
 namespace Config;

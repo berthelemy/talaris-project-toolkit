@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/errors/cli/error_exception.php.
+ * CLI error view template: error exception.
  */
 
 use CodeIgniter\CLI\CLI;

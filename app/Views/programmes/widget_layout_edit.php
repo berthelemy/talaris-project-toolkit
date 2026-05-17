@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/programmes/widget_layout_edit.php.
+ * View template for programmes: widget layout edit.
  */
 $pageTitle = (string) lang('Module.programmeLayoutPageTitle');
 $active = 'programmes';

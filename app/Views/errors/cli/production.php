@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/errors/cli/production.php.
+ * CLI error view template: production.
  */
 
 // On the CLI, we still want errors in productions

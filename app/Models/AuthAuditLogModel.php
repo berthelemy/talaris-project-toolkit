@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/AuthAuditLogModel.php.
+ * Persistence model for Auth Audit Log Model.
  */
 
 namespace App\Models;

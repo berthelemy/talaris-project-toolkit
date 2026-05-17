@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/errors/html/error_400.php.
+ * HTML error view template: error 400.
  */
 ?>
 <!DOCTYPE html>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Auth.php.
+ * Application configuration for Auth.
  */
 
 namespace Config;

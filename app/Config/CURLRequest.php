@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/CURLRequest.php.
+ * Application configuration for CURLRequest.
  */
 
 namespace Config;

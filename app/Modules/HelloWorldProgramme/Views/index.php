@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/HelloWorldProgramme/Views/index.php.
+ * HelloWorldProgramme module view template: index.
  */
 ?>
 <!doctype html>

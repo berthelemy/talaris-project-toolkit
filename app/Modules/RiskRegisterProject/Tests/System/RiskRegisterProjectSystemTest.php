@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/RiskRegisterProject/Tests/System/RiskRegisterProjectSystemTest.php.
+ * System test suite for RiskRegisterProject module.
  */
 
 namespace App\Modules\RiskRegisterProject\Tests\System;

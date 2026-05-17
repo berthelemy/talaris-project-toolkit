@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/site_settings/edit.php.
+ * View template for site_settings: edit.
  */
 $pageTitle = (string) lang('SiteSettings.pageTitle');
 $active = 'site_settings';

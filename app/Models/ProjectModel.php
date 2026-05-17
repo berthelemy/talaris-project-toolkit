@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/ProjectModel.php.
+ * Persistence model for Project Model.
  */
 
 namespace App\Models;

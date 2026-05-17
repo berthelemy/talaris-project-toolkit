@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Routes.php.
+ * Application configuration for Routes.
  */
 
 use CodeIgniter\Router\RouteCollection;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/AssumptionsRegisterProject/Views/_add_modal.php.
+ * AssumptionsRegisterProject module view template: add modal.
  */
 if (defined('ASSUMPTIONS_WIDGET_ADD_MODAL_RENDERED')) {
     return;

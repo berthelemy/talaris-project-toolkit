@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Language/fr/Auth.php.
+ * French localization strings for Auth.
  */
 
 return [

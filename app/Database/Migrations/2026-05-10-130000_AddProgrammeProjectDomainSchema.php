@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-10-130000_AddProgrammeProjectDomainSchema.php.
+ * Database migration: Add Programme Project Domain Schema.
  */
 
 namespace App\Database\Migrations;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Language/fr/UserAdmin.php.
+ * French localization strings for User Admin.
  */
 
 return [

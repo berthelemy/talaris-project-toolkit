@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/HelloWorldProgramme/Language/fr/Module.php.
+ * French localization strings for HelloWorldProgramme module Module.
  */
 
 return require APPPATH . 'Language/fr/Module.php';

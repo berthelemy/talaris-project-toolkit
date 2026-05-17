@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Publisher.php.
+ * Application configuration for Publisher.
  */
 
 namespace Config;

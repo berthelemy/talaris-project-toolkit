@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Images.php.
+ * Application configuration for Images.
  */
 
 namespace Config;

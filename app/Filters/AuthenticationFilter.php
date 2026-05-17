@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Filters/AuthenticationFilter.php.
+ * HTTP filter for Authentication Filter request handling.
  */
 
 namespace App\Filters;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Cookie.php.
+ * Application configuration for Cookie.
  */
 
 namespace Config;

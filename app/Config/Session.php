@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Session.php.
+ * Application configuration for Session.
  */
 
 namespace Config;

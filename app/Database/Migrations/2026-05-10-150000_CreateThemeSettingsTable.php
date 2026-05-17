@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-10-150000_CreateThemeSettingsTable.php.
+ * Database migration: Create Theme Settings Table.
  */
 
 namespace App\Database\Migrations;

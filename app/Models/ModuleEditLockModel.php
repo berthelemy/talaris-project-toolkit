@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/ModuleEditLockModel.php.
+ * Persistence model for Module Edit Lock Model.
  */
 
 namespace App\Models;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-16-130000_EnhanceDecisionsAndDependenciesRaidFields.php.
+ * Database migration: Enhance Decisions And Dependencies Raid Fields.
  */
 
 namespace App\Database\Migrations;

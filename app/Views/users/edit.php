@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/users/edit.php.
+ * View template for users: edit.
  */
 $pageTitle = (string) lang('UserAdmin.pageTitle');
 $active = 'users';

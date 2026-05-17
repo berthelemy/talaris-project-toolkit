@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Mimes.php.
+ * Application configuration for Mimes.
  */
 
 namespace Config;

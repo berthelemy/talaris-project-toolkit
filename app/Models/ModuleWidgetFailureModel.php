@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/ModuleWidgetFailureModel.php.
+ * Persistence model for Module Widget Failure Model.
  */
 
 namespace App\Models;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Events.php.
+ * Application configuration for Events.
  */
 
 namespace Config;

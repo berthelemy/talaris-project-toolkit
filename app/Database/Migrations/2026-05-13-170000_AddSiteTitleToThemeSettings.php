@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-13-170000_AddSiteTitleToThemeSettings.php.
+ * Database migration: Add Site Title To Theme Settings.
  */
 
 namespace App\Database\Migrations;

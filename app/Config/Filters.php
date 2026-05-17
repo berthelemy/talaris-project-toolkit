@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Filters.php.
+ * Application configuration for Filters.
  */
 
 namespace Config;

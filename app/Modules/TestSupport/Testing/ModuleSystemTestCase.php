@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/TestSupport/Testing/ModuleSystemTestCase.php.
+ * Shared module system-test support utilities.
  */
 
 namespace App\Modules\TestSupport\Testing;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Paths.php.
+ * Application configuration for Paths.
  */
 
 namespace Config;

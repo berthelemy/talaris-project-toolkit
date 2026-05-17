@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-16-220000_CreateMeetingNotesModuleTables.php.
+ * Database migration: Create Meeting Notes Module Tables.
  */
 
 namespace App\Database\Migrations;

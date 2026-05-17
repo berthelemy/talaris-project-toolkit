@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-16-180000_AddTasksModuleAndTaskRaidFields.php.
+ * Database migration: Add Tasks Module And Task Raid Fields.
  */
 
 namespace App\Database\Migrations;

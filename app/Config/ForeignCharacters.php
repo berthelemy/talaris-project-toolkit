@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/ForeignCharacters.php.
+ * Application configuration for ForeignCharacters.
  */
 
 namespace Config;

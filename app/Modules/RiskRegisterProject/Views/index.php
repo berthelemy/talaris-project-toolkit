@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/RiskRegisterProject/Views/index.php.
+ * RiskRegisterProject module view template: index.
  */
 ?>
 <!doctype html>

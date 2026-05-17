@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/layouts/app_footer.php.
+ * Shared layout partial: app footer.
  */
 ?>
 <footer class="border-top bg-white mt-4">

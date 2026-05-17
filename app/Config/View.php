@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/View.php.
+ * Application configuration for View.
  */
 
 namespace Config;

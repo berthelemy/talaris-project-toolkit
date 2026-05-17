@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Email.php.
+ * Application configuration for Email.
  */
 
 namespace Config;

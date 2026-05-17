@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/TasksRegisterProject/Views/_add_modal.php.
+ * TasksRegisterProject module view template: add modal.
  */
 if (defined('TASKS_WIDGET_ADD_MODAL_RENDERED')) {
     return;

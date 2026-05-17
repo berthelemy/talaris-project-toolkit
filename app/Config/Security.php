@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Security.php.
+ * Application configuration for Security.
  */
 
 namespace Config;

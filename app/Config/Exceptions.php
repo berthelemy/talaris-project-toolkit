@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Exceptions.php.
+ * Application configuration for Exceptions.
  */
 
 namespace Config;

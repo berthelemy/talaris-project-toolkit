@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/UserRoleAssignmentModel.php.
+ * Persistence model for User Role Assignment Model.
  */
 
 namespace App\Models;

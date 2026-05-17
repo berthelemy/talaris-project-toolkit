@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/ContentSecurityPolicy.php.
+ * Application configuration for ContentSecurityPolicy.
  */
 
 namespace Config;

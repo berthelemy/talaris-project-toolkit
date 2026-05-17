@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-14-120000_AddLessonsLearnedToModuleRaidEntries.php.
+ * Database migration: Add Lessons Learned To Module Raid Entries.
  */
 
 namespace App\Database\Migrations;

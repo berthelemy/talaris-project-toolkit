@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/ModuleWidgetMetricModel.php.
+ * Persistence model for Module Widget Metric Model.
  */
 
 namespace App\Models;

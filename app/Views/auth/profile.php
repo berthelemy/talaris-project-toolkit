@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/auth/profile.php.
+ * Authentication view template: profile.
  */
 $pageTitle = (string) lang('Auth.profileTitle');
 $active = 'profile';

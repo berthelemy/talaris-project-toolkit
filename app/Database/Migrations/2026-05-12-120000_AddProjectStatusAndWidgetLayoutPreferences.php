@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-12-120000_AddProjectStatusAndWidgetLayoutPreferences.php.
+ * Database migration: Add Project Status And Widget Layout Preferences.
  */
 
 namespace App\Database\Migrations;

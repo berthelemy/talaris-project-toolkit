@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Database.php.
+ * Application configuration for Database.
  */
 
 namespace Config;

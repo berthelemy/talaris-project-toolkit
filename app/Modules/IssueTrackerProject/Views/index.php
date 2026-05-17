@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/IssueTrackerProject/Views/index.php.
+ * IssueTrackerProject module view template: index.
  */
 ?>
 <!doctype html>

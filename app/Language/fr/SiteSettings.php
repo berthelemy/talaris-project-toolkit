@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Language/fr/SiteSettings.php.
+ * French localization strings for Site Settings.
  */
 
 return [

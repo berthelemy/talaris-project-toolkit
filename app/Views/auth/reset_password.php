@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/auth/reset_password.php.
+ * Authentication view template: reset password.
  */
 ?>
 <?= $this->extend('layouts/auth') ?>

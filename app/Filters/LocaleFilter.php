@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Filters/LocaleFilter.php.
+ * HTTP filter for Locale Filter request handling.
  */
 
 namespace App\Filters;

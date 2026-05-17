@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-10-230000_CreateModuleEditLocksTable.php.
+ * Database migration: Create Module Edit Locks Table.
  */
 
 namespace App\Database\Migrations;

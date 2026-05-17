@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/ThemeSettingsModel.php.
+ * Persistence model for Theme Settings Model.
  */
 
 namespace App\Models;

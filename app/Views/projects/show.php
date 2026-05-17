@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/projects/show.php.
+ * View template for projects: show.
  */
 $pageTitle = (string) lang('Domain.projectDetailsTitle');
 $active = 'projects';

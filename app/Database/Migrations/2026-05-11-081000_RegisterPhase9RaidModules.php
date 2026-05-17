@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Database/Migrations/2026-05-11-081000_RegisterPhase9RaidModules.php.
+ * Database migration: Register Phase9 Raid Modules.
  */
 
 namespace App\Database\Migrations;

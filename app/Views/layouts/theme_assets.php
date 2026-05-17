@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/layouts/theme_assets.php.
+ * Shared layout partial: theme assets.
  */
 
 use App\Libraries\Theme\ThemeSettingsService;

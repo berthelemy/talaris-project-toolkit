@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/welcome_message.php.
+ * Application view template: welcome message.
  */
 ?>
 <!DOCTYPE html>

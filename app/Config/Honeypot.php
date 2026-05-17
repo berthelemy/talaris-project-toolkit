@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Honeypot.php.
+ * Application configuration for Honeypot.
  */
 
 namespace Config;

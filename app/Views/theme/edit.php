@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/theme/edit.php.
+ * View template for theme: edit.
  */
 $pageTitle = (string) lang('Theme.pageTitle');
 $active = 'theme';

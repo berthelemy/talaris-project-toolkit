@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/IssueTrackerProject/Language/en/Module.php.
+ * English localization strings for IssueTrackerProject module Module.
  */
 
 return require APPPATH . 'Language/en/Module.php';

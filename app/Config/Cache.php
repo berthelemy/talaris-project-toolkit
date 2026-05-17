@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Cache.php.
+ * Application configuration for Cache.
  */
 
 namespace Config;

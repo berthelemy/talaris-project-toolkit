@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/AuthSettingsModel.php.
+ * Persistence model for Auth Settings Model.
  */
 
 namespace App\Models;

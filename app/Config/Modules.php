@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Modules.php.
+ * Application configuration for Modules.
  */
 
 namespace Config;

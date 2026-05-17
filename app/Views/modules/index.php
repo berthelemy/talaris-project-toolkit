@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/modules/index.php.
+ * View template for modules: index.
  */
 $pageTitle = (string) lang('Module.managementTitle');
 $active = 'modules';

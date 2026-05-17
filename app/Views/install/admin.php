@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/install/admin.php.
+ * View template for install: admin.
  */
 ?>
 <?= $this->extend('layouts/auth') ?>

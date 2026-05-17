@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/DependenciesRegisterProject/Tests/System/DependenciesRegisterProjectSystemTest.php.
+ * System test suite for DependenciesRegisterProject module.
  */
 
 namespace App\Modules\DependenciesRegisterProject\Tests\System;

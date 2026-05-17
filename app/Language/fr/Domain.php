@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Language/fr/Domain.php.
+ * French localization strings for Domain.
  */
 
 return [

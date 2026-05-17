@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/errors/html/error_exception.php.
+ * HTML error view template: error exception.
  */
 use CodeIgniter\HTTP\Header;
 use CodeIgniter\CodeIgniter;

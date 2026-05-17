@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Toolbar.php.
+ * Application configuration for Toolbar.
  */
 
 namespace Config;

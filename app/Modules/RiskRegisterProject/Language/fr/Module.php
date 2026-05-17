@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/RiskRegisterProject/Language/fr/Module.php.
+ * French localization strings for RiskRegisterProject module Module.
  */
 
 return require APPPATH . 'Language/fr/Module.php';

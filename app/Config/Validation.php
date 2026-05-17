@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Validation.php.
+ * Application configuration for Validation.
  */
 
 namespace Config;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/IssueTrackerProject/Views/_add_modal.php.
+ * IssueTrackerProject module view template: add modal.
  */
 if (defined('ISSUE_WIDGET_ADD_MODAL_RENDERED')) {
     return;

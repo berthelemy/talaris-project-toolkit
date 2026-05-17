@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/dashboard/index.php.
+ * View template for dashboard: index.
  */
 $pageTitle = (string) lang('Auth.dashboardTitle');
 $active = 'dashboard';

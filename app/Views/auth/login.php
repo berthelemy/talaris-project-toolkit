@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/auth/login.php.
+ * Authentication view template: login.
  */
 ?>
 <?= $this->extend('layouts/auth') ?>

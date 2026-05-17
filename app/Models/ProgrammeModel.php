@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Models/ProgrammeModel.php.
+ * Persistence model for Programme Model.
  */
 
 namespace App\Models;

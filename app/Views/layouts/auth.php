@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Views/layouts/auth.php.
+ * Shared layout partial: auth.
  */
 ?>
 <!doctype html>

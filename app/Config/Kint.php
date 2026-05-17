@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Kint.php.
+ * Application configuration for Kint.
  */
 
 namespace Config;

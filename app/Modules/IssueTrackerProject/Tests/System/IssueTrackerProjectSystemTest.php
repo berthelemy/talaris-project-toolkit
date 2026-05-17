@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Modules/IssueTrackerProject/Tests/System/IssueTrackerProjectSystemTest.php.
+ * System test suite for IssueTrackerProject module.
  */
 
 namespace App\Modules\IssueTrackerProject\Tests\System;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File documentation for app/Config/Generators.php.
+ * Application configuration for Generators.
  */
 
 namespace Config;
