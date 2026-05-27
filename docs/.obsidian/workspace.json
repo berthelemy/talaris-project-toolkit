@@ -77,8 +77,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "8920beb67624d174",
@@ -185,10 +184,13 @@
   },
   "active": "9692571f037e79af",
   "lastOpenFiles": [
+    "project-cards/Remove module scope from the title shown in the navigation panel.md",
+    "00-kanban.base",
+    "project-cards/Navigation panel shrink behaviour.md",
+    "project-cards/Add icons to modules.md",
     "project-cards/Ensure that all php, css and javascript files include full documentation.md",
     "requirements/README.md",
     "requirements/CODE_DOCUMENTATION_STANDARDS.md",
-    "00-kanban.base",
     "project-cards/Project navigation panel display.md",
     "project-cards/Ensure the model definitions are stored within the module directories and not shared.md",
     "project-cards/phase-12-cross-module-reports-and-email.md",
@@ -208,13 +210,9 @@
     "handoffs/HANDOFF_NEXT_SESSION_PHASE10.md",
     "handoffs/HANDOFF_NEXT_SESSION_PHASE9.md",
     "handoffs/HANDOFF_NEXT_SESSION_PHASE7.md",
-    "handoffs/HANDOFF_NEXT_SESSION_PHASE6.md",
     "handoffs/sedsKqXtC",
     "modules/sedTArUBU",
     "project-cards/sedPJHRRa",
-    "project-cards/dependencies-module-full-refresh.md",
-    "Project-reports/BOARD.md",
-    "MODULE_INTERNAL_API.md",
     "modules",
     "Project-reports",
     "Development",
